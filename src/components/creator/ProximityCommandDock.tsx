@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 interface NavItem {
   id: string;
@@ -231,5 +232,46 @@ export function ProximityCommandDock() {
         );
       })}
     </nav>
+  );
+}
+
+export function MobileNav() {
+  const [open, setOpen] = useState(false);
+
+  const go = (item: NavItem) => {
+    setOpen(false);
+    const target = document.querySelector(item.href);
+    if (target) target.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <div className="md:hidden relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+        className="flex items-center justify-center w-9 h-9 rounded-xl border border-white/10 bg-white/[0.04] text-[#F3F1E8] hover:border-[#F47A18]/60 transition-colors cursor-pointer"
+      >
+        {open ? <X size={16} /> : <Menu size={16} />}
+      </button>
+      {open && (
+        <div className="fixed inset-x-4 top-[4.5rem] z-50 rounded-2xl border border-white/15 bg-[#060A16]/95 backdrop-blur-2xl shadow-[0_24px_60px_rgba(0,0,0,0.85)] p-3 space-y-1">
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.id}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                go(item);
+              }}
+              className="block px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-[0.16em] text-[#F3F1E8] hover:text-[#F47A18] hover:bg-white/[0.04] transition-colors font-[family-name:var(--font-outfit)]"
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

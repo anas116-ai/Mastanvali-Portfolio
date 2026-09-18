@@ -150,7 +150,7 @@ export function SkillsSection() {
                   whileHover={{ y: -10, rotateY: -6, rotateX: 3, scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 350, damping: 24 }}
                   onClick={() => setOpenedBook(idx)}
-                  className="relative group cursor-pointer select-none w-full max-w-[320px] h-[400px] rounded-2xl overflow-hidden border border-white/10 hover:border-[#F47A18]/60 bg-[#060A16]/90 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:shadow-[0_25px_60px_rgba(244,122,24,0.22)] transition-all duration-300 flex flex-col justify-between p-6"
+                  className="relative group cursor-pointer select-none w-full max-w-[320px] h-[400px] rounded-2xl overflow-hidden border border-white/10 hover:border-[#F47A18]/60 bg-[#060A16]/90 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:shadow-[0_25px_60px_rgba(244,122,24,0.22)] transition-all duration-300 flex flex-col justify-between px-6 py-6 pb-7"
                 >
                   {/* Subtle Left Luminous Spine Indicator */}
                   <div
@@ -176,7 +176,7 @@ export function SkillsSection() {
                       </span>
                     </div>
                     <span
-                      className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.05] border border-white/10 uppercase tracking-wider font-semibold"
+                      className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-white/[0.05] border border-white/10 uppercase tracking-wider font-semibold"
                       style={{ color: book.accent }}
                     >
                       {book.badge}
@@ -209,13 +209,13 @@ export function SkillsSection() {
                       {book.tech.slice(0, 3).map((t, tIdx) => (
                         <span
                           key={tIdx}
-                          className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-[#94A3B8]"
+                          className="text-[11px] font-mono px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-[#94A3B8]"
                         >
                           {t}
                         </span>
                       ))}
                       {book.tech.length > 3 && (
-                        <span className="text-[10px] font-mono px-1.5 py-0.5 text-white/40">
+                        <span className="text-[11px] font-mono px-1.5 py-0.5 text-white/40">
                           +{book.tech.length - 3}
                         </span>
                       )}
@@ -224,7 +224,7 @@ export function SkillsSection() {
 
                   {/* Bottom Action Footer */}
                   <div className="relative z-10 pt-3.5 border-t border-white/[0.08] flex items-center justify-between">
-                    <span className="text-[10px] font-mono text-[#94A3B8] tracking-wider uppercase">
+                    <span className="text-[11px] font-mono text-[#94A3B8] tracking-wider uppercase">
                       REF: {book.no}
                     </span>
 

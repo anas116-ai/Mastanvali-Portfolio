@@ -84,7 +84,7 @@ export function FinalSection() {
           <ShaderIgnitionButton
             variant="platinum"
             onClick={() => setIsResumeOpen(true)}
-            ariaLabel="Open Resume Modal"
+            ariaLabel="View Resume"
             icon={<FileText size={15} className="text-[#E2E8F0]" />}
             iconPosition="left"
             size="md"

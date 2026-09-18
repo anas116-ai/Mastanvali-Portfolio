@@ -312,7 +312,7 @@ function ProjectCard({
                   {project.no}
                 </span>
                 <span className="text-white/20">/</span>
-                <span className="text-[11px] font-mono uppercase tracking-widest text-[#B8C4CC]">
+                <span className="text-xs font-mono uppercase tracking-widest text-[#B8C4CC]">
                   {project.category}
                 </span>
               </div>
@@ -320,7 +320,7 @@ function ProjectCard({
               {/* Title: Refined Slender Display Font (Outfit) */}
               <h3 className="text-xl sm:text-2xl md:text-[1.85rem] font-medium text-[#F3F1E8] font-[family-name:var(--font-outfit)] tracking-normal flex flex-wrap items-center gap-3">
                 <span>{project.name}</span>
-                <span className="text-[10px] font-mono font-medium px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[#B8C4CC]">
+                <span className="text-[11px] font-mono font-medium px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[#B8C4CC]">
                   {project.telemetry}
                 </span>
               </h3>
@@ -328,10 +328,10 @@ function ProjectCard({
 
             {/* End-to-End Execution Flow (Highlighted Muted Box) */}
             <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] text-xs font-mono text-[#CBD5E1] space-y-1">
-              <span className="text-[10px] font-semibold uppercase tracking-wider block" style={{ color: project.accent }}>
+              <span className="text-[11px] font-semibold uppercase tracking-wider block" style={{ color: project.accent }}>
                 END-TO-END SYSTEM FLOW //
               </span>
-              <div className="text-[11px] sm:text-xs text-[#E2E8F0] leading-relaxed">
+              <div className="text-xs sm:text-sm text-[#E2E8F0] leading-relaxed">
                 {project.flow}
               </div>
             </div>
@@ -343,7 +343,7 @@ function ProjectCard({
 
             {/* Key System Architectures / Implementation */}
             <div className="space-y-2 pt-1 border-t border-white/[0.06]">
-              <div className="text-[11px] font-mono uppercase tracking-wider text-[#E2E8F0] font-semibold">
+              <div className="text-xs font-mono uppercase tracking-wider text-[#E2E8F0] font-semibold">
                 What It Implements:
               </div>
               <ul className="space-y-1.5 text-xs text-[#A8B8C4] font-[family-name:var(--font-sans)]">
@@ -361,7 +361,7 @@ function ProjectCard({
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2.5 py-1 rounded-md text-[10px] font-mono bg-white/[0.04] text-[#B8C4CC] border border-white/[0.08]"
+                  className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-white/[0.04] text-[#B8C4CC] border border-white/[0.08]"
                 >
                   {tag}
                 </span>
@@ -438,7 +438,7 @@ function ProjectCard({
             </div>
 
             {/* Under-Image Telemetry Bar */}
-            <div className="w-full max-w-[380px] sm:max-w-[420px] flex items-center justify-between px-2 text-[11px] font-mono text-[#B8C4CC]">
+            <div className="w-full max-w-[380px] sm:max-w-[420px] flex items-center justify-between px-2 text-xs font-mono text-[#B8C4CC]">
               <span className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: project.accent }} />
                 <span>Verified Vertical UI</span>

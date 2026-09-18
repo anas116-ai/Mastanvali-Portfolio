@@ -38,9 +38,18 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
   const [showSpeech, setShowSpeech] = useState(false);
   const [webglSupported, setWebglSupported] = useState(true);
   const [sceneReady, setSceneReady] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (!webglAvailable()) setWebglSupported(false);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
   }, []);
 
   // Track normalized mouse coordinates (-1 to 1)
@@ -102,6 +111,7 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
           <RigBoundary>
             <Canvas
               camera={{ position: [0, -0.02, 5.35], fov: 38 }}
+              dpr={isMobile ? 1 : [1, 2]}
               gl={{
                 antialias: true,
                 alpha: true,
@@ -128,7 +138,7 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
               <GroundShadow3D mousePosition={mousePosition} />
 
               {/* 3D Volumetric Drifting Atmospheric Dust Particles */}
-              <VolumetricParticleSystem count={150} mousePosition={mousePosition} />
+              <VolumetricParticleSystem count={isMobile ? 60 : 150} mousePosition={mousePosition} />
             </Suspense>
           </Canvas>
         </RigBoundary>

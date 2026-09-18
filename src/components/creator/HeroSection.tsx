@@ -9,7 +9,7 @@ import { ResumeModal } from "@/components/resume/ResumeModal";
 
 import { HeroSnowParticles } from "./HeroSnowParticles";
 import { ShaderIgnitionButton } from "@/components/ui/ShaderIgnitionButton";
-import { ProximityCommandDock } from "./ProximityCommandDock";
+import { ProximityCommandDock, MobileNav } from "./ProximityCommandDock";
 
 export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,6 +69,7 @@ export function HeroSection() {
 
           {/* Right Action Hub */}
           <div className="flex items-center gap-2.5">
+            <MobileNav />
             <a
               href="https://github.com/anas116-ai"
               target="_blank"
@@ -139,12 +140,12 @@ export function HeroSection() {
 
           {/* 1. Clean Executive Role Line - Balanced & Spacious */}
           <FadeIn y={20} delay={0.25} duration={0.7}>
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm md:text-base font-semibold tracking-[0.14em] uppercase text-[#F3F1E8] font-[family-name:var(--font-outfit)]">
-              <span className="text-[#F3F1E8]">SAP BODS DEVELOPER</span>
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm md:text-base font-semibold tracking-[0.14em] text-[#F3F1E8] font-[family-name:var(--font-outfit)]">
+              <span className="text-[#F3F1E8]">SAP BODS Developer</span>
               <span className="text-white/25 select-none">&bull;</span>
-              <span className="text-[#F47A18]">AI SYSTEMS BUILDER</span>
+              <span className="text-[#F47A18]">AI Systems Builder</span>
               <span className="text-white/25 select-none">&bull;</span>
-              <span className="text-[#F3F1E8]">FULL-STACK DEVELOPER</span>
+              <span className="text-[#F3F1E8]">Full-Stack Developer</span>
             </div>
           </FadeIn>
 
@@ -168,7 +169,7 @@ export function HeroSection() {
                 ariaLabel="Explore Work - view projects"
                 icon={<ArrowDown size={14} className="stroke-[2.8]" />}
                 iconPosition="right"
-                size="md"
+                size="lg"
               >
                 Explore Work
               </ShaderIgnitionButton>
@@ -203,7 +204,7 @@ export function HeroSection() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
                 </span>
-                <span className="font-mono font-semibold tracking-wider uppercase text-emerald-400 text-xs sm:text-[12px]">
+                <span className="font-mono font-semibold tracking-wider uppercase text-emerald-400 text-xs">
                   AVAILABLE FOR HIRE // IMMEDIATE JOINER &bull; OPEN TO RELOCATION
                 </span>
               </div>

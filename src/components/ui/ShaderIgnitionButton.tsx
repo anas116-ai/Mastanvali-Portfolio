@@ -385,7 +385,7 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
         {/* Full-bleed WebGL Canvas */}
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full block pointer-events-none opacity-85 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute inset-0 w-full h-full hidden md:block pointer-events-none opacity-85 group-hover:opacity-100 transition-opacity duration-300"
           aria-hidden="true"
         />
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Download, ExternalLink } from "lucide-react";
 
@@ -10,6 +10,8 @@ interface ResumeModalProps {
 }
 
 export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+
   // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -18,10 +20,15 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
     if (isOpen) {
       window.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
+      const raf = requestAnimationFrame(() => closeBtnRef.current?.focus());
+      return () => {
+        cancelAnimationFrame(raf);
+        window.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = "unset";
+      };
     }
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "unset";
     };
   }, [isOpen, onClose]);
 
@@ -48,6 +55,9 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
 
           {/* Modal Window Container */}
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Verified Resume"
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -91,6 +101,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 </a>
 
                 <button
+                  ref={closeBtnRef}
                   onClick={onClose}
                   className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-colors ml-1 cursor-pointer"
                   aria-label="Close Resume"

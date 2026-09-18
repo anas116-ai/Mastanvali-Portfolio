@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FadeIn } from "./FadeIn";
 import { experience } from "@/data/experience";
 import {
@@ -14,6 +14,7 @@ import {
   FileText,
   Sparkles,
   ShieldCheck,
+  Rotate3d,
 } from "lucide-react";
 import { ResumeModal } from "@/components/resume/ResumeModal";
 
@@ -27,6 +28,10 @@ const pipelineStages = [
 export function ExperienceSection() {
   const [viewMode, setViewMode] = useState<"3d" | "specs">("3d");
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(max-width: 1023px)").matches) setViewMode("specs");
+  }, []);
 
   return (
     <section
@@ -125,18 +130,22 @@ export function ExperienceSection() {
           <FadeIn y={20} duration={0.8}>
             <div className="relative w-full flex flex-col items-center justify-center">
               {/* Floating WebGL 3D Canvas Viewport (Elongated for rich verified resume) */}
-              <div className="relative w-full h-[880px] sm:h-[980px] md:h-[1080px]">
+              <div className="relative w-full h-[600px] sm:h-[980px] md:h-[1080px]">
                 <iframe
                   title="3D Tactile Engineering Experience Docket"
                   src="/assets/three-paper/experience-paper.html"
                   className="w-full h-full border-0 bg-transparent block"
                   loading="eager"
                 />
+                <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#08131D]/85 backdrop-blur-xl border border-[rgba(244,122,24,0.35)] text-[#F47A18] text-xs font-mono pointer-events-none select-none">
+                  <Rotate3d size={13} />
+                  <span>Drag to rotate in 3D</span>
+                </div>
               </div>
 
               {/* Minimalist, subtle interaction cue below the paper */}
-              <div className="text-center text-[11px] font-mono text-[#94A3B8]/60 tracking-[0.25em] uppercase pt-2 select-none">
-                Drag to rotate in 3D
+              <div className="text-center text-xs font-mono text-[#94A3B8]/60 tracking-[0.25em] uppercase pt-2 select-none">
+                Touch &amp; drag to rotate &bull; pinch to zoom
               </div>
             </div>
           </FadeIn>
@@ -160,7 +169,7 @@ export function ExperienceSection() {
                         className="p-4 rounded-xl border border-white/10 bg-[#02050B]/90 hover:bg-[#060C18] flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-[#F47A18]/40"
                       >
                         <div className="flex items-center justify-between relative z-10">
-                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#F47A18]/10 text-[#F47A18] border border-[#F47A18]/20">
+                          <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[#F47A18]/10 text-[#F47A18] border border-[#F47A18]/20">
                             {stg.stage}
                           </span>
                           <NodeIcon size={15} className="text-[#F47A18]" />
@@ -170,7 +179,7 @@ export function ExperienceSection() {
                           <div className="text-sm font-semibold text-[#F3F1E8] font-[family-name:var(--font-outfit)]">
                             {stg.title}
                           </div>
-                          <div className="text-[11px] font-mono text-[#94A3B8] mt-0.5">
+                          <div className="text-xs font-mono text-[#94A3B8] mt-0.5">
                             {stg.sub}
                           </div>
                         </div>

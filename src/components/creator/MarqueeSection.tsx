@@ -110,7 +110,7 @@ export function MarqueeSection() {
                 >
                   <Icon size={12} />
                 </div>
-                <span className="font-mono text-[11.5px] sm:text-xs font-semibold text-[#F3F1E8] tracking-wide whitespace-nowrap">
+                <span className="font-mono text-xs font-semibold text-[#F3F1E8] tracking-wide whitespace-nowrap">
                   {node.name}
                 </span>
               </div>
@@ -148,7 +148,7 @@ export function MarqueeSection() {
                 >
                   <Icon size={12} />
                 </div>
-                <span className="font-mono text-[11.5px] sm:text-xs font-semibold text-[#F3F1E8] tracking-wide whitespace-nowrap">
+                <span className="font-mono text-xs font-semibold text-[#F3F1E8] tracking-wide whitespace-nowrap">
                   {node.name}
                 </span>
               </div>

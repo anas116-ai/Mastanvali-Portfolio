@@ -73,10 +73,6 @@ export default function RootLayout({
           type="font/ttf"
           crossOrigin="anonymous"
         />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Cinzel:wght@400;600;700;800&family=Josefin+Sans:wght@300;400;500;600;700&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-        />
       </head>
       <body className="min-h-screen bg-[#060B14] text-[#F3F1E8] font-sans antialiased overflow-x-clip selection:bg-[#F47A18]/30 selection:text-[#F47A18]">
         {children}

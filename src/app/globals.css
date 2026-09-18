@@ -58,6 +58,7 @@
 }
 
 body {
+  color-scheme: dark;
   background-color: #050811;
   color: #F3F1E8;
   font-family: "Plus Jakarta Sans", sans-serif;

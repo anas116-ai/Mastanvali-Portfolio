@@ -557,7 +557,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
               >
                 {area.num}
               </span>
-              <span className="text-[10px] font-mono tracking-[0.22em] text-[#94A3B8] uppercase font-medium">
+              <span className="text-[11px] font-mono tracking-[0.22em] text-[#94A3B8] uppercase font-medium">
                 {area.systemTag}
               </span>
             </div>
@@ -572,7 +572,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
 
           {/* Domain Title Hierarchy — 100% Crisp & High Contrast */}
           <div className="pt-1">
-            <div className="text-[10px] font-mono tracking-widest uppercase text-[#38BDF8] font-medium">
+            <div className="text-[11px] font-mono tracking-widest uppercase text-[#38BDF8] font-medium">
               // CORE DOMAIN
             </div>
             <h3
