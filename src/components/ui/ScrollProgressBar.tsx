@@ -14,10 +14,10 @@ export function ScrollProgressBar() {
   return (
     <div className="fixed top-0 left-0 right-0 z-[999] h-[2px] bg-transparent pointer-events-none">
       <motion.div
-        className="h-full origin-left bg-gradient-to-r from-[#F47A18] via-[#FDE047] to-[#14B8A6]"
+        className="h-full origin-left bg-gradient-to-r from-[#C86A26] via-[#E06D20] to-[#D9A036]"
         style={{
           scaleX,
-          boxShadow: "0 0 10px rgba(244, 122, 24, 0.7), 0 0 4px rgba(253, 224, 71, 0.9)",
+          boxShadow: "0 0 8px rgba(224, 109, 32, 0.35)",
         }}
       />
     </div>

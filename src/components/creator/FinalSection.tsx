@@ -20,10 +20,8 @@ export function FinalSection() {
   return (
     <footer
       id="contact"
-      className="relative w-full overflow-hidden bg-transparent text-[#F3F1E8] pt-20 sm:pt-24 md:pt-28 pb-20 px-5 sm:px-8 md:px-12 lg:px-16 select-none font-[family-name:var(--font-sans)]"
+      className="relative w-full overflow-hidden bg-transparent text-[#F8FAFC] pt-20 sm:pt-24 md:pt-28 pb-20 px-5 sm:px-8 md:px-12 lg:px-16 select-none font-[family-name:var(--font-sans)]"
     >
-
-
       {/* --- LUXURY OBSIDIAN HORIZON --- */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {/* Architectural Coordinate Marks */}
@@ -37,17 +35,17 @@ export function FinalSection() {
 
       <div className="mx-auto max-w-5xl flex flex-col items-center text-center relative z-10 space-y-8">
         <FadeIn y={20} duration={0.8}>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium uppercase tracking-wider mb-4 bg-[#F47A18]/10 text-[#F47A18] border border-[#F47A18]/30 shadow-[0_0_20px_rgba(244,122,24,0.15)]">
-            <span className="w-2 h-2 rounded-full bg-[#F47A18] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium uppercase tracking-wider mb-4 bg-[#E06D20]/10 text-[#E06D20] border border-[#E06D20]/30 shadow-[0_0_15px_rgba(224,109,32,0.15)]">
+            <span className="w-2 h-2 rounded-full bg-[#E06D20] animate-pulse" />
             <span>Available for Opportunities &bull; Immediate Joiner</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-4xl text-[#F3F1E8] mb-4 font-medium font-[family-name:var(--font-outfit)] tracking-normal">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl text-[#F8FAFC] mb-4 font-medium font-[family-name:var(--font-outfit)] tracking-normal">
             Let&apos;s Build Something Extraordinary
           </h2>
 
-          <p className="text-[#B8C4CC] text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed font-[family-name:var(--font-plus-jakarta)]">
-            Open to engineering roles across <strong className="text-[#F3F1E8] font-medium">Enterprise Data Engineering (SAP BODS / SQL / ETL)</strong>, <strong className="text-[#F3F1E8] font-medium">AI Multi-Agent Systems</strong>, or <strong className="text-[#F3F1E8] font-medium">Full-Stack Application Development</strong>.
+          <p className="text-[#94A3B8] text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed font-[family-name:var(--font-plus-jakarta)]">
+            Open to engineering roles across <strong className="text-[#F8FAFC] font-medium">Enterprise Data Engineering (SAP BODS / SQL / ETL)</strong>, <strong className="text-[#F8FAFC] font-medium">AI Multi-Agent Systems</strong>, or <strong className="text-[#F8FAFC] font-medium">Full-Stack Application Development</strong>.
           </p>
         </FadeIn>
 
@@ -57,7 +55,7 @@ export function FinalSection() {
             variant="amber"
             href={`mailto:${email}`}
             ariaLabel="Send an Email to Mastan Vali"
-            icon={<Mail size={15} className="text-[#F47A18]" />}
+            icon={<Mail size={15} className="text-[#E06D20]" />}
             iconPosition="left"
             size="md"
           >
@@ -70,9 +68,9 @@ export function FinalSection() {
             ariaLabel="Copy Email Address"
             icon={
               copied ? (
-                <Check size={14} className="text-[#14B8A6] stroke-[2.5]" />
+                <Check size={14} className="text-[#E06D20] stroke-[2.5]" />
               ) : (
-                <Copy size={14} className="text-[#F47A18]" />
+                <Copy size={14} className="text-[#E06D20]" />
               )
             }
             iconPosition="left"
@@ -85,7 +83,7 @@ export function FinalSection() {
             variant="platinum"
             onClick={() => setIsResumeOpen(true)}
             ariaLabel="View Resume"
-            icon={<FileText size={15} className="text-[#F3F1E8]" />}
+            icon={<FileText size={15} className="text-[#F8FAFC]" />}
             iconPosition="left"
             size="md"
           >
@@ -101,7 +99,7 @@ export function FinalSection() {
           <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs font-mono py-2">
             <div className="flex items-center gap-2">
               <span className="text-[#94A3B8] font-mono">// PHONE:</span>
-              <a href="tel:8374882630" className="text-[#F3F1E8] hover:text-[#F47A18] font-semibold transition-colors">
+              <a href="tel:8374882630" className="text-[#F8FAFC] hover:text-[#E06D20] font-semibold transition-colors">
                 +91 8374882630
               </a>
             </div>
@@ -110,7 +108,7 @@ export function FinalSection() {
 
             <div className="flex items-center gap-2">
               <span className="text-[#94A3B8] font-mono">// LOCATION:</span>
-              <span className="text-[#F3F1E8] font-semibold">
+              <span className="text-[#F8FAFC] font-semibold">
                 AP / Hyderabad, India
               </span>
             </div>
@@ -119,7 +117,7 @@ export function FinalSection() {
 
             <div className="flex items-center gap-2">
               <span className="text-[#94A3B8] font-mono">// RELOCATION:</span>
-              <span className="text-[#F47A18] font-semibold">
+              <span className="text-[#E06D20] font-semibold">
                 Immediate Availability
               </span>
             </div>
@@ -132,17 +130,18 @@ export function FinalSection() {
             href="https://github.com/anas116-ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full bg-white/[0.04] border border-white/10 text-[#B8C4CC] hover:text-[#F47A18] hover:border-[#F47A18]/60 transition-all hover:scale-105 shadow-md"
+            className="p-3 rounded-full bg-white/[0.04] border border-white/10 text-[#94A3B8] hover:text-[#E06D20] hover:border-[#E06D20]/60 transition-all hover:scale-105 shadow-md"
             title="GitHub"
             aria-label="GitHub Profile"
           >
             <Github size={16} />
           </a>
+
           <a
             href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full bg-white/[0.04] border border-white/10 text-[#B8C4CC] hover:text-[#F47A18] hover:border-[#F47A18]/60 transition-all hover:scale-105 shadow-md"
+            className="p-3 rounded-full bg-white/[0.04] border border-white/10 text-[#94A3B8] hover:text-[#E06D20] hover:border-[#E06D20]/60 transition-all hover:scale-105 shadow-md"
             title="LinkedIn"
             aria-label="LinkedIn Profile"
           >
@@ -151,7 +150,7 @@ export function FinalSection() {
         </FadeIn>
 
         {/* Copyright */}
-        <div className="pt-8 border-t border-white/10 w-full text-center text-xs font-mono text-[#A8B8C4]">
+        <div className="pt-8 border-t border-white/10 w-full text-center text-xs font-mono text-[#94A3B8]">
           &copy; {new Date().getFullYear()} Shaik Mastan Vali &bull; Enterprise Data Engineering &bull; AI Systems &bull; Full-Stack Development
         </div>
       </div>

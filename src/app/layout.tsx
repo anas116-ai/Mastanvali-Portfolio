@@ -74,7 +74,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className="min-h-screen bg-[#060B14] text-[#F3F1E8] font-sans antialiased overflow-x-clip selection:bg-[#F47A18]/30 selection:text-[#F47A18]">
+      <body className="min-h-screen bg-[#07090E] text-[#F8FAFC] font-sans antialiased overflow-x-clip selection:bg-[#E06D20]/25 selection:text-[#FFFFFF]">
         {children}
       </body>
     </html>

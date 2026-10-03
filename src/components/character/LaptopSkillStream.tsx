@@ -20,15 +20,16 @@ interface SkillStreamBadge {
 
 // 6 Core Skills: Alternates cleanly between LEFT and RIGHT sides
 // Smooth continuous arc trajectory curves wide around the character body, never occluding torso, arms, or face/head
+// Color palette strictly follows the controlled warm amber, gold, and copper data-fragment system
 const SKILL_ITEMS = [
   {
     text: "SAP BODS Developer",
     category: "ENTERPRISE ETL",
     side: "left" as const,
     icon: Database,
-    accentColor: "#14B8A6", // Cyan
-    borderColor: "rgba(244, 122, 24, 0.65)",
-    bgGlow: "rgba(244, 122, 24, 0.15)",
+    accentColor: "#E06D20", // Burnished Amber
+    borderColor: "rgba(224, 109, 32, 0.45)",
+    bgGlow: "rgba(224, 109, 32, 0.12)",
     arcX: [-68, -135, -205, -238, -242],
     arcY: [232, 192, 132, 68, 38],
   },
@@ -37,9 +38,9 @@ const SKILL_ITEMS = [
     category: "DATA ARCHITECTURE",
     side: "right" as const,
     icon: Database,
-    accentColor: "#F47A18", // Sky Blue
-    borderColor: "rgba(244, 122, 24, 0.65)",
-    bgGlow: "rgba(244, 122, 24, 0.15)",
+    accentColor: "#D9A036", // Brushed Gold
+    borderColor: "rgba(217, 160, 54, 0.45)",
+    bgGlow: "rgba(217, 160, 54, 0.12)",
     arcX: [-16, 135, 205, 238, 242],
     arcY: [232, 192, 132, 68, 38],
   },
@@ -48,9 +49,9 @@ const SKILL_ITEMS = [
     category: "ITSM PLATFORM",
     side: "left" as const,
     icon: Layers,
-    accentColor: "#14B8A6", // Emerald
-    borderColor: "rgba(244, 122, 24, 0.65)",
-    bgGlow: "rgba(244, 122, 24, 0.15)",
+    accentColor: "#C86A26", // Warm Copper
+    borderColor: "rgba(200, 106, 38, 0.45)",
+    bgGlow: "rgba(200, 106, 38, 0.12)",
     arcX: [-70, -138, -208, -240, -244],
     arcY: [234, 194, 134, 70, 40],
   },
@@ -59,9 +60,9 @@ const SKILL_ITEMS = [
     category: "GROUNDED RETRIEVAL",
     side: "right" as const,
     icon: Binary,
-    accentColor: "#F47A18", // Amber
-    borderColor: "rgba(244, 122, 24, 0.65)",
-    bgGlow: "rgba(244, 122, 24, 0.30)",
+    accentColor: "#E67E22", // Amber Bronze
+    borderColor: "rgba(230, 126, 34, 0.45)",
+    bgGlow: "rgba(230, 126, 34, 0.15)",
     arcX: [-14, 138, 208, 240, 244],
     arcY: [232, 192, 132, 70, 40],
   },
@@ -70,9 +71,9 @@ const SKILL_ITEMS = [
     category: "AUTONOMOUS AGENTS",
     side: "left" as const,
     icon: Cpu,
-    accentColor: "#F47A18", // Violet
-    borderColor: "rgba(244, 122, 24, 0.65)",
-    bgGlow: "rgba(244, 122, 24, 0.15)",
+    accentColor: "#E06D20", // Burnished Amber
+    borderColor: "rgba(224, 109, 32, 0.45)",
+    bgGlow: "rgba(224, 109, 32, 0.12)",
     arcX: [-68, -135, -205, -238, -242],
     arcY: [230, 190, 130, 66, 36],
   },
@@ -81,9 +82,9 @@ const SKILL_ITEMS = [
     category: "MULTI-AGENT DAG",
     side: "right" as const,
     icon: Terminal,
-    accentColor: "#F47A18", // Radiant Gold
-    borderColor: "rgba(244, 122, 24, 0.65)",
-    bgGlow: "rgba(244, 122, 24, 0.15)",
+    accentColor: "#D9A036", // Brushed Gold
+    borderColor: "rgba(217, 160, 54, 0.45)",
+    bgGlow: "rgba(217, 160, 54, 0.12)",
     arcX: [-16, 135, 205, 238, 242],
     arcY: [230, 190, 130, 66, 36],
   },
@@ -205,10 +206,10 @@ export function LaptopSkillStream() {
                 }}
                 className="flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-2xl shadow-2xl border transform-gpu"
                 style={{
-                  backgroundColor: "rgba(5, 8, 17, 0.96)",
+                  backgroundColor: "rgba(7, 9, 14, 0.96)",
                   borderColor: badge.accentColor,
                   borderWidth: "1.5px",
-                  boxShadow: `0 8px 24px -2px rgba(0,0,0,0.95), 0 0 20px ${badge.bgGlow}`,
+                  boxShadow: `0 8px 24px -2px rgba(0,0,0,0.95), 0 0 16px ${badge.bgGlow}`,
                 }}
               >
                 <div
@@ -227,7 +228,7 @@ export function LaptopSkillStream() {
                   >
                     {badge.category}
                   </span>
-                  <span className="text-[11px] font-semibold text-[#F3F1E8] whitespace-nowrap mt-0.5">
+                  <span className="text-[11px] font-semibold text-[#F8FAFC] whitespace-nowrap mt-0.5">
                     {badge.text}
                   </span>
                 </div>
@@ -261,7 +262,7 @@ export function LaptopSkillStream() {
                   style={{
                     width: sIdx % 2 === 0 ? 9 : 7,
                     height: sIdx % 2 === 0 ? 5 : 4,
-                    backgroundColor: "rgba(5, 8, 17, 0.94)",
+                    backgroundColor: "rgba(7, 9, 14, 0.94)",
                     border: `1px solid ${badge.accentColor}`,
                     boxShadow: `0 0 10px ${badge.accentColor}`,
                   }}

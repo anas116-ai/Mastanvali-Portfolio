@@ -12,14 +12,14 @@ import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 
 export default function Home() {
   return (
-    <div className="relative bg-[#050811] min-h-screen text-[#F3F1E8] antialiased selection:bg-[#F47A18]/30 selection:text-[#F47A18]" id="top">
+    <div className="relative bg-[#07090E] min-h-screen text-[#F8FAFC] antialiased selection:bg-[#E06D20]/25 selection:text-[#FFFFFF]" id="top">
       {/* Top Scroll Progress Indicator */}
       <ScrollProgressBar />
 
       {/* Skip to content for keyboard users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#F47A18] focus:text-[#050811] focus:rounded-lg focus:font-semibold focus:outline-none focus:ring-2 focus:ring-[#F47A18]"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#E06D20] focus:text-[#07090E] focus:rounded-lg focus:font-semibold focus:outline-none focus:ring-2 focus:ring-[#E06D20]"
       >
         Skip to content
       </a>

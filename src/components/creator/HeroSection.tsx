@@ -33,16 +33,16 @@ export function HeroSection() {
       {/* --- 01. LUXURY KEYNOTE STAGE SPOTLIGHTS & SUBTLE ETHEREAL SNOW --- */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {/* Soft Keynote Stage Spotlight behind 3D Character */}
-        <div className="absolute right-[-5%] sm:right-[5%] lg:right-[8%] top-[20%] sm:top-[28%] w-[500px] sm:w-[650px] h-[500px] sm:h-[650px] rounded-full bg-[radial-gradient(circle,rgba(244,122,24,0.05)_0%,rgba(255,255,255,0.02)_40%,transparent_70%)] blur-3xl" />
+        <div className="absolute right-[-5%] sm:right-[5%] lg:right-[8%] top-[20%] sm:top-[28%] w-[500px] sm:w-[650px] h-[500px] sm:h-[650px] rounded-full bg-[radial-gradient(circle,rgba(224,109,32,0.04)_0%,rgba(255,255,255,0.015)_40%,transparent_70%)] blur-3xl" />
 
-        {/* Warm Golden/Amber Ambient Glow behind Headline */}
-        <div className="absolute left-[-5%] sm:left-[5%] top-[18%] sm:top-[22%] w-[450px] sm:w-[580px] h-[450px] sm:h-[580px] rounded-full bg-[radial-gradient(circle,rgba(244,122,24,0.04)_0%,rgba(244,122,24,0.02)_45%,transparent_75%)] blur-3xl" />
+        {/* Warm Burnished Amber Ambient Glow behind Headline */}
+        <div className="absolute left-[-5%] sm:left-[5%] top-[18%] sm:top-[22%] w-[450px] sm:w-[580px] h-[450px] sm:h-[580px] rounded-full bg-[radial-gradient(circle,rgba(224,109,32,0.035)_0%,rgba(224,109,32,0.015)_45%,transparent_75%)] blur-3xl" />
 
         {/* Ultra-Subtle Ethereal Micro-Snow Falling Peacefully across Backdrop */}
         <HeroSnowParticles />
 
-        {/* Sleek Studio Floor Reflection seamlessly blending into #050811 */}
-        <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-[#050811] via-[#050811]/70 to-transparent" />
+        {/* Sleek Studio Floor Reflection seamlessly blending into #07090E */}
+        <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-[#07090E] via-[#07090E]/70 to-transparent" />
         <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       </div>
 
@@ -55,7 +55,7 @@ export function HeroSection() {
             className="group py-2 inline-flex items-center transition-all cursor-pointer focus:outline-none"
             aria-label="Mastan Vali Portfolio Top"
           >
-            <span className="font-[family-name:var(--font-outfit)] font-bold text-sm sm:text-base tracking-[0.22em] text-[#F3F1E8] group-hover:text-[#F47A18] transition-colors uppercase select-none">
+            <span className="font-[family-name:var(--font-outfit)] font-bold text-sm sm:text-base tracking-[0.22em] text-[#F8FAFC] group-hover:text-[#E06D20] transition-colors uppercase select-none">
               MASTAN VALI
             </span>
           </a>
@@ -70,7 +70,7 @@ export function HeroSection() {
               href="https://github.com/anas116-ai"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/10 hover:border-[#F47A18]/60 text-[#B8C4CC] hover:text-[#F47A18] shadow-sm transition-all hover:scale-105 cursor-pointer relative z-50 pointer-events-auto flex items-center justify-center"
+              className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/10 hover:border-[#E06D20]/60 text-[#94A3B8] hover:text-[#E06D20] shadow-sm transition-all hover:scale-105 cursor-pointer relative z-50 pointer-events-auto flex items-center justify-center"
               title="GitHub Profile (anas116-ai)"
               aria-label="GitHub Profile"
             >
@@ -80,7 +80,7 @@ export function HeroSection() {
               href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/10 hover:border-[#F47A18]/60 text-[#B8C4CC] hover:text-[#F47A18] shadow-sm transition-all hover:scale-105 cursor-pointer relative z-50 pointer-events-auto flex items-center justify-center"
+              className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/10 hover:border-[#E06D20]/60 text-[#94A3B8] hover:text-[#E06D20] shadow-sm transition-all hover:scale-105 cursor-pointer relative z-50 pointer-events-auto flex items-center justify-center"
               title="LinkedIn Profile (Mastan Vali Shaik)"
               aria-label="LinkedIn Profile"
             >
@@ -109,7 +109,7 @@ export function HeroSection() {
           <FadeIn y={25} delay={0.18} duration={0.8}>
             <div className="relative inline-block select-none group max-w-full">
               {/* Subtle Luxury Ambient Halo */}
-              <div className="absolute -inset-4 bg-[radial-gradient(ellipse_at_center,rgba(244,122,24,0.09)_0%,transparent_70%)] blur-2xl pointer-events-none -z-10" />
+              <div className="absolute -inset-4 bg-[radial-gradient(ellipse_at_center,rgba(224,109,32,0.06)_0%,transparent_70%)] blur-2xl pointer-events-none -z-10" />
 
               <svg className="absolute w-0 h-0 pointer-events-none opacity-0" aria-hidden="true">
                 <defs>
@@ -122,7 +122,7 @@ export function HeroSection() {
               </svg>
 
               <h1
-                className="font-warpaint inline-block max-w-full text-[clamp(2.75rem,11.5vw,4.75rem)] sm:text-7xl md:text-8xl lg:text-[7.2rem] xl:text-[9.2rem] tracking-[0.08em] uppercase text-[#F47A18] select-none leading-[0.9] drop-shadow-[0_4px_32px_rgba(244,122,24,0.21)] transition-all duration-500"
+                className="font-warpaint inline-block max-w-full text-[clamp(2.75rem,11.5vw,4.75rem)] sm:text-7xl md:text-8xl lg:text-[7.2rem] xl:text-[9.2rem] tracking-[0.08em] uppercase text-[#E06D20] select-none leading-[0.9] drop-shadow-[0_4px_24px_rgba(224,109,32,0.18)] transition-all duration-500"
                 style={{
                   filter: "url(#warpaint-organic-distress)",
                   WebkitFontSmoothing: "antialiased",
@@ -143,20 +143,20 @@ export function HeroSection() {
 
           {/* 1. Clean Executive Role Line - Balanced & Spacious */}
           <FadeIn y={20} delay={0.25} duration={0.7}>
-            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 text-xs sm:text-sm md:text-base font-semibold tracking-[0.14em] text-[#F3F1E8] font-[family-name:var(--font-outfit)]">
-              <span className="text-[#F47A18] font-bold">Enterprise Data &amp; AI Systems Engineer</span>
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 text-xs sm:text-sm md:text-base font-semibold tracking-[0.14em] text-[#F8FAFC] font-[family-name:var(--font-outfit)]">
+              <span className="text-[#E06D20] font-bold">Enterprise Data &amp; AI Systems Engineer</span>
               <span className="text-white/25 select-none">&bull;</span>
-              <span className="text-[#F3F1E8]">SAP BODS 4.3</span>
+              <span className="text-[#F8FAFC]">SAP BODS 4.3</span>
               <span className="text-white/25 select-none">&bull;</span>
-              <span className="text-[#B8C4CC]">Autonomous AI Architectures</span>
+              <span className="text-[#94A3B8]">Autonomous AI Architectures</span>
             </div>
           </FadeIn>
 
           {/* 2. Clean, Readable Engineering Narrative - Balanced Spacing */}
           <FadeIn y={20} delay={0.35} duration={0.8}>
             <div className="max-w-xl">
-              <p className="text-[#B8C4CC] text-sm leading-relaxed font-light font-[family-name:var(--font-outfit)]">
-                Software Engineer with enterprise production data expertise at <strong className="text-white font-semibold underline decoration-[#F47A18]/50 underline-offset-4">VHS Consulting India Pvt Ltd</strong>. Architecting mission-critical SAP ETL pipelines, AWS S3 cloud data lakes, and next-generation autonomous AI systems.
+              <p className="text-[#94A3B8] text-sm leading-relaxed font-light font-[family-name:var(--font-outfit)]">
+                Software Engineer with enterprise production data expertise at <strong className="text-white font-semibold underline decoration-[#E06D20]/40 underline-offset-4">VHS Consulting India Pvt Ltd</strong>. Architecting mission-critical SAP ETL pipelines, AWS S3 cloud data lakes, and next-generation autonomous AI systems.
               </p>
             </div>
           </FadeIn>
@@ -165,7 +165,7 @@ export function HeroSection() {
           <FadeIn y={20} delay={0.45} duration={0.8} className="space-y-5">
             {/* Action Buttons Row */}
             <div className="flex flex-wrap items-center gap-3.5 sm:gap-4">
-              {/* Primary Explore CTA: Solar Amber Shader Ignition Button */}
+              {/* Primary Explore CTA: Burnished Amber Shader Ignition Button */}
               <ShaderIgnitionButton
                 variant="amber"
                 href="#projects"
@@ -182,7 +182,7 @@ export function HeroSection() {
                 variant="platinum"
                 onClick={() => setIsResumeOpen(true)}
                 ariaLabel="View Resume"
-                icon={<FileText size={15} className="text-[#F3F1E8]" />}
+                icon={<FileText size={15} className="text-[#F8FAFC]" />}
                 iconPosition="left"
                 size="md"
               >
@@ -202,10 +202,10 @@ export function HeroSection() {
 
             {/* Clean, Simple Availability Status Note (No bulky box, normal body text font & size) */}
             <div className="flex items-center pt-1 sm:pt-2">
-              <div className="flex items-center gap-2.5 text-xs sm:text-sm font-[family-name:var(--font-outfit)] text-[#B8C4CC]">
+              <div className="flex items-center gap-2.5 text-xs sm:text-sm font-[family-name:var(--font-outfit)] text-[#94A3B8]">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F47A18] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F47A18]" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E06D20] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E06D20]" />
                 </span>
                 <span className="tracking-wide">
                   Available for Hire <span className="text-white/25 mx-1.5">&bull;</span> Immediate Joiner <span className="text-white/25 mx-1.5">&bull;</span> Open to Relocation
@@ -233,8 +233,8 @@ export function HeroSection() {
             {/* REALISTIC STUDIO STAGE GROUNDING (Floor Reflection + Contact Shadows directly under sneaker soles) */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[260px] h-[58px] pointer-events-none z-10">
               {/* Studio Keynote Floor Light Pool */}
-              <div className="absolute inset-x-0 bottom-1 h-[32px] rounded-[100%] bg-gradient-to-r from-transparent via-[rgba(244,122,24,0.18)] to-transparent blur-md" />
-              <div className="absolute inset-x-8 bottom-2 h-[20px] rounded-[100%] bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.14)] to-transparent blur-sm" />
+              <div className="absolute inset-x-0 bottom-1 h-[32px] rounded-[100%] bg-gradient-to-r from-transparent via-[rgba(224,109,32,0.14)] to-transparent blur-md" />
+              <div className="absolute inset-x-8 bottom-2 h-[20px] rounded-[100%] bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.10)] to-transparent blur-sm" />
 
               {/* Broad Feathered Floor Ambient Occlusion */}
               <div className="absolute inset-x-8 bottom-1 h-[24px] rounded-[100%] bg-black/85 blur-[7px]" />

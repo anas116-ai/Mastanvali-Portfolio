@@ -52,7 +52,7 @@ const projectList: ProjectItem[] = [
     telemetry: "ACID WAL · 0.00s Latency",
     stat1: "100% FEFO Safe",
     stat2: "Offline SQLite",
-    accent: "#F47A18", // Solar Amber (single brand accent)
+    accent: "#E06D20", // Burnished Amber
   },
   {
     no: "02",
@@ -80,7 +80,7 @@ const projectList: ProjectItem[] = [
     telemetry: "98% ATS Match Engine",
     stat1: "98% Target Score",
     stat2: "0 Hallucinations",
-    accent: "#F47A18", // Solar Amber (single brand accent)
+    accent: "#E06D20", // Burnished Amber
   },
   {
     no: "03",
@@ -108,7 +108,7 @@ const projectList: ProjectItem[] = [
     telemetry: "Persistent Memory DAG",
     stat1: "787 Tests Pass",
     stat2: "Ollama Llama-3",
-    accent: "#F47A18", // Solar Amber AI
+    accent: "#E06D20", // Burnished Amber
   },
   {
     no: "04",
@@ -136,7 +136,7 @@ const projectList: ProjectItem[] = [
     telemetry: "1-Click Upstream Sync",
     stat1: "1-Click Sync",
     stat2: "0 Drift Guaranteed",
-    accent: "#F47A18", // Solar Amber (single brand accent)
+    accent: "#E06D20", // Burnished Amber
   },
 ];
 
@@ -156,38 +156,38 @@ export function ProjectsSection() {
     <section
       id="projects"
       ref={containerRef}
-      className="relative w-full bg-transparent pt-24 sm:pt-28 md:pt-32 pb-32 text-[#F3F1E8] z-20 select-none border-t border-white/10 font-[family-name:var(--font-sans)]"
+      className="relative w-full bg-transparent pt-24 sm:pt-28 md:pt-32 pb-32 text-[#F8FAFC] z-20 select-none border-t border-white/10 font-[family-name:var(--font-sans)]"
     >
       {/* Ambient Depth Aurora */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div
-          className="absolute top-1/3 -left-28 w-[850px] h-[850px] rounded-full blur-[160px] opacity-20"
+          className="absolute top-1/3 -left-28 w-[850px] h-[850px] rounded-full blur-[160px] opacity-10"
           style={{
-            background: "radial-gradient(circle, #F47A18 0%, rgba(244, 122, 24, 0.20) 45%, transparent 75%)",
+            background: "radial-gradient(circle, #E06D20 0%, rgba(224, 109, 32, 0.15) 45%, transparent 75%)",
           }}
         />
         <div
-          className="absolute bottom-1/4 -right-24 w-[800px] h-[800px] rounded-full blur-[160px] opacity-20"
+          className="absolute bottom-1/4 -right-24 w-[800px] h-[800px] rounded-full blur-[160px] opacity-10"
           style={{
-            background: "radial-gradient(circle, #F47A18 0%, rgba(244, 122, 24, 0.20) 45%, transparent 75%)",
+            background: "radial-gradient(circle, #E06D20 0%, rgba(224, 109, 32, 0.15) 45%, transparent 75%)",
           }}
         />
       </div>
 
       <div className="mx-auto max-w-7xl px-5 sm:px-8 md:px-12 lg:px-16 relative z-20">
-        {/* Section Heading: Slender / Light Font Weight as requested */}
+        {/* Section Heading */}
         <div className="flex flex-col items-start space-y-3 max-w-4xl mb-14 sm:mb-16">
           <FadeIn y={20} delay={0.1} duration={0.8}>
-            <div className="text-xs font-mono tracking-[0.25em] text-[#F47A18] uppercase">
+            <div className="text-xs font-mono tracking-[0.25em] text-[#E06D20] uppercase">
               // MY PROJECTS
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl text-[#F3F1E8] font-medium font-[family-name:var(--font-outfit)] tracking-normal mt-2">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl text-[#F8FAFC] font-medium font-[family-name:var(--font-outfit)] tracking-normal mt-2">
               Engineered Systems &amp; Software
             </h2>
           </FadeIn>
 
           <FadeIn y={15} delay={0.2} duration={0.8}>
-            <p className="text-[#B8C4CC] text-sm sm:text-base font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
+            <p className="text-[#94A3B8] text-sm sm:text-base font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
               Four verified software systems architected, tested, and published to GitHub. Designed with clean, muted realism and honest engineering depth.
             </p>
           </FadeIn>
@@ -218,18 +218,18 @@ export function ProjectsSection() {
             className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center p-4 sm:p-8 cursor-zoom-out"
           >
             <div
-              className="relative max-w-6xl w-full aspect-[16/9] rounded-2xl overflow-hidden border border-white/20 shadow-[0_0_80px_rgba(0,0,0,0.9)] bg-[#050811]"
+              className="relative max-w-6xl w-full aspect-[16/9] rounded-2xl overflow-hidden border border-white/20 shadow-[0_0_80px_rgba(0,0,0,0.9)] bg-[#07090E]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setModalImage(null)}
-                className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-black/70 hover:bg-white text-white hover:text-black border border-white/20 transition-all duration-200"
+                className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-black/70 hover:bg-[#E06D20] text-white hover:text-[#07090E] border border-white/20 transition-all duration-200"
                 title="Close Full Screen"
               >
                 <X size={18} />
               </button>
 
-              <div className="absolute top-4 left-4 z-50 px-3.5 py-1.5 rounded-lg bg-black/70 backdrop-blur-md border border-white/20 text-xs font-mono text-[#F3F1E8]">
+              <div className="absolute top-4 left-4 z-50 px-3.5 py-1.5 rounded-lg bg-black/70 backdrop-blur-md border border-white/20 text-xs font-mono text-[#F8FAFC]">
                 {modalImage.title} &bull; Full 16K Display
               </div>
 
@@ -242,7 +242,7 @@ export function ProjectsSection() {
                 priority
               />
             </div>
-            <div className="text-white/40 text-xs font-mono mt-3">
+            <div className="text-[#94A3B8] text-xs font-mono mt-3">
               Press ESC or click outside to close
             </div>
           </motion.div>
@@ -269,10 +269,6 @@ function ProjectCard({
     offset: ["start start", "end start"],
   });
 
-  // Smooth deck stacking & reverse unstacking:
-  // As user scrolls down, current card scales gently down (0.95) and softens,
-  // while the next card glides smoothly over it in the exact same viewport spot.
-  // On scrolling back up, the top card lifts away, revealing the card beneath it.
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
   const opacity = useTransform(scrollYProgress, [0, 0.75, 1], [1, 0.95, 0.75]);
   const isLast = index === total - 1;
@@ -289,15 +285,15 @@ function ProjectCard({
         style={{
           scale: isLast ? 1 : scale,
           opacity: isLast ? 1 : opacity,
-          backgroundColor: "#050811",
-          borderColor: "rgba(255, 255, 255, 0.16)",
-          boxShadow: "0 40px 100px -20px rgba(0,0,0,0.99), inset 0 1px 1px rgba(255,255,255,0.15)",
+          backgroundColor: "#0E121B",
+          borderColor: "rgba(255, 255, 255, 0.08)",
+          boxShadow: "0 40px 100px -20px rgba(0,0,0,0.95), inset 0 1px 1px rgba(255,255,255,0.06)",
         }}
-        className="w-full rounded-3xl border backdrop-blur-3xl p-6 sm:p-9 md:p-11 relative overflow-hidden group transition-all duration-300 hover:border-white/30"
+        className="w-full rounded-3xl border backdrop-blur-3xl p-6 sm:p-9 md:p-11 relative overflow-hidden group transition-all duration-300 hover:border-[#E06D20]/40"
       >
         {/* Subtle Ambient Corner Glow (Muted) */}
         <div
-          className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full blur-[110px] opacity-20"
+          className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full blur-[110px] opacity-15"
           style={{ backgroundColor: project.accent }}
         />
 
@@ -312,41 +308,41 @@ function ProjectCard({
                   {project.no}
                 </span>
                 <span className="text-white/20">/</span>
-                <span className="text-xs font-mono uppercase tracking-widest text-[#B8C4CC]">
+                <span className="text-xs font-mono uppercase tracking-widest text-[#94A3B8]">
                   {project.category}
                 </span>
               </div>
 
               {/* Title: Refined Slender Display Font (Outfit) */}
-              <h3 className="text-xl sm:text-2xl md:text-[1.85rem] font-medium text-[#F3F1E8] font-[family-name:var(--font-outfit)] tracking-normal flex flex-wrap items-center gap-3">
+              <h3 className="text-xl sm:text-2xl md:text-[1.85rem] font-medium text-[#F8FAFC] font-[family-name:var(--font-outfit)] tracking-normal flex flex-wrap items-center gap-3">
                 <span>{project.name}</span>
-                <span className="text-[11px] font-mono font-medium px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[#B8C4CC]">
+                <span className="text-[11px] font-mono font-medium px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[#94A3B8]">
                   {project.telemetry}
                 </span>
               </h3>
             </div>
 
             {/* End-to-End Execution Flow (Highlighted Muted Box) */}
-            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] text-xs font-mono text-[#B8C4CC] space-y-1">
+            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] text-xs font-mono text-[#94A3B8] space-y-1">
               <span className="text-[11px] font-semibold uppercase tracking-wider block" style={{ color: project.accent }}>
                 END-TO-END SYSTEM FLOW //
               </span>
-              <div className="text-xs sm:text-sm text-[#F3F1E8] leading-relaxed">
+              <div className="text-xs sm:text-sm text-[#F8FAFC] leading-relaxed">
                 {project.flow}
               </div>
             </div>
 
             {/* Simple Meaning / Problem Solved */}
-            <p className="text-xs sm:text-sm text-[#B8C4CC] font-light leading-relaxed font-[family-name:var(--font-sans)]">
+            <p className="text-xs sm:text-sm text-[#94A3B8] font-light leading-relaxed font-[family-name:var(--font-sans)]">
               {project.simpleMeaning}
             </p>
 
             {/* Key System Architectures / Implementation */}
             <div className="space-y-2 pt-1 border-t border-white/[0.06]">
-              <div className="text-xs font-mono uppercase tracking-wider text-[#F3F1E8] font-semibold">
+              <div className="text-xs font-mono uppercase tracking-wider text-[#F8FAFC] font-semibold">
                 What It Implements:
               </div>
-              <ul className="space-y-1.5 text-xs text-[#A8B8C4] font-[family-name:var(--font-sans)]">
+              <ul className="space-y-1.5 text-xs text-[#94A3B8] font-[family-name:var(--font-sans)]">
                 {project.whatItDoes.slice(0, 3).map((item, idx) => (
                   <li key={idx} className="flex items-start gap-2.5">
                     <CheckCircle2 size={13} className="shrink-0 mt-0.5" style={{ color: project.accent }} />
@@ -361,7 +357,7 @@ function ProjectCard({
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-white/[0.04] text-[#B8C4CC] border border-white/[0.08]"
+                  className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-white/[0.04] text-[#94A3B8] border border-white/[0.08]"
                 >
                   {tag}
                 </span>
@@ -393,7 +389,7 @@ function ProjectCard({
                 );
               })()}
 
-              <div className="flex items-center gap-2 text-xs font-mono text-[#B8C4CC]">
+              <div className="flex items-center gap-2 text-xs font-mono text-[#94A3B8]">
                 <span className="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08]">
                   {project.stat1}
                 </span>
@@ -408,7 +404,7 @@ function ProjectCard({
           <div className="lg:col-span-5 relative w-full flex flex-col items-center justify-center space-y-2.5">
             <div
               onClick={() => onOpenModal(project.bannerImg, project.name)}
-              className="relative w-full max-w-[380px] sm:max-w-[420px] aspect-[3/4] rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#050811] via-[#050811] to-[#050811] shadow-2xl group transition-all duration-300 hover:border-white/40 cursor-zoom-in p-3 flex items-center justify-center"
+              className="relative w-full max-w-[380px] sm:max-w-[420px] aspect-[3/4] rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#07090E] via-[#0E121B] to-[#07090E] shadow-2xl group transition-all duration-300 hover:border-[#E06D20]/40 cursor-zoom-in p-3 flex items-center justify-center"
               title="Click to view full uncropped resolution"
             >
               <div className="relative w-full h-full">
@@ -432,7 +428,7 @@ function ProjectCard({
             </div>
 
             {/* Under-Image Telemetry Bar */}
-            <div className="w-full max-w-[380px] sm:max-w-[420px] flex items-center justify-between px-2 text-xs font-mono text-[#B8C4CC]">
+            <div className="w-full max-w-[380px] sm:max-w-[420px] flex items-center justify-between px-2 text-xs font-mono text-[#94A3B8]">
               <span className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: project.accent }} />
                 <span>Verified Vertical UI</span>

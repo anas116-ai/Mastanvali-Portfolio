@@ -80,10 +80,10 @@ export function ProximityCommandDock() {
         const textSpan = item.querySelector<HTMLElement>(".dock-text");
         if (textSpan) {
           if (val > 0.65) {
-            textSpan.style.color = "#F47A18";
-            textSpan.style.textShadow = "0 0 12px rgba(244, 122, 24, 0.4)";
+            textSpan.style.color = "#E06D20";
+            textSpan.style.textShadow = "0 0 12px rgba(224, 109, 32, 0.4)";
           } else if (val > 0.2) {
-            textSpan.style.color = "#F3F1E8";
+            textSpan.style.color = "#F8FAFC";
             textSpan.style.textShadow = "0 0 8px rgba(255, 255, 255, 0.2)";
           } else {
             textSpan.style.color = "";
@@ -192,7 +192,7 @@ export function ProximityCommandDock() {
                 target.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="relative px-3.5 py-1.5 rounded-lg text-[#B8C4CC] hover:text-[#F47A18] transition-colors duration-200 will-change-transform inline-flex items-center justify-center group"
+            className="relative px-3.5 py-1.5 rounded-lg text-[#94A3B8] hover:text-[#E06D20] transition-colors duration-200 will-change-transform inline-flex items-center justify-center group"
             style={{ transformOrigin: "left center" }}
           >
             {/* Link Text - Clean, unboxed typography with smooth color transition */}
@@ -202,7 +202,7 @@ export function ProximityCommandDock() {
 
             {/* Active Indicator Micro-Glow Line */}
             {isActive && (
-              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-sm bg-[#F47A18] shadow-[0_0_8px_#F47A18]" />
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-sm bg-[#E06D20] shadow-[0_0_8px_rgba(224,109,32,0.6)]" />
             )}
           </a>
         );
@@ -227,12 +227,12 @@ export function MobileNav() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={open ? "Close navigation menu" : "Open navigation menu"}
-        className="flex items-center justify-center w-9 h-9 rounded-xl border border-white/10 bg-white/[0.04] text-[#F3F1E8] hover:border-[#F47A18]/60 transition-colors cursor-pointer"
+        className="flex items-center justify-center w-9 h-9 rounded-xl border border-white/10 bg-white/[0.04] text-[#F8FAFC] hover:border-[#E06D20]/60 transition-colors cursor-pointer"
       >
         {open ? <X size={16} /> : <Menu size={16} />}
       </button>
       {open && (
-        <div className="fixed inset-x-4 top-[4.5rem] z-50 rounded-2xl border border-white/15 bg-[#050811]/95 backdrop-blur-2xl shadow-[0_24px_60px_rgba(0,0,0,0.85)] p-3 space-y-1">
+        <div className="fixed inset-x-4 top-[4.5rem] z-50 rounded-2xl border border-white/15 bg-[#0E121B]/95 backdrop-blur-2xl shadow-[0_24px_60px_rgba(0,0,0,0.85)] p-3 space-y-1">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.id}
@@ -241,7 +241,7 @@ export function MobileNav() {
                 e.preventDefault();
                 go(item);
               }}
-              className="block px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-[0.16em] text-[#F3F1E8] hover:text-[#F47A18] hover:bg-white/[0.04] transition-colors font-[family-name:var(--font-outfit)]"
+              className="block px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-[0.16em] text-[#F8FAFC] hover:text-[#E06D20] hover:bg-white/[0.04] transition-colors font-[family-name:var(--font-outfit)]"
             >
               {item.label}
             </a>

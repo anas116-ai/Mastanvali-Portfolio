@@ -18,18 +18,18 @@ interface ColorConfig {
 }
 
 const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
-  // 01. Solar Amber Core
+  // 01. Solar Amber Core (Refined Burnished Amber)
   amber: {
     dustRgb: [0.13, 0.06, 0.02],
     starLow: [1.0, 0.92, 0.82],
-    starHigh: [1.0, 0.55, 0.2],
-    glowRgb: [1.0, 0.72, 0.45],
+    starHigh: [0.88, 0.43, 0.13],
+    glowRgb: [0.88, 0.43, 0.13],
     flashRgb: [1.0, 0.97, 0.92],
-    borderIdle: "border-[#F47A18]/30",
-    borderHover: "group-hover:border-[#F47A18]/75",
-    glowDrop: "hover:shadow-[0_8px_24px_rgba(244,122,24,0.28)]",
-    textGlow: "rgba(255, 175, 80, 0.6)",
-    bezelGrad: "from-[#F47A18]/25 via-white/5 to-white/10",
+    borderIdle: "border-[#E06D20]/30",
+    borderHover: "group-hover:border-[#E06D20]/75",
+    glowDrop: "hover:shadow-[0_8px_24px_rgba(224,109,32,0.24)]",
+    textGlow: "rgba(224, 109, 32, 0.5)",
+    bezelGrad: "from-[#E06D20]/25 via-white/5 to-white/10",
   },
   // 02. Cyber Teal Core
   teal: {

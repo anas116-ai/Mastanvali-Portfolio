@@ -40,8 +40,8 @@ const masterBooks: MasterBook[] = [
     domainCode: "SYS-DATA-01",
     title: "SAP BODS & Enterprise Data Systems",
     whatIDo: "Designing high-throughput ETL data pipelines, SAP S/4HANA & ECC migration, SQL reconciliation, and 24/7 mission-critical SLA governance.",
-    accent: "#F47A18", // Solar Amber
-    coverGrad: "from-[#050811] via-[#050811] to-[#050811]",
+    accent: "#E06D20", // Burnished Amber
+    coverGrad: "from-[#07090E] via-[#0E121B] to-[#07090E]",
     icon: Database,
     topRoles: [
       "SAP BODS 4.3 production batch & real-time ETL jobs, workflows, and data stores.",
@@ -59,8 +59,8 @@ const masterBooks: MasterBook[] = [
     domainCode: "SYS-AGENT-02",
     title: "Autonomous Multi-Agent Architecture",
     whatIDo: "Orchestrating Directed Acyclic Graph (DAG) agent frameworks, local open-source LLM inference execution, and persistent episodic semantic memory.",
-    accent: "#F47A18", // Solar Amber (single brand accent)
-    coverGrad: "from-[#050811] via-[#050811] to-[#050811]",
+    accent: "#E06D20", // Burnished Amber
+    coverGrad: "from-[#07090E] via-[#0E121B] to-[#07090E]",
     icon: Bot,
     topRoles: [
       "Directed Acyclic Graph (DAG) multi-agent coordination with intelligent task routing.",
@@ -78,8 +78,8 @@ const masterBooks: MasterBook[] = [
     domainCode: "SYS-STACK-03",
     title: "Modern Full-Stack & Desktop Systems",
     whatIDo: "Engineering Next.js 15 production web platforms, zero-latency Electron desktop software with SQLite WAL mode, and automated Git CI/CD pipelines.",
-    accent: "#F47A18", // Solar Amber (single brand accent)
-    coverGrad: "from-[#050811] via-[#050811] to-[#050811]",
+    accent: "#E06D20", // Burnished Amber
+    coverGrad: "from-[#07090E] via-[#0E121B] to-[#07090E]",
     icon: MonitorSmartphone,
     topRoles: [
       "Next.js 15 App Router & React 19 web platforms with Prisma ORM & PostgreSQL.",
@@ -115,24 +115,24 @@ export function SkillsSection() {
   return (
     <section
       id="skills"
-      className="relative w-full bg-transparent py-20 sm:py-24 text-[#F3F1E8] z-20 select-none border-t border-white/10 font-[family-name:var(--font-sans)]"
+      className="relative w-full bg-transparent py-20 sm:py-24 text-[#F8FAFC] z-20 select-none border-t border-white/10 font-[family-name:var(--font-sans)]"
     >
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 lg:px-16 space-y-12 relative z-20">
         {/* Section Header */}
         <div className="flex flex-col items-start space-y-2.5 max-w-3xl">
           <FadeIn y={15} delay={0.1} duration={0.7}>
-            <div className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.22em] text-[#F47A18] uppercase">
+            <div className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.22em] text-[#E06D20] uppercase">
               <Sparkles size={13} />
               <span>// CORE DISCIPLINES · 3 ENGINEERING DOSSIERS</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#F3F1E8] font-[family-name:var(--font-outfit)] tracking-tight mt-1.5">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#F8FAFC] font-[family-name:var(--font-outfit)] tracking-tight mt-1.5">
               Technical Capabilities
             </h2>
           </FadeIn>
 
           <FadeIn y={15} delay={0.2} duration={0.7}>
-            <p className="text-[#B8C4CC] text-xs sm:text-sm font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
+            <p className="text-[#94A3B8] text-xs sm:text-sm font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
               The 3 foundational pillars of my engineering practice — spanning enterprise SAP data infrastructure, autonomous AI multi-agent orchestration, and modern full-stack systems. Click any dossier to open its two-page architectural spread and inspect verified deliverables.
             </p>
           </FadeIn>
@@ -150,7 +150,7 @@ export function SkillsSection() {
                   whileHover={{ y: -10, rotateY: -6, rotateX: 3, scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 350, damping: 24 }}
                   onClick={() => setOpenedBook(idx)}
-                  className="relative group cursor-pointer select-none w-full max-w-[320px] h-[400px] rounded-2xl overflow-hidden border border-white/10 hover:border-[#F47A18]/60 bg-[#050811]/90 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:shadow-[0_25px_60px_rgba(244,122,24,0.12)] transition-all duration-300 flex flex-col justify-between px-6 py-6 pb-7"
+                  className="relative group cursor-pointer select-none w-full max-w-[320px] h-[400px] rounded-2xl overflow-hidden border border-white/10 hover:border-[#E06D20]/60 bg-[#0E121B]/90 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:shadow-[0_25px_60px_rgba(224,109,32,0.12)] transition-all duration-300 flex flex-col justify-between px-6 py-6 pb-7"
                 >
                   {/* Subtle Left Luminous Spine Indicator */}
                   <div
@@ -171,7 +171,7 @@ export function SkillsSection() {
                   <div className="relative z-10 flex items-center justify-between border-b border-white/[0.08] pb-3.5">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: book.accent }} />
-                      <span className="font-mono text-xs font-bold tracking-widest text-white">
+                      <span className="font-mono text-xs font-bold tracking-widest text-[#F8FAFC]">
                         {book.domainCode}
                       </span>
                     </div>
@@ -189,17 +189,17 @@ export function SkillsSection() {
                     <div
                       className="w-13 h-13 rounded-xl flex items-center justify-center border border-white/15 shadow-[0_8px_25px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300"
                       style={{
-                        background: `linear-gradient(135deg, ${book.accent}25, rgba(10,16,30,0.8))`,
+                        background: `linear-gradient(135deg, ${book.accent}25, rgba(14,18,27,0.8))`,
                       }}
                     >
                       <Icon size={24} style={{ color: book.accent }} />
                     </div>
 
                     <div className="space-y-1.5">
-                      <h3 className="text-base sm:text-lg font-bold text-white tracking-tight leading-snug font-[family-name:var(--font-outfit)] group-hover:text-[#F47A18] transition-colors">
+                      <h3 className="text-base sm:text-lg font-bold text-[#F8FAFC] tracking-tight leading-snug font-[family-name:var(--font-outfit)] group-hover:text-[#E06D20] transition-colors">
                         {book.title}
                       </h3>
-                      <p className="text-xs text-[#B8C4CC] font-light leading-relaxed line-clamp-3 font-[family-name:var(--font-plus-jakarta)]">
+                      <p className="text-xs text-[#94A3B8] font-light leading-relaxed line-clamp-3 font-[family-name:var(--font-plus-jakarta)]">
                         {book.whatIDo}
                       </p>
                     </div>
@@ -267,10 +267,10 @@ export function SkillsSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.93, y: 20 }}
               transition={{ type: "spring", damping: 26, stiffness: 320 }}
-              className="relative w-full max-w-5xl max-h-[92vh] flex flex-col rounded-3xl border border-white/15 bg-[#050811]/98 backdrop-blur-3xl shadow-[0_40px_120px_rgba(0,0,0,0.98),0_0_80px_rgba(244,122,24,0.07)] z-10 overflow-hidden"
+              className="relative w-full max-w-5xl max-h-[92vh] flex flex-col rounded-3xl border border-white/15 bg-[#0E121B]/98 backdrop-blur-3xl shadow-[0_40px_120px_rgba(0,0,0,0.98),0_0_80px_rgba(224,109,32,0.07)] z-10 overflow-hidden"
             >
               {/* TOP DOSSIER TOOLBAR */}
-              <div className="w-full flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#050811] z-20">
+              <div className="w-full flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#07090E] z-20">
                 <div className="flex items-center gap-3">
                   <span
                     className="font-mono text-xs font-bold px-3 py-1 rounded-full bg-white/[0.08] tracking-widest"
@@ -278,7 +278,7 @@ export function SkillsSection() {
                   >
                     {masterBooks[openedBook].domainCode}
                   </span>
-                  <span className="text-xs font-mono text-[#B8C4CC] hidden sm:inline">
+                  <span className="text-xs font-mono text-[#94A3B8] hidden sm:inline">
                     ARCHITECTURAL DOSSIER · {masterBooks[openedBook].badge}
                   </span>
                 </div>
@@ -290,7 +290,7 @@ export function SkillsSection() {
                       e.stopPropagation();
                       setOpenedBook((prev) => (prev !== null ? (prev - 1 + masterBooks.length) % masterBooks.length : 0));
                     }}
-                    className="p-1.5 px-2.5 rounded-lg bg-white/[0.06] hover:bg-white/15 text-[#B8C4CC] hover:text-white transition-all text-xs font-mono flex items-center gap-1 cursor-pointer"
+                    className="p-1.5 px-2.5 rounded-lg bg-white/[0.06] hover:bg-white/15 text-[#94A3B8] hover:text-[#F8FAFC] transition-all text-xs font-mono flex items-center gap-1 cursor-pointer"
                     title="Previous Dossier (Left Arrow)"
                   >
                     <ChevronLeft size={14} />
@@ -306,7 +306,7 @@ export function SkillsSection() {
                       e.stopPropagation();
                       setOpenedBook((prev) => (prev !== null ? (prev + 1) % masterBooks.length : 0));
                     }}
-                    className="p-1.5 px-2.5 rounded-lg bg-white/[0.06] hover:bg-white/15 text-[#B8C4CC] hover:text-white transition-all text-xs font-mono flex items-center gap-1 cursor-pointer"
+                    className="p-1.5 px-2.5 rounded-lg bg-white/[0.06] hover:bg-white/15 text-[#94A3B8] hover:text-[#F8FAFC] transition-all text-xs font-mono flex items-center gap-1 cursor-pointer"
                     title="Next Dossier (Right Arrow)"
                   >
                     <span className="hidden sm:inline">Next</span>
@@ -318,7 +318,7 @@ export function SkillsSection() {
                   {/* Close Book Button */}
                   <button
                     onClick={() => setOpenedBook(null)}
-                    className="p-1.5 px-2.5 rounded-lg bg-white/[0.08] hover:bg-[#F47A18] text-[#B8C4CC] hover:text-white transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono"
+                    className="p-1.5 px-2.5 rounded-lg bg-white/[0.08] hover:bg-[#E06D20] text-[#94A3B8] hover:text-[#07090E] transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono"
                     title="Close Book (Esc)"
                     aria-label="Close Book"
                   >
@@ -329,7 +329,7 @@ export function SkillsSection() {
               </div>
 
               {/* ─── TWO-PAGE SPREAD BODY (Left Panel + Central Laser Divider + Right Panel) ─── */}
-              <div className="relative w-full flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 bg-[#050811]">
+              <div className="relative w-full flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 bg-[#07090E]">
                 {/* Visual Central Luminous Laser Divider (md and up) */}
                 <div className="hidden md:block absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 pointer-events-none z-30">
                   <div className="w-full h-full bg-gradient-to-r from-black/60 via-black/90 to-black/60" />
@@ -343,7 +343,7 @@ export function SkillsSection() {
                 </div>
 
                 {/* ── LEFT PANEL (FOLIO 01: SYSTEM ARCHITECTURE & THESIS) ── */}
-                <div className="relative p-6 sm:p-8 md:pr-10 flex flex-col justify-between space-y-6 border-b md:border-b-0 md:border-r border-white/10 bg-gradient-to-br from-[#050811] to-[#050811]">
+                <div className="relative p-6 sm:p-8 md:pr-10 flex flex-col justify-between space-y-6 border-b md:border-b-0 md:border-r border-white/10 bg-gradient-to-br from-[#07090E] to-[#0E121B]">
                   <div className="space-y-5">
                     {/* Top Folio Header */}
                     <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -363,7 +363,7 @@ export function SkillsSection() {
                       <div
                         className="w-13 h-13 rounded-xl flex items-center justify-center shrink-0 border border-white/20 shadow-lg"
                         style={{
-                          background: `linear-gradient(135deg, ${masterBooks[openedBook].accent}30, #050811)`,
+                          background: `linear-gradient(135deg, ${masterBooks[openedBook].accent}30, #0E121B)`,
                         }}
                       >
                         {React.createElement(masterBooks[openedBook].icon, { size: 24, style: { color: masterBooks[openedBook].accent } })}
@@ -372,7 +372,7 @@ export function SkillsSection() {
                         <div className="text-[10px] font-mono tracking-widest uppercase font-bold" style={{ color: masterBooks[openedBook].accent }}>
                           {masterBooks[openedBook].badge}
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-white font-[family-name:var(--font-outfit)] leading-snug">
+                        <h3 className="text-lg sm:text-xl font-bold text-[#F8FAFC] font-[family-name:var(--font-outfit)] leading-snug">
                           {masterBooks[openedBook].title}
                         </h3>
                       </div>
@@ -380,10 +380,10 @@ export function SkillsSection() {
 
                     {/* Scope of Engineering */}
                     <div className="space-y-1.5 pt-1">
-                      <div className="text-[11px] font-mono tracking-wider uppercase font-semibold text-[#B8C4CC]">
+                      <div className="text-[11px] font-mono tracking-wider uppercase font-semibold text-[#94A3B8]">
                         // SCOPE OF PRACTICE &amp; EXECUTION
                       </div>
-                      <p className="text-xs sm:text-[13px] text-[#B8C4CC] font-light leading-relaxed font-[family-name:var(--font-plus-jakarta)]">
+                      <p className="text-xs sm:text-[13px] text-[#94A3B8] font-light leading-relaxed font-[family-name:var(--font-plus-jakarta)]">
                         {masterBooks[openedBook].whatIDo}
                       </p>
                     </div>
@@ -394,7 +394,7 @@ export function SkillsSection() {
                       <div className="text-[10.5px] font-mono tracking-wider uppercase font-semibold pl-1" style={{ color: masterBooks[openedBook].accent }}>
                         // ARCHITECTURAL THESIS
                       </div>
-                      <p className="text-xs text-[#F3F1E8] font-light leading-relaxed italic pl-1">
+                      <p className="text-xs text-[#F8FAFC] font-light leading-relaxed italic pl-1">
                         &ldquo;{masterBooks[openedBook].archPhilosophy}&rdquo;
                       </p>
                     </div>
@@ -404,14 +404,14 @@ export function SkillsSection() {
                   <div className="pt-4 border-t border-white/10 flex items-center justify-between">
                     <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/10 text-xs font-mono">
                       <ShieldCheck size={14} style={{ color: masterBooks[openedBook].accent }} />
-                      <span className="text-white font-medium">{masterBooks[openedBook].sla}</span>
+                      <span className="text-[#F8FAFC] font-medium">{masterBooks[openedBook].sla}</span>
                     </div>
                     <span className="text-[10px] font-mono text-white/50 tracking-wider">FOLIO · 01</span>
                   </div>
                 </div>
 
                 {/* ── RIGHT PANEL (FOLIO 02: VERIFIED DELIVERABLES & TECH STACK) ── */}
-                <div className="relative p-6 sm:p-8 md:pl-10 flex flex-col justify-between space-y-6 bg-gradient-to-bl from-[#050811] to-[#050811]">
+                <div className="relative p-6 sm:p-8 md:pl-10 flex flex-col justify-between space-y-6 bg-gradient-to-bl from-[#07090E] to-[#0E121B]">
                   <div className="space-y-4">
                     {/* Top Folio Header */}
                     <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -421,19 +421,19 @@ export function SkillsSection() {
                           FOLIO 02 // PRODUCTION DELIVERABLES
                         </span>
                       </div>
-                      <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-[#14B8A6]/10 text-[#14B8A6] border border-[#14B8A6]/20 font-bold tracking-wider">
+                      <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-[#E06D20]/10 text-[#E06D20] border border-[#E06D20]/20 font-bold tracking-wider">
                         VERIFIED ACTIVE
                       </span>
                     </div>
 
                     {/* 4 Core Deliverables */}
                     <div className="space-y-2.5 pt-1">
-                      <div className="text-[11px] font-mono tracking-wider uppercase font-semibold text-[#B8C4CC]">
+                      <div className="text-[11px] font-mono tracking-wider uppercase font-semibold text-[#94A3B8]">
                         // KEY RESPONSIBILITIES &amp; DELIVERABLES
                       </div>
                       <div className="space-y-2.5">
                         {masterBooks[openedBook].topRoles.map((role, rIdx) => (
-                          <div key={rIdx} className="flex items-start gap-2.5 text-xs sm:text-[12.5px] leading-relaxed text-[#F3F1E8]">
+                          <div key={rIdx} className="flex items-start gap-2.5 text-xs sm:text-[12.5px] leading-relaxed text-[#F8FAFC]">
                             <CheckCircle2
                               size={15}
                               className="shrink-0 mt-0.5"
@@ -447,14 +447,14 @@ export function SkillsSection() {
 
                     {/* Production Tech Stack */}
                     <div className="space-y-2 pt-1">
-                      <div className="text-[11px] font-mono tracking-wider uppercase font-semibold text-[#B8C4CC]">
+                      <div className="text-[11px] font-mono tracking-wider uppercase font-semibold text-[#94A3B8]">
                         // PRODUCTION ENVIRONMENT STACK
                       </div>
                       <div className="flex flex-wrap gap-1.5">
                         {masterBooks[openedBook].tech.map((t, tIdx) => (
                           <span
                             key={tIdx}
-                            className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/10 text-[#F3F1E8] hover:border-white/20 transition-colors"
+                            className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/10 text-[#F8FAFC] hover:border-white/20 transition-colors"
                           >
                             {t}
                           </span>
@@ -468,7 +468,7 @@ export function SkillsSection() {
                         <span className="text-[10px] font-mono text-white/50 uppercase tracking-wider block">
                           SYSTEM VERIFICATION
                         </span>
-                        <span className="text-xs font-mono font-bold text-white tracking-wide block">
+                        <span className="text-xs font-mono font-bold text-[#F8FAFC] tracking-wide block">
                           AUTHENTICATED PRODUCTION ARTIFACT
                         </span>
                         <span className="text-[9.5px] font-mono text-[#94A3B8] block">

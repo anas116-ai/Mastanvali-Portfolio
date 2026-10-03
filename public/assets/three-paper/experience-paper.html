@@ -106,39 +106,33 @@ function signature(ctx,x,y,s,seed,color,lw){
 /* ---- 03 · GAME STYLE · plastic --------------------------------------- */
 
 // High-contrast, crystal-clear typography palette
-const ACCENT_AMBER = '#F47A18';
-const AMBER_GLOW = '#FFA54F';
-const AMBER_MUTED = 'rgba(244, 122, 24, 0.65)';
-const AMBER_SUBTLE = 'rgba(244, 122, 24, 0.15)';
-const BORDER_HAIRLINE = 'rgba(255, 255, 255, 0.14)';
+const ACCENT_AMBER = '#E06D20';
+const AMBER_GLOW = '#F27D2E';
+const AMBER_MUTED = 'rgba(224, 109, 32, 0.65)';
+const AMBER_SUBTLE = 'rgba(224, 109, 32, 0.12)';
+const BORDER_HAIRLINE = 'rgba(255, 255, 255, 0.12)';
 const TEXT_PRIMARY = '#FFFFFF';
-const TEXT_SECONDARY = '#F1F5F9';
-const TEXT_MUTED = '#CBD5E1';
+const TEXT_SECONDARY = '#F8FAFC';
+const TEXT_MUTED = '#94A3B8';
 const MONO = '"JetBrains Mono", monospace';
 const SANS = '"Inter Tight", "Inter", sans-serif';
 
 function drawRefinedDocket(ctx){
-  // 1. Sleek, Dark Obsidian Graphite Base (Quiet Luxury)
+  // 1. Sleek, Dark Obsidian Slate Graphite Base (Quiet Luxury)
   const g = ctx.createLinearGradient(0, 0, TW, TH);
-  g.addColorStop(0, '#0A1020');
-  g.addColorStop(0.5, '#070D18');
-  g.addColorStop(1, '#050912');
+  g.addColorStop(0, '#0C101A');
+  g.addColorStop(0.5, '#080C14');
+  g.addColorStop(1, '#060910');
   ctx.fillStyle = g; ctx.fillRect(0, 0, TW, TH);
 
-  // Whisper-thin Engineering Grid Lines
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
-  ctx.lineWidth = 1;
-  for(let x = 60; x < TW; x += 40){ ctx.beginPath(); ctx.moveTo(x, 60); ctx.lineTo(x, TH-60); ctx.stroke(); }
-  for(let y = 60; y < TH; y += 40){ ctx.beginPath(); ctx.moveTo(60, y); ctx.lineTo(TW-60, y); ctx.stroke(); }
+  // Subtle architectural perimeter margin
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)'; ctx.lineWidth = 1;
+  rr(ctx, 55, 55, TW - 110, TH - 110, 16); ctx.stroke();
 
-  // Hairline perimeter border with subtle amber accent
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)'; ctx.lineWidth = 1.2;
-  rr(ctx, 55, 55, TW - 110, TH - 110, 18); ctx.stroke();
-
-  // Corner Brackets (High contrast gold amber)
-  ctx.strokeStyle = ACCENT_AMBER; ctx.lineWidth = 2.2;
+  // Corner Precision Indicators (Refined burnished amber)
+  ctx.strokeStyle = ACCENT_AMBER; ctx.lineWidth = 2.0;
   [[55,55,1,1],[TW-55,55,-1,1],[TW-55,TH-55,-1,-1],[55,TH-55,1,-1]].forEach(([x,y,sx,sy])=>{
-    ctx.beginPath(); ctx.moveTo(x+36*sx, y); ctx.lineTo(x, y); ctx.lineTo(x, y+36*sy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+28*sx, y); ctx.lineTo(x, y); ctx.lineTo(x, y+28*sy); ctx.stroke();
   });
 
   // Top Status Bar
@@ -147,15 +141,15 @@ function drawRefinedDocket(ctx){
   track(ctx, 'ENTERPRISE PRODUCTION RECORD // CLIENT: TCS | GRAINGER', 114, 120, 2.2, false);
 
   // Status Badge on Right (Gilded glass pill)
-  ctx.fillStyle = 'rgba(244, 122, 24, 0.12)';
+  ctx.fillStyle = 'rgba(224, 109, 32, 0.10)';
   rr(ctx, TW - 325, 96, 235, 36, 8); ctx.fill();
-  ctx.strokeStyle = 'rgba(244, 122, 24, 0.40)'; ctx.lineWidth = 1.2;
+  ctx.strokeStyle = 'rgba(224, 109, 32, 0.35)'; ctx.lineWidth = 1.2;
   rr(ctx, TW - 325, 96, 235, 36, 8); ctx.stroke();
   ctx.fillStyle = '#FFFFFF'; ctx.font = '700 14px ' + MONO;
   track(ctx, '✓ VERIFIED DEPLOYMENT', TW - 208, 119, 1.6, true);
 
   // Divider
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)'; ctx.lineWidth = 1.2;
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.10)'; ctx.lineWidth = 1.0;
   ctx.beginPath(); ctx.moveTo(90, 152); ctx.lineTo(TW - 90, 152); ctx.stroke();
 
   // Document Title & Role Summary (Large, crisp, high-impact)

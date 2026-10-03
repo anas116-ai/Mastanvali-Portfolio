@@ -19,7 +19,7 @@ export function AmbientBackgroundLayers() {
         if (!heroGlowRef.current) return;
         const x = Math.round((e.clientX / window.innerWidth) * 100);
         const y = Math.round((e.clientY / window.innerHeight) * 100);
-        heroGlowRef.current.style.background = `radial-gradient(ellipse 90% 60% at ${x}% ${Math.max(15, y * 0.4)}%, rgba(244, 122, 24, 0.12) 0%, rgba(244, 122, 24, 0.05) 45%, transparent 80%)`;
+        heroGlowRef.current.style.background = `radial-gradient(ellipse 90% 60% at ${x}% ${Math.max(15, y * 0.4)}%, rgba(224, 109, 32, 0.06) 0%, rgba(224, 109, 32, 0.02) 45%, transparent 80%)`;
       });
     };
 
@@ -31,15 +31,15 @@ export function AmbientBackgroundLayers() {
   }, []);
 
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden z-0 select-none bg-[#050811]">
-      {/* 1. CONTINUOUS LUXURY OBSIDIAN & SOLAR AMBER AMBIENCE (Zero disjointed pixel breaks) */}
+    <div className="pointer-events-none absolute inset-0 overflow-hidden z-0 select-none bg-[#07090E]">
+      {/* 1. CONTINUOUS LUXURY OBSIDIAN & BURNISHED AMBER AMBIENCE (Zero disjointed pixel breaks) */}
       
       {/* Dynamic Cursor-Responsive Ambient Halo */}
       <div
         ref={heroGlowRef}
         className="absolute top-0 inset-x-0 h-[1400px] will-change-[background]"
         style={{
-          background: "radial-gradient(ellipse 90% 60% at 50% 30%, rgba(244, 122, 24, 0.12) 0%, rgba(244, 122, 24, 0.04) 40%, transparent 80%)",
+          background: "radial-gradient(ellipse 90% 60% at 50% 30%, rgba(224, 109, 32, 0.05) 0%, rgba(224, 109, 32, 0.015) 40%, transparent 80%)",
         }}
       />
 
@@ -48,10 +48,10 @@ export function AmbientBackgroundLayers() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 45% at 65% 30%, rgba(244, 122, 24, 0.04) 0%, transparent 65%), " +
-            "radial-gradient(ellipse 80% 45% at 35% 55%, rgba(244, 122, 24, 0.04) 0%, transparent 65%), " +
-            "radial-gradient(ellipse 80% 45% at 50% 80%, rgba(244, 122, 24, 0.04) 0%, transparent 70%), " +
-            "radial-gradient(ellipse 80% 45% at 50% 98%, rgba(244, 122, 24, 0.03) 0%, transparent 70%)",
+            "radial-gradient(ellipse 80% 45% at 65% 30%, rgba(224, 109, 32, 0.025) 0%, transparent 65%), " +
+            "radial-gradient(ellipse 80% 45% at 35% 55%, rgba(224, 109, 32, 0.02) 0%, transparent 65%), " +
+            "radial-gradient(ellipse 80% 45% at 50% 80%, rgba(224, 109, 32, 0.02) 0%, transparent 70%), " +
+            "radial-gradient(ellipse 80% 45% at 50% 98%, rgba(224, 109, 32, 0.015) 0%, transparent 70%)",
         }}
       />
 
