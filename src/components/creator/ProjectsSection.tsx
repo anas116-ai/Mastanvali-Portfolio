@@ -52,7 +52,7 @@ const projectList: ProjectItem[] = [
     telemetry: "ACID WAL · 0.00s Latency",
     stat1: "100% FEFO Safe",
     stat2: "Offline SQLite",
-    accent: "#10B981", // Emerald Pharmacy
+    accent: "#F47A18", // Solar Amber (single brand accent)
   },
   {
     no: "02",
@@ -80,7 +80,7 @@ const projectList: ProjectItem[] = [
     telemetry: "98% ATS Match Engine",
     stat1: "98% Target Score",
     stat2: "0 Hallucinations",
-    accent: "#14B8A6", // Cyber Teal
+    accent: "#F47A18", // Solar Amber (single brand accent)
   },
   {
     no: "03",
@@ -136,7 +136,7 @@ const projectList: ProjectItem[] = [
     telemetry: "1-Click Upstream Sync",
     stat1: "1-Click Sync",
     stat2: "0 Drift Guaranteed",
-    accent: "#8B5CF6", // Cyber Violet
+    accent: "#F47A18", // Solar Amber (single brand accent)
   },
 ];
 
@@ -161,13 +161,13 @@ export function ProjectsSection() {
       {/* Ambient Depth Aurora */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div
-          className="absolute top-1/3 -left-28 w-[850px] h-[850px] rounded-full blur-[160px] opacity-40"
+          className="absolute top-1/3 -left-28 w-[850px] h-[850px] rounded-full blur-[160px] opacity-20"
           style={{
-            background: "radial-gradient(circle, #14B8A6 0%, rgba(20, 184, 166, 0.20) 45%, transparent 75%)",
+            background: "radial-gradient(circle, #F47A18 0%, rgba(244, 122, 24, 0.20) 45%, transparent 75%)",
           }}
         />
         <div
-          className="absolute bottom-1/4 -right-24 w-[800px] h-[800px] rounded-full blur-[160px] opacity-40"
+          className="absolute bottom-1/4 -right-24 w-[800px] h-[800px] rounded-full blur-[160px] opacity-20"
           style={{
             background: "radial-gradient(circle, #F47A18 0%, rgba(244, 122, 24, 0.20) 45%, transparent 75%)",
           }}
@@ -178,7 +178,7 @@ export function ProjectsSection() {
         {/* Section Heading: Slender / Light Font Weight as requested */}
         <div className="flex flex-col items-start space-y-3 max-w-4xl mb-14 sm:mb-16">
           <FadeIn y={20} delay={0.1} duration={0.8}>
-            <div className="text-xs font-mono tracking-[0.25em] text-[#14B8A6] uppercase">
+            <div className="text-xs font-mono tracking-[0.25em] text-[#F47A18] uppercase">
               // MY PROJECTS
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl text-[#F3F1E8] font-medium font-[family-name:var(--font-outfit)] tracking-normal mt-2">
@@ -187,7 +187,7 @@ export function ProjectsSection() {
           </FadeIn>
 
           <FadeIn y={15} delay={0.2} duration={0.8}>
-            <p className="text-[#CBD5E1] text-sm sm:text-base font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
+            <p className="text-[#B8C4CC] text-sm sm:text-base font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
               Four verified software systems architected, tested, and published to GitHub. Designed with clean, muted realism and honest engineering depth.
             </p>
           </FadeIn>
@@ -218,7 +218,7 @@ export function ProjectsSection() {
             className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center p-4 sm:p-8 cursor-zoom-out"
           >
             <div
-              className="relative max-w-6xl w-full aspect-[16/9] rounded-2xl overflow-hidden border border-white/20 shadow-[0_0_80px_rgba(0,0,0,0.9)] bg-[#020408]"
+              className="relative max-w-6xl w-full aspect-[16/9] rounded-2xl overflow-hidden border border-white/20 shadow-[0_0_80px_rgba(0,0,0,0.9)] bg-[#050811]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -289,7 +289,7 @@ function ProjectCard({
         style={{
           scale: isLast ? 1 : scale,
           opacity: isLast ? 1 : opacity,
-          backgroundColor: "#070C18",
+          backgroundColor: "#050811",
           borderColor: "rgba(255, 255, 255, 0.16)",
           boxShadow: "0 40px 100px -20px rgba(0,0,0,0.99), inset 0 1px 1px rgba(255,255,255,0.15)",
         }}
@@ -327,11 +327,11 @@ function ProjectCard({
             </div>
 
             {/* End-to-End Execution Flow (Highlighted Muted Box) */}
-            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] text-xs font-mono text-[#CBD5E1] space-y-1">
+            <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] text-xs font-mono text-[#B8C4CC] space-y-1">
               <span className="text-[11px] font-semibold uppercase tracking-wider block" style={{ color: project.accent }}>
                 END-TO-END SYSTEM FLOW //
               </span>
-              <div className="text-xs sm:text-sm text-[#E2E8F0] leading-relaxed">
+              <div className="text-xs sm:text-sm text-[#F3F1E8] leading-relaxed">
                 {project.flow}
               </div>
             </div>
@@ -343,7 +343,7 @@ function ProjectCard({
 
             {/* Key System Architectures / Implementation */}
             <div className="space-y-2 pt-1 border-t border-white/[0.06]">
-              <div className="text-xs font-mono uppercase tracking-wider text-[#E2E8F0] font-semibold">
+              <div className="text-xs font-mono uppercase tracking-wider text-[#F3F1E8] font-semibold">
                 What It Implements:
               </div>
               <ul className="space-y-1.5 text-xs text-[#A8B8C4] font-[family-name:var(--font-sans)]">
@@ -370,15 +370,9 @@ function ProjectCard({
 
             {/* Action Buttons & Status */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
-              {/* Dynamic Project-Matching Shader Ignition Button */}
+              {/* Project GitHub Button (single brand amber) */}
               {(() => {
-                const variantMap: Record<string, IgnitionColorVariant> = {
-                  "#10B981": "emerald",
-                  "#14B8A6": "teal",
-                  "#F47A18": "amber",
-                  "#8B5CF6": "violet",
-                };
-                const variant = variantMap[project.accent] || "teal";
+                const variant: IgnitionColorVariant = "amber";
 
                 return (
                   <ShaderIgnitionButton
@@ -414,7 +408,7 @@ function ProjectCard({
           <div className="lg:col-span-5 relative w-full flex flex-col items-center justify-center space-y-2.5">
             <div
               onClick={() => onOpenModal(project.bannerImg, project.name)}
-              className="relative w-full max-w-[380px] sm:max-w-[420px] aspect-[3/4] rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#0B1322] via-[#070D1A] to-[#04070F] shadow-2xl group transition-all duration-300 hover:border-white/40 cursor-zoom-in p-3 flex items-center justify-center"
+              className="relative w-full max-w-[380px] sm:max-w-[420px] aspect-[3/4] rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#050811] via-[#050811] to-[#050811] shadow-2xl group transition-all duration-300 hover:border-white/40 cursor-zoom-in p-3 flex items-center justify-center"
               title="Click to view full uncropped resolution"
             >
               <div className="relative w-full h-full">

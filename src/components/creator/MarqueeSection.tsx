@@ -17,25 +17,26 @@ import {
   Terminal,
 } from "lucide-react";
 
-// Clean, high-impact core technology capsules (Minimal Option 2: Clean, bold, zero clutter)
+// Clean, high-impact core technology capsules — strict 2-ink discipline:
+// gold carries brand, champagne carries text. Teal reserved for status only.
 const row1Nodes = [
-  { icon: Database, name: "SAP BODS 4.3", color: "#14B8A6" },
-  { icon: Bot, name: "Multi-Agent DAGs", color: "#A78BFA" },
-  { icon: Database, name: "SQL Data Architecture", color: "#38BDF8" },
-  { icon: Cpu, name: "Python 3.12 & Async APIs", color: "#34D399" },
-  { icon: Code2, name: "Next.js 15 & React 19", color: "#F3F1E8" },
-  { icon: Workflow, name: "Enterprise ETL Workflows", color: "#F47A18" },
-  { icon: Sparkles, name: "Autonomous AI Agents", color: "#FDE047" },
+  { icon: Database, name: "SAP BODS 4.3", color: "#F47A18" },
+  { icon: Bot, name: "Multi-Agent DAGs", color: "#F3F1E8" },
+  { icon: Database, name: "SQL Data Architecture", color: "#F47A18" },
+  { icon: Cpu, name: "Python 3.12 & Async APIs", color: "#F3F1E8" },
+  { icon: Code2, name: "Next.js 15 & React 19", color: "#F47A18" },
+  { icon: Workflow, name: "Enterprise ETL Workflows", color: "#F3F1E8" },
+  { icon: Sparkles, name: "Autonomous AI Agents", color: "#F47A18" },
 ];
 
 const row2Nodes = [
-  { icon: MonitorSmartphone, name: "Offline Desktop ERP", color: "#14B8A6" },
+  { icon: MonitorSmartphone, name: "Offline Desktop ERP", color: "#F3F1E8" },
   { icon: Zap, name: "Ollama & Local LLMs", color: "#F47A18" },
-  { icon: Server, name: "SAP HANA & S/4HANA", color: "#38BDF8" },
-  { icon: Layers, name: "ServiceNow & ITSM", color: "#34D399" },
-  { icon: Binary, name: "RAG Retrieval Systems", color: "#A78BFA" },
-  { icon: ShieldCheck, name: "Tesseract OCR Engines", color: "#FDE047" },
-  { icon: Terminal, name: "SQLite WAL & Vector Indexing", color: "#10B981" },
+  { icon: Server, name: "SAP HANA & S/4HANA", color: "#F3F1E8" },
+  { icon: Layers, name: "ServiceNow & ITSM", color: "#F47A18" },
+  { icon: Binary, name: "RAG Retrieval Systems", color: "#F3F1E8" },
+  { icon: ShieldCheck, name: "Tesseract OCR Engines", color: "#F47A18" },
+  { icon: Terminal, name: "SQLite WAL & Vector Indexing", color: "#F3F1E8" },
 ];
 
 const quadrupledRow1 = [...row1Nodes, ...row1Nodes, ...row1Nodes, ...row1Nodes];
@@ -96,7 +97,7 @@ export function MarqueeSection() {
                 key={`r1-${idx}`}
                 className="flex items-center gap-2.5 px-3.5 py-2 rounded-lg border backdrop-blur-xl shrink-0 transition-all duration-300 hover:border-white/20 group"
                 style={{
-                  backgroundColor: "rgba(8, 14, 26, 0.85)",
+                  backgroundColor: "rgba(5, 8, 17, 0.85)",
                   borderColor: "rgba(255, 255, 255, 0.07)",
                   boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
                 }}
@@ -134,7 +135,7 @@ export function MarqueeSection() {
                 key={`r2-${idx}`}
                 className="flex items-center gap-2.5 px-3.5 py-2 rounded-lg border backdrop-blur-xl shrink-0 transition-all duration-300 hover:border-white/20 group"
                 style={{
-                  backgroundColor: "rgba(8, 14, 26, 0.85)",
+                  backgroundColor: "rgba(5, 8, 17, 0.85)",
                   borderColor: "rgba(255, 255, 255, 0.07)",
                   boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
                 }}

@@ -110,7 +110,7 @@ export function Navbar() {
               <Github size={16} />
             </a>
             <a
-              href="https://www.linkedin.com/in/mastan-vali-shaik-86952725/"
+              href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-slate-400 hover:text-white transition-colors p-1"

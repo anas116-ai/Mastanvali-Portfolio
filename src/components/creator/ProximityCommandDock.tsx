@@ -76,29 +76,15 @@ export function ProximityCommandDock() {
 
         item.style.transform = `translate3d(${translateX.toFixed(2)}px, 0, 0) scale(${scale.toFixed(3)})`;
 
-        // Luxury Cyber-Obsidian Refraction Box
-        const bgPill = item.querySelector<HTMLElement>(".dock-glow-pill");
-        if (bgPill) {
-          bgPill.style.opacity = (val * 0.95).toFixed(2);
-          bgPill.style.transform = `scale(${1 + val * 0.06})`;
-          if (val > 0.6) {
-            bgPill.style.borderColor = `rgba(244, 122, 24, ${((val - 0.5) * 0.6).toFixed(2)})`;
-            bgPill.style.boxShadow = `0 0 16px rgba(244, 122, 24, ${((val - 0.5) * 0.4).toFixed(2)}), inset 0 1px 0 rgba(255, 255, 255, 0.2)`;
-          } else {
-            bgPill.style.borderColor = "rgba(100, 210, 225, 0.18)";
-            bgPill.style.boxShadow = "inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.35)";
-          }
-        }
-
-        // High-contrast clean typography transitions
+        // High-contrast clean typography transitions (No clunky box/pill)
         const textSpan = item.querySelector<HTMLElement>(".dock-text");
         if (textSpan) {
           if (val > 0.65) {
             textSpan.style.color = "#F47A18";
-            textSpan.style.textShadow = "0 0 12px rgba(244, 122, 24, 0.5)";
+            textSpan.style.textShadow = "0 0 12px rgba(244, 122, 24, 0.4)";
           } else if (val > 0.2) {
             textSpan.style.color = "#F3F1E8";
-            textSpan.style.textShadow = "0 0 8px rgba(255, 255, 255, 0.25)";
+            textSpan.style.textShadow = "0 0 8px rgba(255, 255, 255, 0.2)";
           } else {
             textSpan.style.color = "";
             textSpan.style.textShadow = "";
@@ -209,17 +195,7 @@ export function ProximityCommandDock() {
             className="relative px-3.5 py-1.5 rounded-lg text-[#B8C4CC] hover:text-[#F47A18] transition-colors duration-200 will-change-transform inline-flex items-center justify-center group"
             style={{ transformOrigin: "left center" }}
           >
-            {/* Signature Cyber-Obsidian Glow Box (Slightly Rounded Corners) */}
-            <span
-              className="dock-glow-pill absolute inset-0 rounded-lg opacity-0 pointer-events-none transition-transform"
-              style={{
-                background: "linear-gradient(180deg, rgba(20, 184, 166, 0.10) 0%, rgba(244, 122, 24, 0.08) 100%)",
-                border: "1px solid rgba(100, 210, 225, 0.18)",
-                boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 14px rgba(0, 0, 0, 0.45)",
-              }}
-            />
-
-            {/* Link Text */}
+            {/* Link Text - Clean, unboxed typography with smooth color transition */}
             <span className="dock-text relative z-10 transition-colors duration-150">
               {item.label}
             </span>
@@ -256,7 +232,7 @@ export function MobileNav() {
         {open ? <X size={16} /> : <Menu size={16} />}
       </button>
       {open && (
-        <div className="fixed inset-x-4 top-[4.5rem] z-50 rounded-2xl border border-white/15 bg-[#060A16]/95 backdrop-blur-2xl shadow-[0_24px_60px_rgba(0,0,0,0.85)] p-3 space-y-1">
+        <div className="fixed inset-x-4 top-[4.5rem] z-50 rounded-2xl border border-white/15 bg-[#050811]/95 backdrop-blur-2xl shadow-[0_24px_60px_rgba(0,0,0,0.85)] p-3 space-y-1">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.id}

@@ -46,7 +46,7 @@ export function FinalSection() {
             Let&apos;s Build Something Extraordinary
           </h2>
 
-          <p className="text-[#CBD5E1] text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed font-[family-name:var(--font-plus-jakarta)]">
+          <p className="text-[#B8C4CC] text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed font-[family-name:var(--font-plus-jakarta)]">
             Open to engineering roles across <strong className="text-[#F3F1E8] font-medium">Enterprise Data Engineering (SAP BODS / SQL / ETL)</strong>, <strong className="text-[#F3F1E8] font-medium">AI Multi-Agent Systems</strong>, or <strong className="text-[#F3F1E8] font-medium">Full-Stack Application Development</strong>.
           </p>
         </FadeIn>
@@ -70,7 +70,7 @@ export function FinalSection() {
             ariaLabel="Copy Email Address"
             icon={
               copied ? (
-                <Check size={14} className="text-emerald-400 stroke-[2.5]" />
+                <Check size={14} className="text-[#14B8A6] stroke-[2.5]" />
               ) : (
                 <Copy size={14} className="text-[#F47A18]" />
               )
@@ -85,7 +85,7 @@ export function FinalSection() {
             variant="platinum"
             onClick={() => setIsResumeOpen(true)}
             ariaLabel="View Resume"
-            icon={<FileText size={15} className="text-[#E2E8F0]" />}
+            icon={<FileText size={15} className="text-[#F3F1E8]" />}
             iconPosition="left"
             size="md"
           >
@@ -132,17 +132,17 @@ export function FinalSection() {
             href="https://github.com/anas116-ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full bg-white/[0.04] border border-white/10 text-[#CBD5E1] hover:text-[#F47A18] hover:border-[#F47A18]/60 transition-all hover:scale-105 shadow-md"
+            className="p-3 rounded-full bg-white/[0.04] border border-white/10 text-[#B8C4CC] hover:text-[#F47A18] hover:border-[#F47A18]/60 transition-all hover:scale-105 shadow-md"
             title="GitHub"
             aria-label="GitHub Profile"
           >
             <Github size={16} />
           </a>
           <a
-            href="https://www.linkedin.com/in/mastan-vali-shaik-86952725/"
+            href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full bg-white/[0.04] border border-white/10 text-[#CBD5E1] hover:text-[#F47A18] hover:border-[#F47A18]/60 transition-all hover:scale-105 shadow-md"
+            className="p-3 rounded-full bg-white/[0.04] border border-white/10 text-[#B8C4CC] hover:text-[#F47A18] hover:border-[#F47A18]/60 transition-all hover:scale-105 shadow-md"
             title="LinkedIn"
             aria-label="LinkedIn Profile"
           >

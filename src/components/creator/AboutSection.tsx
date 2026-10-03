@@ -31,8 +31,8 @@ const capabilityAreas: CapabilityArea[] = [
       "Local inference execution with Ollama (Llama 3, Mistral) & Cloud APIs",
       "Persistent memory with SQLite FTS5 indexing & ChromaDB vector search",
     ],
-    accent: "#38BDF8", // Sky Cyan AI
-    borderColor: "rgba(56, 189, 248, 0.40)",
+    accent: "#F47A18", // Solar Amber (single brand accent)
+    borderColor: "rgba(244, 122, 24, 0.40)",
     icon: Bot,
     systemTag: "MULTI-AGENT // DAG NODES",
     fishCount: 2, // 2 companion baby Kois
@@ -47,8 +47,8 @@ const capabilityAreas: CapabilityArea[] = [
       "Anasify: AI ATS resume optimizer with strict truth verification",
       "Next.js 15, React 19, TypeScript, Prisma, and Tailwind CSS architectures",
     ],
-    accent: "#10B981", // High-Tech Emerald Mint
-    borderColor: "rgba(16, 185, 129, 0.40)",
+    accent: "#F47A18", // Solar Amber (single brand accent)
+    borderColor: "rgba(244, 122, 24, 0.40)",
     icon: MonitorSmartphone,
     systemTag: "ZERO-LATENCY // WAL ERP",
     fishCount: 3, // 3 playful baby Kois
@@ -89,7 +89,7 @@ export function AboutSection() {
             </FadeIn>
 
             <FadeIn y={15} delay={0.2} duration={0.8}>
-              <p className="text-[#CBD5E1] text-sm sm:text-base font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
+              <p className="text-[#B8C4CC] text-sm sm:text-base font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
                 Bridging enterprise-grade data architecture and autonomous AI agent systems. Grounded in mission-critical reliability, verified deterministic logic, and fluid zero-latency systems.
               </p>
             </FadeIn>

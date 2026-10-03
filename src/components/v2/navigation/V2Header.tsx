@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -79,7 +79,7 @@ export function V2Header() {
 
           {/* LinkedIn Profile */}
           <a
-            href="https://www.linkedin.com/in/mastan-vali-shaik-86952725/"
+            href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 rounded-full bg-[#08131D]/85 border border-[rgba(100,210,225,0.16)] text-[#B8C4CC] hover:text-[#14B8A6] hover:border-[#14B8A6]/40 shadow-sm transition-all hover:scale-105"

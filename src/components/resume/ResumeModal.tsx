@@ -62,10 +62,10 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             transition={{ type: "spring", duration: 0.45, bounce: 0.12 }}
-            className="relative w-full max-w-5xl h-[94vh] bg-[#070D18] text-white rounded-2xl shadow-[0_30px_90px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col z-10 border border-white/20"
+            className="relative w-full max-w-5xl h-[94vh] bg-[#050811] text-white rounded-2xl shadow-[0_30px_90px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col z-10 border border-white/20"
           >
             {/* Modal Top Control Bar */}
-            <div className="bg-[#080E1C] px-3 sm:px-6 py-3 border-b border-white/10 flex flex-wrap items-center justify-between gap-2 shrink-0 select-none">
+            <div className="bg-[#050811] px-3 sm:px-6 py-3 border-b border-white/10 flex flex-wrap items-center justify-between gap-2 shrink-0 select-none">
               <div className="flex items-center gap-2.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#F47A18] animate-pulse" />
                 <div className="flex items-center gap-2">
@@ -83,7 +83,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   href={resumePdfPath}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-mono text-[#CBD5E1] hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-mono text-[#B8C4CC] hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
                   title="Open original PDF in new tab"
                 >
                   <ExternalLink size={13} />
@@ -112,7 +112,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </div>
 
             {/* Seamless 3-Page Authentic Document Scroll Viewport */}
-            <div className="relative w-full flex-1 bg-[#050912] overflow-y-auto overflow-x-hidden p-3 sm:p-6 space-y-6">
+            <div className="relative w-full flex-1 bg-[#050811] overflow-y-auto overflow-x-hidden p-3 sm:p-6 space-y-6">
               {resumePages.map((page, idx) => (
                 <div key={idx} className="max-w-3xl mx-auto flex flex-col items-center space-y-2">
                   <div className="w-full flex items-center justify-between text-[11px] font-mono text-[#94A3B8] px-2">

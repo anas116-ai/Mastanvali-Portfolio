@@ -78,7 +78,7 @@ export function ExperienceSection() {
                   </div>
                 </div>
 
-                <p className="text-[#CBD5E1] text-xs sm:text-sm font-light leading-relaxed pt-1 font-[family-name:var(--font-plus-jakarta)]">
+                <p className="text-[#B8C4CC] text-xs sm:text-sm font-light leading-relaxed pt-1 font-[family-name:var(--font-plus-jakarta)]">
                   Engineering enterprise ETL batch workflows, SAP ECC extraction routines, SQL Server reconciliation, and mission-critical production data pipelines.
                 </p>
               </div>
@@ -88,12 +88,12 @@ export function ExperienceSection() {
           {/* Action Controls: 3D Docket vs Recruiter Specs + PDF Modal */}
           <FadeIn y={15} delay={0.3} duration={0.8}>
             <div className="flex flex-wrap items-center gap-2.5">
-              <div className="p-1 rounded-xl bg-[#080E1C]/80 border border-white/10 flex items-center">
+              <div className="p-1 rounded-xl bg-[#050811]/80 border border-white/10 flex items-center">
                 <button
                   onClick={() => setViewMode("3d")}
                   className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
                     viewMode === "3d"
-                      ? "bg-[#F47A18] text-white shadow-[0_0_15px_rgba(244,122,24,0.35)]"
+                      ? "bg-[#F47A18] text-white shadow-[0_0_15px_rgba(244,122,24,0.18)]"
                       : "text-[#94A3B8] hover:text-[#F3F1E8] hover:bg-white/[0.04]"
                   }`}
                 >
@@ -104,7 +104,7 @@ export function ExperienceSection() {
                   onClick={() => setViewMode("specs")}
                   className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
                     viewMode === "specs"
-                      ? "bg-[#F47A18] text-white shadow-[0_0_15px_rgba(244,122,24,0.35)]"
+                      ? "bg-[#F47A18] text-white shadow-[0_0_15px_rgba(244,122,24,0.18)]"
                       : "text-[#94A3B8] hover:text-[#F3F1E8] hover:bg-white/[0.04]"
                   }`}
                 >
@@ -137,7 +137,7 @@ export function ExperienceSection() {
                   className="w-full h-full border-0 bg-transparent block"
                   loading="eager"
                 />
-                <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#08131D]/85 backdrop-blur-xl border border-[rgba(244,122,24,0.35)] text-[#F47A18] text-xs font-mono pointer-events-none select-none">
+                <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#050811]/85 backdrop-blur-xl border border-[rgba(244,122,24,0.35)] text-[#F47A18] text-xs font-mono pointer-events-none select-none">
                   <Rotate3d size={13} />
                   <span>Drag to rotate in 3D</span>
                 </div>
@@ -152,7 +152,7 @@ export function ExperienceSection() {
         ) : (
           /* --- 02. HIGH-DENSITY RECRUITER SPECIFICATION SHEET (Accessible Text View) --- */
           <FadeIn y={20} duration={0.8}>
-            <div className="relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#070D18]/90 backdrop-blur-2xl p-7 sm:p-10 md:p-12 space-y-8 shadow-[0_30px_70px_rgba(0,0,0,0.8)]">
+            <div className="relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#050811]/90 backdrop-blur-2xl p-7 sm:p-10 md:p-12 space-y-8 shadow-[0_30px_70px_rgba(0,0,0,0.8)]">
               {/* Architecture Pipeline Stages */}
               <div className="space-y-3">
                 <div className="text-xs font-mono uppercase tracking-wider text-[#F3F1E8] font-semibold flex items-center justify-between">
@@ -166,7 +166,7 @@ export function ExperienceSection() {
                     return (
                       <div
                         key={i}
-                        className="p-4 rounded-xl border border-white/10 bg-[#02050B]/90 hover:bg-[#060C18] flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-[#F47A18]/40"
+                        className="p-4 rounded-xl border border-white/10 bg-[#050811]/90 hover:bg-[#050811] flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-[#F47A18]/40"
                       >
                         <div className="flex items-center justify-between relative z-10">
                           <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[#F47A18]/10 text-[#F47A18] border border-[#F47A18]/20">
@@ -198,7 +198,7 @@ export function ExperienceSection() {
                   {experience.domains.map((dom, dIdx) => (
                     <div
                       key={dIdx}
-                      className="p-4 rounded-xl bg-[#02050B]/75 border border-white/[0.08] hover:border-[#F47A18]/30 transition-all space-y-3"
+                      className="p-4 rounded-xl bg-[#050811]/75 border border-white/[0.08] hover:border-[#F47A18]/30 transition-all space-y-3"
                     >
                       <div className="flex items-center gap-2 text-xs font-mono font-semibold text-[#F47A18] tracking-wide border-b border-white/[0.06] pb-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#F47A18]" />
@@ -206,7 +206,7 @@ export function ExperienceSection() {
                       </div>
                       <ul className="space-y-2">
                         {dom.items.map((it, iIdx) => (
-                          <li key={iIdx} className="flex items-start gap-2.5 text-xs text-[#CBD5E1] leading-relaxed">
+                          <li key={iIdx} className="flex items-start gap-2.5 text-xs text-[#B8C4CC] leading-relaxed">
                             <CheckCircle2 size={14} className="text-[#F47A18] shrink-0 mt-0.5" />
                             <span>{it}</span>
                           </li>
@@ -223,7 +223,7 @@ export function ExperienceSection() {
                 {experience.environment.map((env) => (
                   <span
                     key={env}
-                    className="px-2.5 py-1 rounded-md text-xs font-mono bg-white/[0.04] text-[#E2E8F0] border border-white/[0.08] hover:border-[#F47A18]/40 transition-colors"
+                    className="px-2.5 py-1 rounded-md text-xs font-mono bg-white/[0.04] text-[#F3F1E8] border border-white/[0.08] hover:border-[#F47A18]/40 transition-colors"
                   >
                     {env}
                   </span>

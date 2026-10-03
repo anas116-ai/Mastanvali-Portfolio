@@ -27,8 +27,8 @@ const SKILL_ITEMS = [
     side: "left" as const,
     icon: Database,
     accentColor: "#14B8A6", // Cyan
-    borderColor: "rgba(20, 184, 166, 0.65)",
-    bgGlow: "rgba(20, 184, 166, 0.30)",
+    borderColor: "rgba(244, 122, 24, 0.65)",
+    bgGlow: "rgba(244, 122, 24, 0.15)",
     arcX: [-68, -135, -205, -238, -242],
     arcY: [232, 192, 132, 68, 38],
   },
@@ -37,9 +37,9 @@ const SKILL_ITEMS = [
     category: "DATA ARCHITECTURE",
     side: "right" as const,
     icon: Database,
-    accentColor: "#38BDF8", // Sky Blue
-    borderColor: "rgba(56, 189, 248, 0.65)",
-    bgGlow: "rgba(56, 189, 248, 0.30)",
+    accentColor: "#F47A18", // Sky Blue
+    borderColor: "rgba(244, 122, 24, 0.65)",
+    bgGlow: "rgba(244, 122, 24, 0.15)",
     arcX: [-16, 135, 205, 238, 242],
     arcY: [232, 192, 132, 68, 38],
   },
@@ -48,9 +48,9 @@ const SKILL_ITEMS = [
     category: "ITSM PLATFORM",
     side: "left" as const,
     icon: Layers,
-    accentColor: "#34D399", // Emerald
-    borderColor: "rgba(52, 211, 153, 0.65)",
-    bgGlow: "rgba(52, 211, 153, 0.30)",
+    accentColor: "#14B8A6", // Emerald
+    borderColor: "rgba(244, 122, 24, 0.65)",
+    bgGlow: "rgba(244, 122, 24, 0.15)",
     arcX: [-70, -138, -208, -240, -244],
     arcY: [234, 194, 134, 70, 40],
   },
@@ -70,9 +70,9 @@ const SKILL_ITEMS = [
     category: "AUTONOMOUS AGENTS",
     side: "left" as const,
     icon: Cpu,
-    accentColor: "#A78BFA", // Violet
-    borderColor: "rgba(167, 139, 250, 0.65)",
-    bgGlow: "rgba(167, 139, 250, 0.30)",
+    accentColor: "#F47A18", // Violet
+    borderColor: "rgba(244, 122, 24, 0.65)",
+    bgGlow: "rgba(244, 122, 24, 0.15)",
     arcX: [-68, -135, -205, -238, -242],
     arcY: [230, 190, 130, 66, 36],
   },
@@ -81,9 +81,9 @@ const SKILL_ITEMS = [
     category: "MULTI-AGENT DAG",
     side: "right" as const,
     icon: Terminal,
-    accentColor: "#FDE047", // Radiant Gold
-    borderColor: "rgba(253, 224, 71, 0.65)",
-    bgGlow: "rgba(253, 224, 71, 0.30)",
+    accentColor: "#F47A18", // Radiant Gold
+    borderColor: "rgba(244, 122, 24, 0.65)",
+    bgGlow: "rgba(244, 122, 24, 0.15)",
     arcX: [-16, 135, 205, 238, 242],
     arcY: [230, 190, 130, 66, 36],
   },
@@ -205,7 +205,7 @@ export function LaptopSkillStream() {
                 }}
                 className="flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-2xl shadow-2xl border transform-gpu"
                 style={{
-                  backgroundColor: "rgba(7, 14, 28, 0.96)",
+                  backgroundColor: "rgba(5, 8, 17, 0.96)",
                   borderColor: badge.accentColor,
                   borderWidth: "1.5px",
                   boxShadow: `0 8px 24px -2px rgba(0,0,0,0.95), 0 0 20px ${badge.bgGlow}`,
@@ -261,7 +261,7 @@ export function LaptopSkillStream() {
                   style={{
                     width: sIdx % 2 === 0 ? 9 : 7,
                     height: sIdx % 2 === 0 ? 5 : 4,
-                    backgroundColor: "rgba(7, 14, 28, 0.94)",
+                    backgroundColor: "rgba(5, 8, 17, 0.94)",
                     border: `1px solid ${badge.accentColor}`,
                     boxShadow: `0 0 10px ${badge.accentColor}`,
                   }}

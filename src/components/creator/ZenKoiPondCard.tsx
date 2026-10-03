@@ -519,11 +519,11 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
       onMouseLeave={handleMouseLeave}
       className={`group relative rounded-2xl sm:rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-between h-full min-h-[480px] sm:min-h-[510px] select-none ${
         isHovered
-          ? "border-white/30 shadow-[0_16px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(56,189,248,0.18)]"
+          ? "border-white/30 shadow-[0_16px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(244,122,24,0.10)]"
           : "border-white/[0.10] shadow-[0_10px_35px_rgba(0,0,0,0.6)]"
       }`}
       style={{
-        backgroundColor: "rgba(5, 12, 22, 0.50)",
+        backgroundColor: "rgba(5, 8, 17, 0.55)",
         backdropFilter: "blur(8px)",
       }}
     >
@@ -572,7 +572,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
 
           {/* Domain Title Hierarchy — 100% Crisp & High Contrast */}
           <div className="pt-1">
-            <div className="text-[11px] font-mono tracking-widest uppercase text-[#38BDF8] font-medium">
+            <div className="text-[11px] font-mono tracking-widest uppercase text-[#F47A18] font-medium">
               // CORE DOMAIN
             </div>
             <h3
@@ -584,7 +584,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
               {area.title}
             </h3>
             <div
-              className="text-xs font-mono text-[#FDBA74] tracking-wide mt-0.5 font-medium"
+              className="text-xs font-mono text-[#F47A18] tracking-wide mt-0.5 font-medium"
               style={{
                 textShadow: "0 1px 6px rgba(0, 0, 0, 0.95)",
               }}
@@ -594,7 +594,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
 
             {/* Clear Body Description */}
             <p
-              className="text-xs text-[#CBD5E1] font-light leading-relaxed mt-2"
+              className="text-xs text-[#B8C4CC] font-light leading-relaxed mt-2"
               style={{
                 textShadow: "0 1px 8px rgba(0, 0, 0, 0.95)",
               }}
@@ -609,7 +609,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
           {area.points.map((point, pIdx) => (
             <div
               key={pIdx}
-              className="flex items-start gap-2 text-xs text-[#F8FAFC] font-normal"
+              className="flex items-start gap-2 text-xs text-[#F3F1E8] font-normal"
               style={{
                 textShadow: "0 2px 6px rgba(0, 0, 0, 0.98)",
               }}

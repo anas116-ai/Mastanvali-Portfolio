@@ -123,4 +123,34 @@ button:focus-visible,
   }
 }
 
+/* ---------- TextAnimationCollection / threeui-intro (MASTAN VALI) ---------- */
+/* Slow in-place reveal: letters fade+rise+deblur at their own positions. */
+.threeui-intro-wordmark {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+  line-height: 0.9;
+  letter-spacing: 0.08em;
+}
+.threeui-intro-line {
+  display: inline;
+  position: relative;
+  will-change: opacity;
+}
+/* Each word keeps its letters together; lines may wrap on small screens. */
+.threeui-intro-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.threeui-intro-space {
+  display: inline;
+}
+.threeui-intro-char {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+.threeui-intro-wordmark.is-light .threeui-intro-char {
+  color: #0c0c0c;
+}
+
 

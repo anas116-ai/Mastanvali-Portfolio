@@ -10,7 +10,7 @@
 <style>
 :root{ --bg:transparent; --ink:#f3f1e8; }
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;background:transparent !important;overflow:hidden;
+html,body{height:100%;background:#050811 !important;overflow:hidden;
   touch-action:pan-y;overscroll-behavior:contain}
 body{
   color:var(--ink);
@@ -18,7 +18,7 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 #gl{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;
-    pointer-events:none;display:block;background:transparent !important;}
+    pointer-events:none;display:block;background:#050811 !important;}
 </style>
 </head>
 <body>
@@ -362,7 +362,7 @@ function makeCertTexture(){
    ====================================================================== */
 const canvas = document.getElementById('gl');
 const renderer = new T.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:'high-performance'});
-renderer.setClearColor(0x000000, 0);
+renderer.setClearColor(0x050811, 1);
 renderer.outputEncoding = T.sRGBEncoding;
 renderer.toneMapping = T.NoToneMapping;
 
@@ -382,7 +382,7 @@ function envTexture(){
     x.save(); x.translate(cx,cy); x.scale(1,ry/rx); x.translate(-cx,-cy);
     x.fillStyle=rg; x.beginPath(); x.arc(cx,cy,rx,0,7); x.fill(); x.restore();
   };
-  blob(w*0.30,h*0.24,330,240,'rgba(255,252,246,A)','1');
+  blob(w*0.30,h*0.24,330,240,'rgba(244,150,60,A)','.38');
   blob(w*0.74,h*0.34,240,200,'rgba(150,175,235,A)','.42');
   blob(w*0.52,h*0.86,420,190,'rgba(255,170,120,A)','.10');
   const t=new T.CanvasTexture(c);
@@ -393,7 +393,7 @@ const pmrem = new T.PMREMGenerator(renderer);
 pmrem.compileEquirectangularShader();
 scene.environment = pmrem.fromEquirectangular(envTexture()).texture;
 
-const key  = new T.DirectionalLight(0xfff6ec, 1.45); key.position.set(-3.3,2.1,2.0);
+const key  = new T.DirectionalLight(0xffe3c2, 1.05); key.position.set(-3.3,2.1,2.0);
 const fill = new T.DirectionalLight(0xffeedd, 0.16); fill.position.set(3.6,-1.8,1.6);
 const rim  = new T.DirectionalLight(0xffffff, 0.12); rim.position.set(1.6,1.2,-2.6);
 scene.add(key,fill,rim,new T.AmbientLight(0xffffff,0.22));
@@ -474,7 +474,7 @@ const tex = makeCertTexture();
 const mat = new T.MeshPhysicalMaterial({
   map: tex, color: new T.Color(0xffffff), side: T.DoubleSide, metalness: 0.0,
   roughness: 0.50, clearcoat: 0.12, clearcoatRoughness: 0.10,
-  envMapIntensity: 0.25, specularIntensity: 0.30,
+  envMapIntensity: 0.16, specularIntensity: 0.30,
   transparent: false, opacity: 1
 });
 mat.onBeforeCompile = (sh)=>{

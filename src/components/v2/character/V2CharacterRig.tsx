@@ -171,7 +171,7 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.92 }}
             transition={{ duration: 0.24, ease: "easeOut" }}
-            className="absolute top-[6%] left-1/2 -translate-x-1/2 rounded-full px-4 py-1.5 text-xs font-mono font-semibold text-[#F3F1E8] shadow-xl backdrop-blur-xl whitespace-nowrap z-30 border border-[rgba(100,210,225,0.3)] bg-[#08131D]/95 pointer-events-none"
+            className="absolute top-[6%] left-1/2 -translate-x-1/2 rounded-full px-4 py-1.5 text-xs font-mono font-semibold text-[#F3F1E8] shadow-xl backdrop-blur-xl whitespace-nowrap z-30 border border-[rgba(244,122,24,0.35)] bg-[#050811]/95 pointer-events-none"
             role="status"
             aria-live="polite"
           >
