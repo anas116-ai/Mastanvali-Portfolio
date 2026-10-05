@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "../shaders/threeui.css";
 
+/* ═══════════════════════════════════════════════════════════════
+   FONTS
+   Warpaint   → hero wordmark (signature display face)
+   Allerta    → stencil accents used in dossier seals
+   Geist      → UI / body / navigation  (SF-Pro-grade neo-grotesque)
+   Geist Mono → eyebrows, tags, technical metadata
+   Outfit     → section display headings (tight negative tracking)
+   ═══════════════════════════════════════════════════════════════ */
+
 @font-face {
   font-family: "Warpaint";
   src: url("/fonts/Warpaint.ttf") format("truetype");
@@ -17,89 +26,150 @@
   font-display: swap;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN SYSTEM — "Graphite & Lemon"
+   60 / 30 / 10 discipline. One hue family for accents, five colours total.
+
+   60%  FOUNDATION   cool graphite, hue 240, never pure black
+   30%  SURFACES     raised graphite plate, cut not rounded
+   10%  ACCENT       lemon yellow, hue 59, the only chroma on the page
+
+   Ground hue 240 against accent hue 59 is a 181 degree spread, which is
+   the widest separation the wheel allows. Lemon cannot sit on a warm brown
+   ground without collapsing into one brown mass, so the ground is cool by
+   necessity rather than by preference. Surfaces separate by hairline,
+   never by shadow, so the near 1.08:1 fill ratio stays intentional.
+   ═══════════════════════════════════════════════════════════════ */
+
 @theme {
   --font-stencil: "Allerta Stencil", sans-serif;
 
-  /* 60% — Foundation: Deep Architectural Near-Black / Obsidian Graphite */
-  --color-bg-primary: #07090E;
-  --color-bg-secondary: #0A0D14;
-  --color-bg-deep: #05060A;
+  /* ── 60% FOUNDATION ─────────────────────────────────────────── */
+  --color-bg-primary:   #0B0B0D;
+  --color-bg-secondary: #0F0F12;
+  --color-bg-deep:      #060608;
+  --color-bg-warm:      #141418;
 
-  /* 30% — Secondary Surfaces & Architectural Layers */
-  --color-surface: #0E121B;
-  --color-surface-elevated: #131824;
-  --color-surface-subtle: #090C13;
-  --color-surface-document: #0C1018;
+  /* ── 30% SURFACES (raised graphite plate) ───────────────────── */
+  --color-surface:           rgba(21, 21, 26, 0.72);
+  --color-surface-elevated:  rgba(30, 30, 36, 0.82);
+  --color-surface-high:      rgba(40, 40, 47, 0.88);
+  --color-surface-document:  #0C0C0F;
+  --color-surface-subtle:    rgba(234, 232, 226, 0.045);
 
-  /* Precision Technical Hairline Borders */
-  --color-border-subtle: rgba(255, 255, 255, 0.08);
-  --color-border-default: rgba(255, 255, 255, 0.12);
-  --color-border-strong: rgba(255, 255, 255, 0.20);
-  --color-border-accent: rgba(224, 109, 32, 0.35);
+  /* Hairline structure — cut edges, never glowy */
+  --color-border-hairline: rgba(234, 232, 226, 0.13);
+  --color-border-subtle:   rgba(234, 232, 226, 0.075);
+  --color-border-default:  rgba(234, 232, 226, 0.11);
+  --color-border-strong:   rgba(234, 232, 226, 0.24);
+  --color-border-accent:   rgba(228, 226, 74, 0.42);
 
-  /* High-Contrast Readable Typography Hierarchy */
-  --color-text-primary: #F8FAFC;
-  --color-text-secondary: #94A3B8;
-  --color-text-muted: #64748B;
-  --color-text-dim: #475569;
+  /* ── TEXT (bone, no pure white, no slate blue) ───────────────── */
+  --color-text-primary:   #EAE8E2;
+  --color-text-secondary: #C9C8C3;
+  --color-text-muted:     #8C8C86;
+  --color-text-dim:       #6A6A66;
+  --color-text-faint:     #43433F;
 
-  /* 10% — Restrained Luxury Warm Accent Family (Burnished Amber / Warm Copper / Gold) */
-  --color-accent: #E06D20;
-  --color-accent-hover: #F27D2E;
-  --color-accent-active: #C85C14;
-  --color-accent-gold: #D9A036;
-  --color-accent-copper: #C86A26;
+  /* ── 10% ACCENT (one hue, lightness varied) ─────────────────── */
+  --color-accent-lemon:     #E4E24A;
+  --color-accent-lemon-hi:  #EDEC6B;
+  --color-accent-lemon-deep:#C9C73C;
+  --color-accent-lemon-dim: #8E8C2A;
+  /* Darker member of the same hue, for use on cream paper only. */
+  --color-accent-ink:       #6B6A18;
+
+  /* Legacy-compatible aliases, all resolved to the lemon family */
+  --color-accent:        #E4E24A;
+  --color-accent-hover:  #EDEC6B;
+  --color-accent-active: #C9C73C;
+  --color-accent-dim:    #8E8C2A;
+  --color-accent-amber:  #E4E24A;
 
   /* Fonts */
-  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-josefin: var(--font-josefin), "Josefin Sans", sans-serif;
-  --font-julius: var(--font-julius), "Julius Sans One", sans-serif;
-  --font-display: var(--font-josefin), "Josefin Sans", sans-serif;
-  --font-heading: var(--font-josefin), "Josefin Sans", sans-serif;
-  --font-body: "Plus Jakarta Sans", -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-  --font-warpaint: "Warpaint", -apple-system, sans-serif;
+  --font-sans:    var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body:    var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: var(--font-outfit), "Geist", sans-serif;
+  --font-heading: var(--font-outfit), "Geist", sans-serif;
+  --font-mono:    var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  --font-warpaint: "Warpaint", "Allerta Stencil", sans-serif;
 }
 
 :root {
-  /* Centralized CSS Custom Properties matching 60-30-10 System */
-  --bg-primary: #07090E;
-  --bg-secondary: #0A0D14;
-  --bg-deep: #05060A;
+  /* ── 60% Foundation ────────────────────────────── */
+  --bg-primary:   #0B0B0D;
+  --bg-secondary: #0F0F12;
+  --bg-deep:      #060608;
+  --bg-warm:      #141418;
 
-  --surface: #0E121B;
-  --surface-elevated: #131824;
-  --surface-subtle: #090C13;
-  --surface-document: #0C1018;
+  /* ── 30% Surfaces ───────────────────────────────── */
+  --surface:          rgba(21, 21, 26, 0.72);
+  --surface-elevated: rgba(30, 30, 36, 0.82);
+  --surface-high:     rgba(40, 40, 47, 0.88);
+  --surface-document: #0C0C0F;
+  --surface-subtle:   rgba(234, 232, 226, 0.045);
 
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-default: rgba(255, 255, 255, 0.12);
-  --border-strong: rgba(255, 255, 255, 0.20);
-  --border-accent: rgba(224, 109, 32, 0.35);
+  /* ── Hairline structure ─────────────────────────── */
+  --border-hairline: rgba(234, 232, 226, 0.13);
+  --border-subtle:   rgba(234, 232, 226, 0.075);
+  --border-default:  rgba(234, 232, 226, 0.11);
+  --border-strong:   rgba(234, 232, 226, 0.24);
+  --border-accent:   rgba(228, 226, 74, 0.42);
 
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
+  /* ── Typography ─────────────────────────────────── */
+  --text-primary:   #EAE8E2;
+  --text-secondary: #C9C8C3;
+  --text-muted:     #8C8C86;
+  --text-dim:       #6A6A66;
+  --text-faint:     #43433F;
 
-  --accent: #E06D20;
-  --accent-hover: #F27D2E;
-  --accent-active: #C85C14;
-  --accent-subtle: rgba(224, 109, 32, 0.10);
-  --accent-muted: rgba(224, 109, 32, 0.22);
-  --accent-glow: rgba(224, 109, 32, 0.18);
-  --accent-foreground: #FFFFFF;
+  /* ── Accent: one hue, five lightness stops ───────── */
+  --accent:         #E4E24A;
+  --accent-hi:      #EDEC6B;
+  --accent-deep:    #C9C73C;
+  --accent-dim:     #8E8C2A;
+  --accent-ink:     #6B6A18;
+  --accent-glow:    rgba(228, 226, 74, 0.22);
 
-  --font-header-dynamic: var(--font-josefin), "Josefin Sans", sans-serif;
-  --font-subheader-dynamic: var(--font-plus-jakarta), sans-serif;
+  /* Dynamic font hooks (overridable at runtime by FontPairingProvider) */
+  --font-header-dynamic: var(--font-outfit), "Geist", sans-serif;
+  --font-subheader-dynamic: var(--font-geist-sans), sans-serif;
+
+  /* Motion language — one shared easing curve, slow and expensive */
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-glide: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
   color-scheme: dark;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   overflow-x: clip;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   SCROLL
+   Native wheel scrolling is left alone on purpose. Intercepting
+   wheel events to synthesise momentum makes the page feel heavier
+   than the browser already does and breaks trackpad precision,
+   which is the opposite of luxurious. What is fixed here is the
+   thing the browser owns badly: anchor travel. Long jumps are
+   eased over a real duration with a deceleration curve, so
+   arriving at a section settles rather than stopping dead.
+   ───────────────────────────────────────────────────────────── */
+
+html {
+  scroll-padding-top: 6rem;
+  scroll-behavior: smooth;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TYPE UTILITIES
+   ───────────────────────────────────────────────────────────── */
 
 .font-header-dynamic {
   font-family: var(--font-header-dynamic) !important;
@@ -109,34 +179,239 @@ body {
   font-family: var(--font-subheader-dynamic) !important;
 }
 
+/* Editorial section heading — sentence case, tight tracking, no shouting */
 .stylish-header {
-  font-family: var(--font-header-dynamic, 'Syne', sans-serif);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-family: var(--font-header-dynamic, var(--font-outfit), sans-serif);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  text-transform: none;
 }
 
 .stylish-sub {
-  font-family: var(--font-subheader-dynamic, 'Syne', sans-serif);
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-family: var(--font-subheader-dynamic, var(--font-geist-sans), sans-serif);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.65;
+}
+
+/* Small technical eyebrow — mono, wide, dim, uppercase */
+.eyebrow {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 ::selection {
-  background-color: rgba(224, 109, 32, 0.25);
-  color: #FFFFFF;
+  background-color: rgba(228, 226, 74, 0.30);
+  color: #0B0B0D;
 }
 
-/* Focus-visible rings for keyboard navigation */
+/* ─────────────────────────────────────────────────────────────
+   SURFACE UTILITIES
+   Cut plate, not soft pillow. Depth via layering, never drop shadow.
+   ───────────────────────────────────────────────────────────── */
+
+.plate {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border-hairline);
+}
+
+.plate-elevated {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-hairline);
+}
+
+/* Fine engraved top light-line — replaces the glassmorphic inset glow */
+.edge-lit {
+  position: relative;
+}
+.edge-lit::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(234, 232, 226, 0.22) 22%,
+    rgba(234, 232, 226, 0.22) 78%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* Vertical hairline rule used between inline metadata */
+.rule-dot::before {
+  content: "·";
+  margin-inline: 0.75em;
+  color: var(--text-faint);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SPOTLIGHT CURSOR — a light pool that follows the pointer
+   Purely additive, never intercepts input.
+   ───────────────────────────────────────────────────────────── */
+
+.spotlight-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  contain: strict;
+}
+
+.spotlight-pool {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 340px;
+  height: 340px;
+  margin: -170px 0 0 -170px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle closest-side,
+    rgba(228, 226, 74, 0.085) 0%,
+    rgba(228, 226, 74, 0.048) 34%,
+    rgba(228, 226, 74, 0.020) 60%,
+    transparent 78%
+  );
+  opacity: 0;
+  transition: opacity 520ms var(--ease-glide);
+  will-change: transform;
+}
+
+.spotlight-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  border: 1px solid rgba(228, 226, 74, 0.30);
+  box-shadow: 0 0 22px rgba(228, 226, 74, 0.10);
+  opacity: 0;
+  transition: opacity 420ms var(--ease-glide), width 380ms var(--ease-settle),
+    height 380ms var(--ease-settle), margin 380ms var(--ease-settle);
+  will-change: transform;
+}
+
+.spotlight-layer[data-active="true"] .spotlight-pool,
+.spotlight-layer[data-active="true"] .spotlight-ring {
+  opacity: 1;
+}
+
+/* Pointer over an interactive element: ring dilates into a soft halo */
+.spotlight-layer[data-hover="true"] .spotlight-ring {
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  border-color: rgba(228, 226, 74, 0.48);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HERO WORDMARK — MASTAN VALI
+   One colour. The wordmark is a single lemon, with only a
+   lightness ramp inside that one hue so the letterform keeps its
+   depth without ever reading as multi-coloured. The scratch mask
+   is deliberately sparse: the whole letter stays legible and only
+   the occasional nick breaks an edge.
+   ───────────────────────────────────────────────────────────── */
+
+.threeui-intro-wordmark {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+  line-height: 0.9;
+  letter-spacing: 0.06em;
+}
+
+.threeui-intro-line {
+  display: inline;
+  position: relative;
+}
+
+.threeui-intro-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.threeui-intro-letter,
+.threeui-intro-char {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity, filter;
+  background-image: linear-gradient(
+    178deg,
+    #F0EF7E 0%,
+    #E7E552 38%,
+    #D8D644 72%,
+    #C6C43A 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #E4E24A;
+}
+
+/* Sparse nicks, not a scratch field.
+   Four hairline cuts are repeated across a 260px tile, so roughly one
+   twentieth of the letter surface is ever interrupted. The whole letter
+   stays readable at every viewport; only the odd edge gets marked. */
+.scratch-face {
+  --scratch-tile: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 260' preserveAspectRatio='none'><rect width='260' height='260' fill='white'/><g stroke='black' stroke-width='1.1' stroke-linecap='round' fill='none'><path d='M28 62 L96 61'/><path d='M150 178 L214 177'/></g><g stroke='black' stroke-width='0.7' stroke-linecap='round' fill='none'><path d='M64 148 L118 147'/><path d='M186 34 L232 33'/></g></svg>");
+  -webkit-mask-image: var(--scratch-tile);
+  mask-image: var(--scratch-tile);
+  -webkit-mask-size: 260px 260px;
+  mask-size: 260px 260px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SCROLL CUE
+   A hairline that fills downward and carries one slow light body.
+   Both run on the same 3.4s cycle and both respect reduced motion
+   through the media query at the foot of this file.
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes cue-fill {
+  0%   { transform: scaleY(0); }
+  55%  { transform: scaleY(1); }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+@keyframes cue-travel {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  12%  { opacity: 1; }
+  55%  { transform: translateY(520%); opacity: 1; }
+  72%  { opacity: 0; }
+  100% { transform: translateY(520%); opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ACCESSIBILITY
+   ───────────────────────────────────────────────────────────── */
+
 a:focus-visible,
 button:focus-visible,
-[role="button"]:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 4px;
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(228, 226, 74, 0.85);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -146,31 +421,11 @@ button:focus-visible,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   .animate-pulse,
-  .animate-ping {
+  .animate-ping,
+  .spotlight-layer {
+    display: none !important;
     animation: none !important;
   }
-}
-
-/* TextAnimationCollection / threeui-intro (MASTAN VALI) */
-.threeui-intro-wordmark {
-  display: inline-block;
-  position: relative;
-  max-width: 100%;
-  line-height: 0.9;
-  letter-spacing: 0.08em;
-}
-.threeui-intro-line {
-  display: inline;
-  position: relative;
-  will-change: opacity;
-}
-.threeui-intro-word {
-  display: inline-block;
-  white-space: nowrap;
-}
-.threeui-intro-letter {
-  display: inline-block;
-  will-change: transform, opacity, filter;
 }

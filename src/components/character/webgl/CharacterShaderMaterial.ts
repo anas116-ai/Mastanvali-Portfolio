@@ -55,8 +55,8 @@ export const CharacterVertexShader = /* glsl */ `
 export const CharacterFragmentShader = /* glsl */ `
   uniform sampler2D uTexture;
   uniform sampler2D uNormalMap;
-  uniform vec3 uRimColorCyan;
-  uniform vec3 uRimColorAmber;
+  
+  
   uniform vec3 uLightPosition;
   uniform float uTime;
   uniform float uLightIntensity;
@@ -114,8 +114,8 @@ export function createCharacterShaderMaterial(
       uDisplacementScale: { value: 0.18 },
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uRimColorCyan: { value: new THREE.Color("#14B8A6") },
-      uRimColorAmber: { value: new THREE.Color("#F47A18") },
+      
+      
       uLightPosition: { value: new THREE.Vector3(1.2, 2.4, 3.0) },
       uLightIntensity: { value: 1.0 },
     },

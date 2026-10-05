@@ -13,29 +13,33 @@ import {
   Server,
   Binary,
   Workflow,
-  Sparkles,
+  GitBranch,
   Terminal,
 } from "lucide-react";
 
-// Clean, high-impact core technology capsules — 60-30-10 architectural system
+/**
+ * Borderless inventory tape. No capsules, no chips, no boxes: a single run of
+ * words separated by hairline slashes, drifting in two counter-moving rows.
+ * Accents come from the site's oxidised metal family.
+ */
 const row1Nodes = [
-  { icon: Database, name: "SAP BODS 4.3", color: "#E06D20" },
-  { icon: Bot, name: "Multi-Agent DAGs", color: "#F8FAFC" },
-  { icon: Database, name: "SQL Data Architecture", color: "#E06D20" },
-  { icon: Cpu, name: "Python 3.12 & Async APIs", color: "#F8FAFC" },
-  { icon: Code2, name: "Next.js 15 & React 19", color: "#E06D20" },
-  { icon: Workflow, name: "Enterprise ETL Workflows", color: "#F8FAFC" },
-  { icon: Sparkles, name: "Autonomous AI Agents", color: "#E06D20" },
+  { icon: Database, name: "SAP BODS 4.3", color: "#EDEC6B" },
+  { icon: GitBranch, name: "Multi-Agent DAGs", color: "#C9C73C" },
+  { icon: Database, name: "SQL Data Architecture", color: "#C9C8C3" },
+  { icon: Cpu, name: "Python 3.12 and Async APIs", color: "#D2D041" },
+  { icon: Code2, name: "Next.js 15 and React 19", color: "#C9C8C3" },
+  { icon: Workflow, name: "Enterprise ETL Workflows", color: "#E4E24A" },
+  { icon: Bot, name: "Autonomous LLM Agents", color: "#B4B23A" },
 ];
 
 const row2Nodes = [
-  { icon: MonitorSmartphone, name: "Offline Desktop ERP", color: "#F8FAFC" },
-  { icon: Zap, name: "Ollama & Local LLMs", color: "#E06D20" },
-  { icon: Server, name: "SAP HANA & S/4HANA", color: "#F8FAFC" },
-  { icon: Layers, name: "ServiceNow & ITSM", color: "#E06D20" },
-  { icon: Binary, name: "RAG Retrieval Systems", color: "#F8FAFC" },
-  { icon: ShieldCheck, name: "Tesseract OCR Engines", color: "#E06D20" },
-  { icon: Terminal, name: "SQLite WAL & Vector Indexing", color: "#F8FAFC" },
+  { icon: MonitorSmartphone, name: "Offline Desktop ERP", color: "#C9C8C3" },
+  { icon: Zap, name: "Ollama and Local LLMs", color: "#E4E24A" },
+  { icon: Server, name: "SAP HANA and S/4HANA", color: "#EDEC6B" },
+  { icon: Layers, name: "ServiceNow and ITSM", color: "#C9C8C3" },
+  { icon: Binary, name: "RAG Retrieval Systems", color: "#C9C73C" },
+  { icon: ShieldCheck, name: "Tesseract OCR Engines", color: "#D2D041" },
+  { icon: Terminal, name: "SQLite WAL and Vector Indexing", color: "#B4B23A" },
 ];
 
 const quadrupledRow1 = [...row1Nodes, ...row1Nodes, ...row1Nodes, ...row1Nodes];
@@ -56,8 +60,7 @@ export function MarqueeSection() {
         }
         const rect = sectionRef.current.getBoundingClientRect();
         const sectionTop = rect.top + window.scrollY;
-        const calculatedOffset = (window.scrollY - sectionTop + window.innerHeight) * 0.22;
-        setOffset(calculatedOffset);
+        setOffset((window.scrollY - sectionTop + window.innerHeight) * 0.2);
         rafRef.current = null;
       });
     };
@@ -70,91 +73,49 @@ export function MarqueeSection() {
     };
   }, []);
 
+  const renderRow = (nodes: typeof row1Nodes, keyPrefix: string, direction: number) => (
+    <div
+      className="flex items-center w-max"
+      style={{
+        transform: `translateX(${direction * offset - 300}px)`,
+        willChange: "transform",
+        transition: "transform 0.12s linear",
+      }}
+    >
+      {nodes.map((node, idx) => {
+        const Icon = node.icon;
+        return (
+          <span key={`${keyPrefix}-${idx}`} className="flex items-center shrink-0">
+            <span className="flex items-center gap-2 px-6 sm:px-8 transition-colors duration-500 group">
+              <Icon
+                size={13}
+                className="shrink-0 opacity-80"
+                style={{ color: node.color }}
+              />
+              <span className="font-[family-name:var(--font-geist-sans)] text-[13px] sm:text-sm font-normal tracking-[-0.005em] text-[#8C8C86] hover:text-[#C9C8C3] whitespace-nowrap transition-colors duration-500">
+                {node.name}
+              </span>
+            </span>
+            <span className="text-[#35353A] select-none text-[13px]">/</span>
+          </span>
+        );
+      })}
+    </div>
+  );
+
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-[#07090E] py-8 sm:py-10 border-y border-white/[0.06] select-none font-[family-name:var(--font-outfit)]"
+      className="relative w-full overflow-hidden bg-transparent py-7 sm:py-8 border-y border-[rgba(234,232,226,0.06)] select-none"
+      aria-label="Technologies and platforms"
     >
-      {/* Side Fade Gradients */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-36 bg-gradient-to-r from-[#07090E] via-[#07090E]/90 to-transparent z-20 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-36 bg-gradient-to-l from-[#07090E] via-[#07090E]/90 to-transparent z-20 pointer-events-none" />
+      {/* Feathered ends so the tape dissolves rather than stopping */}
+      <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-40 bg-gradient-to-r from-[#0B0B0D] via-[#0B0B0D]/92 to-transparent z-20 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-28 sm:w-40 bg-gradient-to-l from-[#0B0B0D] via-[#0B0B0D]/92 to-transparent z-20 pointer-events-none" />
 
       <div className="flex flex-col gap-2.5">
-        {/* Row 1 — Clean Minimal Tech Capsules */}
-        <div
-          className="flex gap-2.5 items-center"
-          style={{
-            transform: `translateX(${offset - 300}px)`,
-            willChange: "transform",
-            transition: "transform 0.1s linear",
-          }}
-        >
-          {quadrupledRow1.map((node, idx) => {
-            const Icon = node.icon;
-            return (
-              <div
-                key={`r1-${idx}`}
-                className="flex items-center gap-2.5 px-3.5 py-2 rounded-lg border backdrop-blur-xl shrink-0 transition-all duration-300 hover:border-white/20 group"
-                style={{
-                  backgroundColor: "rgba(14, 18, 27, 0.85)",
-                  borderColor: "rgba(255, 255, 255, 0.07)",
-                  boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
-                }}
-              >
-                <div
-                  className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110"
-                  style={{
-                    color: node.color,
-                    backgroundColor: `${node.color}15`,
-                  }}
-                >
-                  <Icon size={12} />
-                </div>
-                <span className="font-mono text-xs font-semibold text-[#F8FAFC] tracking-wide whitespace-nowrap">
-                  {node.name}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Row 2 — Clean Minimal Tech Capsules */}
-        <div
-          className="flex gap-2.5 items-center"
-          style={{
-            transform: `translateX(${-offset - 300}px)`,
-            willChange: "transform",
-            transition: "transform 0.1s linear",
-          }}
-        >
-          {quadrupledRow2.map((node, idx) => {
-            const Icon = node.icon;
-            return (
-              <div
-                key={`r2-${idx}`}
-                className="flex items-center gap-2.5 px-3.5 py-2 rounded-lg border backdrop-blur-xl shrink-0 transition-all duration-300 hover:border-white/20 group"
-                style={{
-                  backgroundColor: "rgba(14, 18, 27, 0.85)",
-                  borderColor: "rgba(255, 255, 255, 0.07)",
-                  boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
-                }}
-              >
-                <div
-                  className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110"
-                  style={{
-                    color: node.color,
-                    backgroundColor: `${node.color}15`,
-                  }}
-                >
-                  <Icon size={12} />
-                </div>
-                <span className="font-mono text-xs font-semibold text-[#F8FAFC] tracking-wide whitespace-nowrap">
-                  {node.name}
-                </span>
-              </div>
-            );
-          })}
-        </div>
+        {renderRow(quadrupledRow1, "r1", 1)}
+        {renderRow(quadrupledRow2, "r2", -1)}
       </div>
     </section>
   );

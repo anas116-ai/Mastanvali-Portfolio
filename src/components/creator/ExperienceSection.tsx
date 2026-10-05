@@ -6,24 +6,58 @@ import { experience } from "@/data/experience";
 import {
   Calendar,
   MapPin,
-  CheckCircle2,
   Database,
   Layers,
   Cpu,
   Server,
   FileText,
-  Sparkles,
   ShieldCheck,
   Rotate3d,
+  type LucideIcon,
 } from "lucide-react";
 import { ResumeModal } from "@/components/resume/ResumeModal";
 
+/* Warm oxidised-metal accents only. Four hues, no neon, no lemon. */
 const pipelineStages = [
-  { stage: "STAGE 01", title: "SAP ECC", sub: "IDoc & BAPI Extraction", icon: Database },
-  { stage: "STAGE 02", title: "SAP BODS 4.3", sub: "Enterprise Data Flows", icon: Layers },
-  { stage: "STAGE 03", title: "SQL Server", sub: "Validation & Reconciliation", icon: Cpu },
-  { stage: "STAGE 04", title: "AWS S3 & S/4HANA", sub: "Target Staging & Load", icon: Server },
+  {
+    stage: "Stage 01",
+    title: "SAP ECC",
+    sub: "IDoc and BAPI extraction",
+    icon: Database,
+    color: "#D2D041",
+  },
+  {
+    stage: "Stage 02",
+    title: "SAP BODS 4.3",
+    sub: "Enterprise data flows",
+    icon: Layers,
+    color: "#EDEC6B",
+  },
+  {
+    stage: "Stage 03",
+    title: "SQL Server",
+    sub: "Validation and reconciliation",
+    icon: Cpu,
+    color: "#B4B23A",
+  },
+  {
+    stage: "Stage 04",
+    title: "AWS S3 and S/4HANA",
+    sub: "Target staging and load",
+    icon: Server,
+    color: "#C9C8C3",
+  },
 ];
+
+const pillarColors = ["#E4E24A", "#B4B23A", "#D2D041", "#C9C8C3"];
+
+/* Machined plate: sharp 3px corners with the top right corner cut away.
+   Built from stacked gradients so no drop shadow is ever needed. */
+const cutCorner = {
+  backgroundImage:
+    "linear-gradient(225deg, transparent 13px, rgba(21,21,26,0.96) 13px), linear-gradient(180deg, rgba(21,21,26,0.96) 0%, rgba(21,21,26,0.96) 100%)",
+  backgroundColor: "transparent",
+};
 
 export function ExperienceSection() {
   const [viewMode, setViewMode] = useState<"3d" | "specs">("3d");
@@ -33,92 +67,101 @@ export function ExperienceSection() {
     if (window.matchMedia("(max-width: 1023px)").matches) setViewMode("specs");
   }, []);
 
+  const modeButton = (mode: "3d" | "specs", label: string, Icon: LucideIcon) => {
+    const active = viewMode === mode;
+    return (
+      <button
+        type="button"
+        onClick={() => setViewMode(mode)}
+        aria-pressed={active}
+        className={`relative px-4 py-2 text-[11px] font-mono uppercase tracking-[0.18em] transition-colors duration-300 cursor-pointer flex items-center gap-2 ${
+          active ? "text-[#0B0B0D]" : "text-[#8C8C86] hover:text-[#EAE8E2]"
+        }`}
+      >
+        <span
+          className={`absolute inset-0 transition-opacity duration-300 ${
+            active ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ backgroundColor: "#EDEC6B" }}
+        />
+        <Icon size={12} className="relative z-10" />
+        <span className="relative z-10 font-medium">{label}</span>
+      </button>
+    );
+  };
+
   return (
     <section
       id="experience"
-      className="relative w-full bg-transparent py-24 sm:py-28 md:py-32 text-[#F8FAFC] z-20 select-none border-t border-white/10"
+      className="relative w-full bg-transparent py-24 sm:py-28 md:py-32 text-[#EAE8E2] z-20 select-none border-t border-[rgba(234,232,226,0.07)]"
     >
-      <div className="max-w-7xl mx-auto relative z-20 space-y-10 sm:space-y-12 px-5 sm:px-8 md:px-12 lg:px-16">
-        {/* Section Header with Role Context placed directly under Experience */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-white/[0.08]">
-          <div className="space-y-3 max-w-3xl">
+      <div className="max-w-7xl mx-auto relative z-20 space-y-12 sm:space-y-14 px-5 sm:px-8 md:px-12 lg:px-16">
+        {/* Section header with role metadata set directly beneath it */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-7 border-b border-[rgba(234,232,226,0.11)]">
+          <div className="space-y-4 max-w-3xl">
             <FadeIn y={20} delay={0.1} duration={0.8}>
-              <div className="text-xs font-mono tracking-[0.25em] text-[#E06D20] uppercase flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#E06D20]" />
-                // WORK EXPERIENCE
+              <div className="eyebrow flex items-center gap-2.5">
+                <span className="h-[5px] w-[5px] rounded-full bg-[#E4E24A] animate-pulse" />
+                // Curriculum vitae / printed sheet
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] font-bold text-[#F8FAFC] font-[family-name:var(--font-outfit)] tracking-tight mt-1.5">
+              <h2 className="stylish-header text-[2.1rem] sm:text-[2.6rem] lg:text-[3.1rem] text-[#EAE8E2] mt-3">
                 Experience
               </h2>
             </FadeIn>
 
-            {/* Essential Role Metadata placed right under Experience header */}
             <FadeIn y={15} delay={0.2} duration={0.8}>
-              <div className="pt-1 space-y-2">
+              <div className="pt-1 space-y-3">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="text-xl sm:text-2xl font-bold text-[#F8FAFC] font-[family-name:var(--font-outfit)]">
+                  <span className="text-xl sm:text-2xl text-[#EAE8E2] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.02em]">
                     {experience.title}
                   </span>
-                  <span className="text-sm sm:text-base font-semibold text-[#E06D20] font-mono">
-                    &bull; {experience.company}
+                  <span className="rule-dot text-[13px] sm:text-sm text-[#D2D041] font-[family-name:var(--font-geist-mono)] tracking-[0.06em]">
+                    {experience.company}
                   </span>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs sm:text-sm font-mono text-[#94A3B8]">
-                  <span className="px-2.5 py-0.5 rounded bg-white/[0.04] border border-white/10 text-[#F8FAFC]">
-                    Client: {experience.client} | Project: {experience.project}
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 font-[family-name:var(--font-geist-mono)] text-[11.5px] tracking-[0.05em] text-[#8C8C86]">
+                  <span>
+                    Client {experience.client} <span className="text-[#43433F]">/</span> Project{" "}
+                    {experience.project}
                   </span>
-                  <div className="flex items-center gap-1.5">
-                    <Calendar size={13} className="text-[#E06D20]" />
+                  <span className="flex items-center gap-1.5">
+                    <Calendar size={12} className="text-[#6A6A66]" />
                     <span>{experience.period}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <MapPin size={13} className="text-[#E06D20]" />
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <MapPin size={12} className="text-[#6A6A66]" />
                     <span>{experience.location}</span>
-                  </div>
+                  </span>
                 </div>
 
-                <p className="text-[#94A3B8] text-xs sm:text-sm font-light leading-relaxed pt-1 font-[family-name:var(--font-plus-jakarta)]">
-                  Engineering enterprise ETL batch workflows, SAP ECC extraction routines, SQL Server reconciliation, and mission-critical production data pipelines.
+                <p className="stylish-sub text-xs sm:text-sm text-[#C9C8C3] max-w-xl">
+                  Engineering enterprise ETL batch workflows, SAP ECC extraction routines,
+                  SQL Server reconciliation, and mission-critical production data pipelines.
                 </p>
               </div>
             </FadeIn>
           </div>
 
-          {/* Action Controls: 3D Docket vs Recruiter Specs + PDF Modal */}
+          {/* View switch and resume */}
           <FadeIn y={15} delay={0.3} duration={0.8}>
-            <div className="flex flex-wrap items-center gap-2.5">
-              <div className="p-1 rounded-xl bg-[#0E121B]/80 border border-white/10 flex items-center">
-                <button
-                  onClick={() => setViewMode("3d")}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
-                    viewMode === "3d"
-                      ? "bg-[#E06D20] text-white shadow-[0_0_15px_rgba(224,109,32,0.18)]"
-                      : "text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-white/[0.04]"
-                  }`}
-                >
-                  <Sparkles size={13} />
-                  <span>3D Tactile Docket</span>
-                </button>
-                <button
-                  onClick={() => setViewMode("specs")}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
-                    viewMode === "specs"
-                      ? "bg-[#E06D20] text-white shadow-[0_0_15px_rgba(224,109,32,0.18)]"
-                      : "text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-white/[0.04]"
-                  }`}
-                >
-                  <FileText size={13} />
-                  <span>Specification Sheet</span>
-                </button>
+            <div className="flex flex-wrap items-center gap-3">
+              <div
+                role="group"
+                aria-label="Experience view"
+                className="relative inline-flex items-stretch p-px border border-[rgba(234,232,226,0.13)] bg-[rgba(234,232,226,0.045)]"
+              >
+                {modeButton("3d", "The sheet", Rotate3d)}
+                {modeButton("specs", "Specification", FileText)}
               </div>
 
               <button
+                type="button"
                 onClick={() => setIsResumeOpen(true)}
-                className="px-3.5 py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.10] text-xs font-mono text-[#F8FAFC] border border-white/15 hover:border-[#E06D20]/50 transition-all flex items-center gap-2 cursor-pointer shadow-md"
+                className="px-4 py-2.5 bg-transparent hover:bg-[rgba(234,232,226,0.05)] text-[11px] font-mono uppercase tracking-[0.18em] text-[#C9C8C3] border border-[rgba(234,232,226,0.13)] hover:border-[rgba(228,226,74,0.42)] transition-colors duration-300 flex items-center gap-2 cursor-pointer"
               >
-                <ShieldCheck size={14} className="text-[#E06D20]" />
-                <span>Verified Resume PDF</span>
+                <ShieldCheck size={13} className="text-[#E4E24A]" />
+                <span className="font-medium">Verified resume</span>
               </button>
             </div>
           </FadeIn>
@@ -126,60 +169,91 @@ export function ExperienceSection() {
 
         {/* PRIMARY DISPLAY VIEWPORT */}
         {viewMode === "3d" ? (
-          /* --- 01. SEAMLESS FLOATING 3D PAPER (NO ARTIFICIAL BOX, 100% TRANSPARENT CANVAS) --- */
           <FadeIn y={20} duration={0.8}>
             <div className="relative w-full flex flex-col items-center justify-center">
-              {/* Floating WebGL 3D Canvas Viewport (Elongated for rich verified resume) */}
-              <div className="relative w-full h-[600px] sm:h-[980px] md:h-[1080px]">
+              {/* Warm gallery wash behind the paper. No rings, no orbit, no spin. */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
+                <div className="w-[720px] sm:w-[940px] h-[720px] sm:h-[940px] blur-3xl opacity-70 bg-[radial-gradient(ellipse_at_center,rgba(228,226,74,0.13)_0%,rgba(228,226,74,0.06)_40%,transparent_72%)]" />
+              </div>
+
+              <div className="relative w-full h-[600px] sm:h-[980px] md:h-[1080px] z-10">
                 <iframe
-                  title="3D Tactile Engineering Experience Docket"
-                  src="/assets/three-paper/experience-paper.html"
+                  title="Resume of Mastan Vali, printed on a sheet of paper you can turn"
+                  src="/assets/three-paper/experience-paper.html?v=6"
                   className="w-full h-full border-0 bg-transparent block"
                   loading="eager"
+                  style={{ background: "transparent", colorScheme: "dark" }}
                 />
-                <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0E121B]/85 backdrop-blur-xl border border-[rgba(224,109,32,0.35)] text-[#E06D20] text-xs font-mono pointer-events-none select-none">
+                <div className="absolute top-4 right-4 flex items-center gap-2 text-[#EDEC6B] font-[family-name:var(--font-geist-mono)] text-[11px] tracking-[0.16em] uppercase pointer-events-none select-none">
                   <Rotate3d size={13} />
-                  <span>Drag to rotate in 3D</span>
+                  <span className="hidden sm:inline">Drag to rotate</span>
                 </div>
               </div>
 
-              {/* Minimalist, subtle interaction cue below the paper */}
-              <div className="text-center text-xs font-mono text-[#94A3B8]/60 tracking-[0.25em] uppercase pt-2 select-none">
-                Touch &amp; drag to rotate &bull; pinch to zoom
+              {/* Plinth: a machined brass rule with survey ticks instead of a shadow */}
+              <div className="w-full max-w-xl h-6 pointer-events-none relative -mt-4 z-0 flex items-end justify-center">
+                <div className="w-full h-px bg-[linear-gradient(90deg,transparent,rgba(237,236,107,0.28)_30%,rgba(237,236,107,0.28)_70%,transparent)]" />
+                <div className="absolute bottom-0 flex w-full justify-center gap-6">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <span
+                      key={i}
+                      className={`block w-px bg-[rgba(237,236,107,0.26)] ${i === 2 ? "h-2.5" : "h-1.5"}`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="text-center text-[11px] font-[family-name:var(--font-geist-mono)] text-[#6A6A66] tracking-[0.22em] uppercase pt-4 select-none">
+                Drag to rotate / pinch to zoom
               </div>
             </div>
           </FadeIn>
         ) : (
-          /* --- 02. HIGH-DENSITY RECRUITER SPECIFICATION SHEET (Accessible Text View) --- */
           <FadeIn y={20} duration={0.8}>
-            <div className="relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0E121B]/90 backdrop-blur-2xl p-7 sm:p-10 md:p-12 space-y-8 shadow-[0_30px_70px_rgba(0,0,0,0.8)]">
-              {/* Architecture Pipeline Stages */}
-              <div className="space-y-3">
-                <div className="text-xs font-mono uppercase tracking-wider text-[#F8FAFC] font-semibold flex items-center justify-between">
-                  <span>Enterprise Data Pipeline Architecture &bull; Client: TCS | Project: Grainger</span>
-                  <span className="text-[#E06D20] text-[11px] hidden sm:inline">HIGH-RELIABILITY ETL</span>
+            <div
+              className="relative border border-[rgba(234,232,226,0.13)] p-7 sm:p-10 md:p-12 space-y-9 overflow-hidden edge-lit"
+              style={cutCorner}
+            >
+              <div className="absolute inset-0 -z-10 bg-[linear-gradient(168deg,rgba(26,26,31,0.94)_0%,rgba(12,12,15,0.97)_58%,rgba(8,7,6,0.98)_100%)]" />
+
+              {/* Pipeline stages */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="eyebrow">
+                    Enterprise pipeline / Client {experience.client} / Project {experience.project}
+                  </span>
+                  <span className="hidden sm:inline text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase text-[#B4B23A]">
+                    High reliability ETL
+                  </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   {pipelineStages.map((stg, i) => {
                     const NodeIcon = stg.icon;
                     return (
                       <div
                         key={i}
-                        className="p-4 rounded-xl border border-white/10 bg-[#07090E]/90 hover:bg-[#07090E] flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-[#E06D20]/40"
+                        className="edge-lit relative overflow-hidden p-4 pt-5 border border-[rgba(234,232,226,0.09)] bg-[rgba(234,232,226,0.022)] transition-colors duration-300 hover:border-[rgba(234,232,226,0.2)]"
                       >
-                        <div className="flex items-center justify-between relative z-10">
-                          <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[#E06D20]/10 text-[#E06D20] border border-[#E06D20]/20">
+                        <span
+                          className="absolute top-0 left-0 h-[2px] w-9"
+                          style={{ backgroundColor: stg.color }}
+                        />
+                        <div className="flex items-center justify-between">
+                          <span
+                            className="text-[10px] font-[family-name:var(--font-geist-mono)] tracking-[0.22em] uppercase font-medium"
+                            style={{ color: stg.color }}
+                          >
                             {stg.stage}
                           </span>
-                          <NodeIcon size={15} className="text-[#E06D20]" />
+                          <NodeIcon size={15} style={{ color: stg.color }} />
                         </div>
 
-                        <div className="mt-4 relative z-10">
-                          <div className="text-sm font-semibold text-[#F8FAFC] font-[family-name:var(--font-outfit)]">
+                        <div className="mt-5">
+                          <div className="text-sm text-[#EAE8E2] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.01em]">
                             {stg.title}
                           </div>
-                          <div className="text-xs font-mono text-[#94A3B8] mt-0.5">
+                          <div className="text-[11.5px] font-[family-name:var(--font-geist-mono)] text-[#8C8C86] mt-1 leading-relaxed">
                             {stg.sub}
                           </div>
                         </div>
@@ -189,52 +263,63 @@ export function ExperienceSection() {
                 </div>
               </div>
 
-              {/* Responsibilities 4 Core Domains */}
-              <div className="space-y-4 pt-2">
-                <div className="text-xs font-mono uppercase tracking-wider text-[#F8FAFC] font-semibold">
-                  Verified Production Roles &amp; Responsibilities
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {experience.domains.map((dom, dIdx) => (
-                    <div
-                      key={dIdx}
-                      className="p-4 rounded-xl bg-[#07090E]/75 border border-white/[0.08] hover:border-[#E06D20]/30 transition-all space-y-3"
-                    >
-                      <div className="flex items-center gap-2 text-xs font-mono font-semibold text-[#E06D20] tracking-wide border-b border-white/[0.06] pb-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#E06D20]" />
-                        <span>PILLAR 0{dIdx + 1} // {dom.title}</span>
+              {/* Four responsibility pillars */}
+              <div className="space-y-5">
+                <span className="eyebrow">Verified production responsibilities</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[rgba(234,232,226,0.09)] border border-[rgba(234,232,226,0.09)]">
+                  {experience.domains.map((dom, dIdx) => {
+                    const accent = pillarColors[dIdx % pillarColors.length];
+                    return (
+                      <div key={dIdx} className="p-5 bg-[#0D0D10] space-y-3.5">
+                        <div
+                          className="flex items-center gap-2.5 text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] uppercase font-medium"
+                          style={{ color: accent }}
+                        >
+                          <span className="block h-px w-5" style={{ backgroundColor: accent }} />
+                          <span>
+                            Pillar 0{dIdx + 1} / {dom.title}
+                          </span>
+                        </div>
+                        <ul className="space-y-2.5">
+                          {dom.items.map((it, iIdx) => (
+                            <li
+                              key={iIdx}
+                              className="flex items-start gap-3 text-[12.5px] text-[#C9C8C3] leading-relaxed"
+                            >
+                              <span
+                                aria-hidden
+                                className="shrink-0 mt-[7px] block h-px w-3"
+                                style={{ backgroundColor: accent }}
+                              />
+                              <span>{it}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                      <ul className="space-y-2">
-                        {dom.items.map((it, iIdx) => (
-                          <li key={iIdx} className="flex items-start gap-2.5 text-xs text-[#94A3B8] leading-relaxed">
-                            <CheckCircle2 size={14} className="text-[#E06D20] shrink-0 mt-0.5" />
-                            <span>{it}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Technical Environment Tags */}
-              <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-white/[0.08]">
-                <span className="text-xs font-mono text-[#94A3B8] mr-2">PRODUCTION STACK:</span>
-                {experience.environment.map((env) => (
-                  <span
-                    key={env}
-                    className="px-2.5 py-1 rounded-md text-xs font-mono bg-white/[0.04] text-[#F8FAFC] border border-white/[0.08] hover:border-[#E06D20]/40 transition-colors"
-                  >
-                    {env}
-                  </span>
-                ))}
+              {/* Production stack, inline with slash rules rather than chips */}
+              <div className="pt-6 border-t border-[rgba(234,232,226,0.09)]">
+                <span className="eyebrow">Production stack</span>
+                <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[12px] font-[family-name:var(--font-geist-mono)] text-[#8C8C86]">
+                  {experience.environment.map((env, i) => (
+                    <span key={env} className="flex items-center gap-2">
+                      <span className="transition-colors duration-300 hover:text-[#EAE8E2]">{env}</span>
+                      {i < experience.environment.length - 1 && (
+                        <span className="text-[#43433F]">/</span>
+                      )}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </FadeIn>
         )}
       </div>
 
-      {/* Verified Resume Modal */}
       <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </section>
   );

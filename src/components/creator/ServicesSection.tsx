@@ -36,8 +36,8 @@ const original6Services: ServiceCard[] = [
     title: "Enterprise ETL & Data Pipeline Engineering",
     badge: "ENTERPRISE CORE",
     desc: "Architecting high-throughput data extraction, historical SCD Type 1 & 2 dimensional pipelines, and automated reconciliation across Fortune 500 SAP infrastructures.",
-    accent: "#F47A18",
-    coverGrad: "from-[#1F150B] via-[#100B06] to-[#060402]",
+    accent: "#C8702A",
+    coverGrad: "from-[#100C08] via-[#0A0806] to-[#060404]",
     icon: Database,
     topRoles: [
       "SAP BODS 4.3 production batch & real-time ETL jobs, workflows, and data flows.",
@@ -53,8 +53,8 @@ const original6Services: ServiceCard[] = [
     title: "Autonomous Multi-Agent Architecture",
     badge: "AI INTELLIGENCE",
     desc: "Designing and orchestrating autonomous multi-agent DAG frameworks that coordinate specialized LLM agents for non-deterministic code and data workflows.",
-    accent: "#8B5CF6",
-    coverGrad: "from-[#171028] via-[#0E0A1A] to-[#040308]",
+    accent: "#C8702A",
+    coverGrad: "from-[#0E0C12] via-[#090810] to-[#040307]",
     icon: Bot,
     topRoles: [
       "Directed Acyclic Graph (DAG) multi-agent coordination with intelligent task routing.",
@@ -70,8 +70,8 @@ const original6Services: ServiceCard[] = [
     title: "Offline-First Desktop Software & ERP",
     badge: "SOFTWARE SYSTEMS",
     desc: "Engineering zero-latency cross-platform desktop applications with local ACID compliance via SQLite in WAL mode and hardware-bound distribution licenses.",
-    accent: "#14B8A6",
-    coverGrad: "from-[#0A1D1C] via-[#061211] to-[#020606]",
+    accent: "#C8702A",
+    coverGrad: "from-[#080E0E] via-[#050A0A] to-[#020606]",
     icon: MonitorSmartphone,
     topRoles: [
       "Electron + React 19 cross-platform desktop ERP with zero-latency response time.",
@@ -87,8 +87,8 @@ const original6Services: ServiceCard[] = [
     title: "Modern Full-Stack AI SaaS Platforms",
     badge: "PRODUCT BUILDING",
     desc: "Building production web applications using Next.js 15, React 19, TypeScript, PostgreSQL, and multi-model LLM APIs with strict truth-verification engines.",
-    accent: "#38BDF8",
-    coverGrad: "from-[#0A1A2E] via-[#050F1C] to-[#02050B]",
+    accent: "#C8702A",
+    coverGrad: "from-[#080D16] via-[#050910] to-[#02040A]",
     icon: Cpu,
     topRoles: [
       "Next.js 15 App Router, React 19 Server Actions, and high-speed edge streaming.",
@@ -104,8 +104,8 @@ const original6Services: ServiceCard[] = [
     title: "Developer Workflow & Git Telemetry",
     badge: "DEV PRODUCTIVITY",
     desc: "Custom productivity systems designed for developer workflows, interactive Git branch trees, automated PR code review scoring, and webhook triggers.",
-    accent: "#10B981",
-    coverGrad: "from-[#0A2016] via-[#05130D] to-[#010604]",
+    accent: "#C8702A",
+    coverGrad: "from-[#080E0A] via-[#050A07] to-[#020503]",
     icon: Server,
     topRoles: [
       "Real-time GitHub REST & GraphQL API integrations monitoring upstream repositories.",
@@ -121,8 +121,8 @@ const original6Services: ServiceCard[] = [
     title: "Production Support & Incident Reliability",
     badge: "RELIABILITY SLA",
     desc: "Mission-critical production engineering for high-consequence enterprise environments with ITIL incident triage, root cause analysis, and automated checksums.",
-    accent: "#94A3B8",
-    coverGrad: "from-[#18202A] via-[#0E131A] to-[#040608]",
+    accent: "#C8702A",
+    coverGrad: "from-[#0E1218] via-[#090C12] to-[#040609]",
     icon: ShieldCheck,
     topRoles: [
       "24/7 enterprise production support maintaining 99.98% SLA compliance for Fortune 500.",
@@ -145,7 +145,7 @@ export function ServicesSection() {
   return (
     <section
       id="services"
-      className="relative w-full bg-[#050811] py-20 sm:py-24 text-[#F3F1E8] z-20 select-none border-t border-white/10 font-[family-name:var(--font-sans)]"
+      className="relative w-full bg-[#06080D] py-20 sm:py-24 text-[#EEF0F3] z-20 select-none border-t border-white/[0.06] font-[family-name:var(--font-sans)]"
     >
       {/* Precision Blueprint Grid Background */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden opacity-[0.035]">
@@ -164,17 +164,17 @@ export function ServicesSection() {
         {/* Section Header */}
         <div className="flex flex-col items-start space-y-2.5 max-w-3xl">
           <FadeIn y={15} delay={0.1} duration={0.7}>
-            <div className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.22em] text-[#14B8A6] uppercase">
+            <div className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.22em] text-[#C8702A]/80 uppercase">
               <Sparkles size={13} />
               <span>// ARCHITECTURAL CAPABILITIES · 6 HARDCOVER TOMES</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#F3F1E8] font-[family-name:var(--font-outfit)] tracking-tight mt-1.5">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#EEF0F3] font-[family-name:var(--font-outfit)] tracking-tight mt-1.5">
               Solutions &amp; Services
             </h2>
           </FadeIn>
 
           <FadeIn y={15} delay={0.2} duration={0.7}>
-            <p className="text-[#CBD5E1] text-xs sm:text-sm font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
+            <p className="text-[#8A97A8] text-xs sm:text-sm font-light leading-relaxed max-w-2xl font-[family-name:var(--font-plus-jakarta)]">
               The 6 core engineering capabilities. Click any book to open its cover right in-place and inspect verified production roles, deliverables, and technical stack.
             </p>
           </FadeIn>
@@ -235,13 +235,13 @@ export function ServicesSection() {
 
                   {/* 3. HARDCOVER CASE: IN-PLACE REVEAL (FRONT COVER vs OPENED INNER PAGE) */}
                   <div
-                    className="relative w-full h-full rounded-r-md rounded-l-[3px] overflow-hidden flex flex-col justify-between border border-white/[0.12] z-10 transition-colors duration-300"
+                    className="relative w-full h-full rounded-r-md rounded-l-[3px] overflow-hidden flex flex-col justify-between border border-white/[0.08] z-10 transition-colors duration-300"
                     style={{
                       background: isOpen
-                        ? "linear-gradient(150deg, #090E17 0%, #060A10 100%)"
+                        ? "linear-gradient(150deg, #0C0F18 0%, #06080D 100%)"
                         : `linear-gradient(145deg, ${card.coverGrad})`,
                       boxShadow: isOpen
-                        ? `0 20px 45px rgba(0,0,0,0.95), 0 0 25px ${card.accent}30, inset 0 0 1px rgba(255,255,255,0.2)`
+                        ? `0 20px 45px rgba(0,0,0,0.95), 0 0 25px ${card.accent}25, inset 0 0 1px rgba(255,255,255,0.15)`
                         : "0 12px 30px rgba(0,0,0,0.85), -5px 0 12px rgba(0,0,0,0.75)",
                     }}
                   >
@@ -253,7 +253,7 @@ export function ServicesSection() {
                     </div>
 
                     {/* 3B. Vertical Debossed Hinge Joint */}
-                    <div className="absolute left-6 top-0 bottom-0 w-[1.5px] bg-black/70 shadow-[1px_0_0_rgba(255,255,255,0.08)] z-20 pointer-events-none" />
+                    <div className="absolute left-6 top-0 bottom-0 w-[1.5px] bg-black/70 shadow-[1px_0_0_rgba(255,255,255,0.06)] z-20 pointer-events-none" />
 
                     {/* ── STATE A: FRONT COVER (When closed) ── */}
                     {!isOpen && (
@@ -266,18 +266,18 @@ export function ServicesSection() {
                         className="relative z-10 pl-9 pr-4 pt-4 pb-4 flex-1 flex flex-col justify-between h-full"
                       >
                         {/* Top: Numeral + Badge */}
-                        <div className="flex items-center justify-between border-b border-white/[0.08] pb-2.5">
+                        <div className="flex items-center justify-between border-b border-white/[0.06] pb-2.5">
                           <div className="flex items-center gap-2">
                             <span
                               className="font-mono text-xl font-bold tracking-widest"
                               style={{
                                 color: card.accent,
-                                textShadow: `0 0 14px ${card.accent}60`,
+                                textShadow: `0 0 14px ${card.accent}50`,
                               }}
                             >
                               {card.no}
                             </span>
-                            <span className="text-[8.5px] font-mono tracking-[0.20em] text-[#94A3B8] uppercase font-semibold">
+                            <span className="text-[8.5px] font-mono text-[#8A97A8] uppercase font-semibold">
                               {card.badge}
                             </span>
                           </div>
@@ -287,20 +287,20 @@ export function ServicesSection() {
                         {/* Middle: Title & Description */}
                         <div className="space-y-2 py-1 my-auto">
                           <h3
-                            className="text-sm sm:text-[15px] font-bold text-white tracking-tight leading-snug font-[family-name:var(--font-outfit)]"
+                            className="text-sm sm:text-[15px] font-bold text-[#EEF0F3] tracking-tight leading-snug font-[family-name:var(--font-outfit)]"
                             style={{ textShadow: "0 2px 8px rgba(0,0,0,0.95)" }}
                           >
                             {card.title}
                           </h3>
 
-                          <p className="text-[11px] sm:text-[11.5px] text-[#CBD5E1] font-light leading-relaxed line-clamp-3">
+                          <p className="text-[11px] sm:text-[11.5px] text-[#8A97A8] font-light leading-relaxed line-clamp-3">
                             {card.desc}
                           </p>
                         </div>
 
                         {/* Bottom: SLA Metric & Open Action */}
-                        <div className="pt-2.5 border-t border-white/[0.08] flex items-center justify-between">
-                          <span className="text-[8.5px] font-mono text-[#FDBA74] tracking-wider uppercase font-medium">
+                        <div className="pt-2.5 border-t border-white/[0.06] flex items-center justify-between">
+                          <span className="text-[8.5px] font-mono text-[#C49A38] tracking-wider uppercase font-medium">
                             {card.sla}
                           </span>
 
@@ -326,12 +326,12 @@ export function ServicesSection() {
                         className="relative z-10 pl-8 pr-3.5 pt-3.5 pb-3.5 flex-1 flex flex-col justify-between h-full overflow-y-auto"
                       >
                         {/* Opened Page Header */}
-                        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                        <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
                           <div className="flex items-center gap-1.5">
-                            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-white font-bold">
+                            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.08] text-[#EEF0F3] font-bold">
                               {card.no}
                             </span>
-                            <span className="text-[8.5px] font-mono text-[#38BDF8] uppercase font-semibold">
+                            <span className="text-[8.5px] font-mono text-[#C8702A] uppercase font-semibold">
                               TOP ROLES &amp; RESPONSIBILITIES
                             </span>
                           </div>
@@ -341,7 +341,7 @@ export function ServicesSection() {
                               e.stopPropagation();
                               setOpenedBook(null);
                             }}
-                            className="p-1 rounded-md bg-white/10 hover:bg-white/20 text-[#CBD5E1] hover:text-white transition-colors"
+                            className="p-1 rounded-md bg-white/[0.08] hover:bg-white/[0.15] text-[#8A97A8] hover:text-[#EEF0F3] transition-colors"
                             aria-label="Close book"
                             title="Close Book"
                           >
@@ -352,7 +352,7 @@ export function ServicesSection() {
                         {/* 4 Top Roles & Deliverables Bulleted */}
                         <div className="space-y-1.5 py-2">
                           {card.topRoles.map((role, rIdx) => (
-                            <div key={rIdx} className="flex items-start gap-1.5 text-[10.5px] leading-tight text-[#F1F5F9]">
+                            <div key={rIdx} className="flex items-start gap-1.5 text-[10.5px] leading-tight text-[#EEF0F3]">
                               <CheckCircle2
                                 size={12}
                                 className="shrink-0 mt-0.5"
@@ -364,26 +364,26 @@ export function ServicesSection() {
                         </div>
 
                         {/* Opened Page Bottom: Tech Stack & Close button */}
-                        <div className="pt-2 border-t border-white/10 space-y-1.5">
+                        <div className="pt-2 border-t border-white/[0.08] space-y-1.5">
                           <div className="flex flex-wrap gap-1">
                             {card.tech.slice(0, 4).map((t, tIdx) => (
                               <span
                                 key={tIdx}
-                                className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.05] border border-white/10 text-[#E2E8F0]"
+                                className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-[#EEF0F3]"
                               >
                                 {t}
                               </span>
                             ))}
                           </div>
 
-                          <div className="flex items-center justify-between text-[9px] font-mono text-[#94A3B8] pt-1">
-                            <span className="text-[#10B981] font-semibold">{card.sla}</span>
+                          <div className="flex items-center justify-between text-[9px] font-mono text-[#8A97A8] pt-1">
+                            <span className="text-[#C8702A] font-semibold">{card.sla}</span>
                             <span
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setOpenedBook(null);
                               }}
-                              className="cursor-pointer hover:underline text-white font-semibold flex items-center gap-0.5"
+                              className="cursor-pointer hover:underline text-[#EEF0F3] font-semibold flex items-center gap-0.5"
                             >
                               <span>CLOSE</span>
                               <span>✕</span>

@@ -317,7 +317,7 @@ export function TactileCapabilityCard({ area, index }: TactileCapabilityCardProp
                 >
                   {area.num}
                 </span>
-                <span className="text-[10px] font-mono tracking-wider px-2 py-0.5 rounded border uppercase text-[#94A3B8] border-white/10 bg-white/[0.02]">
+                <span className="text-[10px] font-mono tracking-wider px-2 py-0.5 rounded border uppercase text-[#8A97A8] border-white/10 bg-white/[0.02]">
                   {area.systemTag}
                 </span>
               </div>
@@ -339,10 +339,10 @@ export function TactileCapabilityCard({ area, index }: TactileCapabilityCardProp
 
             {/* Domain Title Hierarchy */}
             <div>
-              <div className="text-[10px] font-mono font-semibold uppercase tracking-widest text-[#94A3B8]">
+              <div className="text-[10px] font-mono font-semibold uppercase tracking-widest text-[#8A97A8]">
                 CORE DOMAIN
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-[#F3F1E8] tracking-tight mt-1 font-[family-name:var(--font-outfit)]">
+              <h3 className="text-lg sm:text-xl font-bold text-[#EEF0F3] tracking-tight mt-1 font-[family-name:var(--font-outfit)]">
                 {area.title}
               </h3>
               <div

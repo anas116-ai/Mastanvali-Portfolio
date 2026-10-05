@@ -12,9 +12,9 @@ export function Logo({ light = false, sub = true }: { light?: boolean; sub?: boo
       >
         <defs>
           <linearGradient id="smvMark" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#C86A26" />
-            <stop offset="50%" stopColor="#E06D20" />
-            <stop offset="100%" stopColor="#D9A036" />
+            <stop offset="0%" stopColor="#B05E20" />
+            <stop offset="50%" stopColor="#C8702A" />
+            <stop offset="100%" stopColor="#C49A38" />
           </linearGradient>
         </defs>
 
@@ -40,7 +40,7 @@ export function Logo({ light = false, sub = true }: { light?: boolean; sub?: boo
           fontSize="15.5"
           fontWeight="600"
           letterSpacing="2"
-          fill={light ? "#0b0b0e" : "#F8FAFC"}
+          fill={light ? "#0b0b0e" : "#EEF0F3"}
         >
           SHAIK MASTAN VALI
         </text>
@@ -52,7 +52,7 @@ export function Logo({ light = false, sub = true }: { light?: boolean; sub?: boo
             fontSize="7.5"
             fontWeight="500"
             letterSpacing="3.5"
-            fill={light ? "#6b6b6b" : "#E06D20"}
+            fill={light ? "#6b6b6b" : "#C8702A"}
           >
             DATA {String.fromCharCode(0x2192)} AI
           </text>

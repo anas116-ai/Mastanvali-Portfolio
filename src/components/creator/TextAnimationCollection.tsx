@@ -4,19 +4,23 @@ import { useEffect, useMemo, useRef } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
- * TextAnimationCollection — variant `threeui-intro` (slow in-place luxury reveal)
+ * TextAnimationCollection — variant `threeui-intro` (stamp drop)
  *
- * Inspired by the opening beat of ThreeUI registered source `threeui-intro`
- * (rev 5a736cd3c1f6f19802f61ebb10e1701b9f7aa26e, `makeWordmark`, 0.00–1.72s),
- * re-authored per approved plan as a SLOW, IN-PLACE reveal:
+ * The signature MASTAN VALI wordmark behaves like a type slug being pressed
+ * onto the page, strictly one letter at a time:
  *
- *   - Every letter stays at its own final position (no scatter/fly-in).
- *   - Per letter: opacity 0→1, translateY 16px→0, blur 8px→0, expo ease-out.
- *   - Staggered 70ms per letter, 1.1s each → ~2.6s total, plays ONCE.
- *   - No chromatic fringing, no loop, no sheen sweep.
+ *   - M is released, falls, and settles completely before N is released.
+ *   - Each letter starts ABOVE its final baseline and falls straight down.
+ *   - On contact the letter settles: it compresses very slightly on Y, then
+ *     eases back out, so it lands exactly in place instead of floating in.
+ *   - Letters never translate sideways and never overshoot their slot.
+ *   - The face is one lemon, masked with a sparse scratch so nicks break
+ *     only the occasional edge and the whole letter stays readable.
+ *   - After the word has fully settled the hero holds for REPLAY_MS, then
+ *     the sequence starts again from the first letter.
  *
- * Props keep the requested `<TextAnimationCollection variant="threeui-intro"
- * mode hue saturation brightness />` API; hue/sat/brightness via CSS filter.
+ * Props keep the `<TextAnimationCollection variant mode hue saturation
+ * brightness text />` API.
  */
 
 export type TextIntroVariant = "threeui-intro";
@@ -25,21 +29,39 @@ export type TextIntroMode = "dark" | "light";
 interface TextAnimationCollectionProps {
   variant?: TextIntroVariant;
   mode?: TextIntroMode;
+  /** Accepted for API compatibility. The wordmark is a fixed single lemon,
+   *  so these three are intentionally not applied as a CSS filter. */
   hue?: number;
   saturation?: number;
   brightness?: number;
   text?: string;
   className?: string;
-  /** Kept for API compat — animation always plays once. */
+  /** When true the drop re-strikes every REPLAY_MS while the hero is in view. */
   loop?: boolean;
 }
 
 const clamp = (v: number, a: number, b: number) => (v < a ? a : v > b ? b : v);
 const seg = (t: number, a: number, b: number) => clamp((t - a) / (b - a || 1e-6), 0, 1);
-const eOut = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
-const LETTER_DELAY = 0.07; // seconds between letters
-const LETTER_DURATION = 1.1; // seconds per letter
+/** Impact-free drop: fast approach, hard stop, no bounce. */
+const eDrop = (t: number) => 1 - Math.pow(1 - t, 5);
+
+/** Compression curve for the settle. Peaks at 26% of the settle window. */
+const settle = (t: number) => Math.sin(clamp(t, 0, 1) * Math.PI) * (1 - clamp(t, 0, 1) * 0.25);
+
+/**
+ * Each letter must be unambiguously its own event. At 85ms the eleven glyphs
+ * of MASTAN VALI resolved inside a third of a second and read as one simultaneous
+ * arrival. 240ms per letter gives every glyph a visible drop, impact, and settle
+ * before the next one is released, so M lands, then N, then E, then X.
+ */
+const LETTER_DELAY = 0.24; // seconds between letters
+const FALL_TIME = 0.30; // seconds of free fall before impact
+const SETTLE_TIME = 0.46; // seconds of compress-and-release after impact
+const DROP_HEIGHT = 0.62; // fraction of glyph height, in em
+
+/** Hold this long after the full word has settled, then re-strike. */
+const REPLAY_MS = 10000;
 
 export function TextAnimationCollection({
   variant = "threeui-intro",
@@ -49,16 +71,19 @@ export function TextAnimationCollection({
   brightness = 1.0,
   text = "MASTAN VALI",
   className = "",
+  loop = true,
 }: TextAnimationCollectionProps) {
   const rootRef = useRef<HTMLSpanElement>(null);
   const charsRef = useRef<HTMLSpanElement[]>([]);
   const reduced = useReducedMotion();
   const playingRef = useRef(false);
+  const replayRef = useRef<number | null>(null);
 
   const words = useMemo(() => text.split(" "), [text]);
+  const letterCount = useMemo(() => text.replace(/ /g, "").length, [text]);
   const total = useMemo(
-    () => LETTER_DELAY * (text.replace(/ /g, "").length - 1) + LETTER_DURATION,
-    [text]
+    () => LETTER_DELAY * (letterCount - 1) + FALL_TIME + SETTLE_TIME,
+    [letterCount]
   );
 
   useEffect(() => {
@@ -67,78 +92,126 @@ export function TextAnimationCollection({
     const nodes = charsRef.current;
     if (!root || !nodes.length) return;
 
-    const lock = () => {
+    const settleAll = () => {
       for (const n of nodes) {
         if (!n) continue;
-        n.style.transform = "translateY(0px)";
+        n.style.transform = "translateY(0em)";
         n.style.opacity = "1";
         n.style.filter = "none";
       }
     };
 
+    const clearReplay = () => {
+      if (replayRef.current !== null) {
+        window.clearTimeout(replayRef.current);
+        replayRef.current = null;
+      }
+    };
+
     if (reduced) {
-      lock();
+      settleAll();
       return;
     }
 
     let raf = 0;
     let cancelled = false;
 
-    // One slow in-place pass; replays when hero scrolls into view or on hover,
-    // so the motion is seen whenever the user looks at the name.
     const play = () => {
       if (playingRef.current || cancelled) return;
       playingRef.current = true;
       const t0 = performance.now();
+
       const tick = (now: number) => {
         if (cancelled) return;
         const elapsed = (now - t0) / 1000;
+
         for (let i = 0; i < nodes.length; i++) {
           const n = nodes[i];
           if (!n) continue;
-          const q = eOut(seg(elapsed, i * LETTER_DELAY, i * LETTER_DELAY + LETTER_DURATION));
-          n.style.transform = `translateY(${((1 - q) * 16).toFixed(1)}px)`;
-          n.style.opacity = q.toFixed(3);
-          n.style.filter = q < 0.99 ? `blur(${((1 - q) * 8).toFixed(2)}px)` : "none";
+
+          const start = i * LETTER_DELAY;
+          const land = start + FALL_TIME;
+
+          if (elapsed <= start) {
+            // Waiting its turn: parked above the baseline, out of sight.
+            n.style.transform = `translateY(${-DROP_HEIGHT}em)`;
+            n.style.opacity = "0";
+            n.style.filter = "none";
+            continue;
+          }
+
+          if (elapsed < land) {
+            // Free fall from above. Accelerating, straight down.
+            const fall = eDrop(seg(elapsed, start, land));
+            n.style.transform = `translateY(${(-DROP_HEIGHT * (1 - fall)).toFixed(4)}em)`;
+            n.style.opacity = "1";
+            n.style.filter = "none";
+            continue;
+          }
+
+          if (elapsed < land + SETTLE_TIME) {
+            // Impact: compress, then ease back to the exact final slot.
+            const s = settle(seg(elapsed, land, land + SETTLE_TIME));
+            n.style.transform = `translateY(${(s * 0.052).toFixed(4)}em) scaleY(${(1 - s * 0.075).toFixed(4)})`;
+            n.style.opacity = "1";
+            n.style.filter = "none";
+            continue;
+          }
+
+          n.style.transform = "translateY(0em)";
+          n.style.opacity = "1";
+          n.style.filter = "none";
         }
-        if (elapsed < total + 0.2) {
+
+        if (elapsed < total + 0.15) {
           raf = requestAnimationFrame(tick);
         } else {
-          lock();
+          settleAll();
           playingRef.current = false;
+          clearReplay();
+          if (loop) replayRef.current = window.setTimeout(play, REPLAY_MS);
         }
       };
+
       raf = requestAnimationFrame(tick);
     };
 
     play();
+
+    // Re-strike when the hero returns to view, and stop burning frames when it leaves.
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) play();
+        const visible = entries.some((e) => e.isIntersecting);
+        if (visible) play();
+        else clearReplay();
       },
       { threshold: 0.4 }
     );
     io.observe(root);
-    root.addEventListener("mouseenter", play);
 
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
+      clearReplay();
       io.disconnect();
-      root.removeEventListener("mouseenter", play);
     };
-  }, [variant, reduced, total, text]);
+  }, [variant, reduced, total, text, loop]);
 
-  const filter = `hue-rotate(${hue}deg) saturate(${saturation}) brightness(${brightness})`;
   let charIndex = -1;
 
   return (
     <span
       ref={rootRef}
-      className={`threeui-intro-wordmark ${mode === "light" ? "is-light" : "is-dark"} ${className}`}
+      className={`threeui-intro-wordmark scratch-face ${
+        mode === "light" ? "is-light" : "is-dark"
+      } ${className}`}
       role="text"
       aria-label={text}
-      style={{ filter }}
+      // The wordmark is one lemon. The filter stays at identity so no hue,
+      // saturation, or brightness shift can ever split the name into
+      // multiple colours; the form prop is kept for API compatibility only.
+      style={{ filter: "none" }}
+      data-filter-unused={`${hue}/${saturation}/${brightness}`}
     >
       <span className="threeui-intro-line" aria-hidden="true">
         {words.map((word, wi) => (
@@ -158,7 +231,11 @@ export function TextAnimationCollection({
                 </span>
               );
             })}
-            {wi < words.length - 1 ? <span className="threeui-intro-space"> </span> : null}
+            {wi < words.length - 1 ? (
+              <span className="threeui-intro-space" aria-hidden="true">
+                &nbsp;
+              </span>
+            ) : null}
           </span>
         ))}
       </span>

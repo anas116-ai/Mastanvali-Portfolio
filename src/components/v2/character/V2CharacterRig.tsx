@@ -5,7 +5,6 @@ import { DepthCharacterMesh } from "@/components/character/webgl/DepthCharacterM
 import { GroundShadow3D } from "@/components/character/webgl/GroundShadow3D";
 import { VolumetricParticleSystem } from "@/components/character/webgl/VolumetricParticleSystem";
 import { LaptopSkillStream } from "@/components/character/LaptopSkillStream";
-import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 function webglAvailable(): boolean {
@@ -35,7 +34,6 @@ interface V2CharacterRigProps {
 export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mousePosition = useRef({ x: 0, y: 0 });
-  const [showSpeech, setShowSpeech] = useState(false);
   const [webglSupported, setWebglSupported] = useState(true);
   const [sceneReady, setSceneReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -75,39 +73,26 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.addEventListener("mouseleave", handleMouseLeave);
 
-    const timer = setTimeout(() => setShowSpeech(true), 1600);
-    const hideTimer = setTimeout(() => setShowSpeech(false), 4600);
-
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
-      clearTimeout(timer);
-      clearTimeout(hideTimer);
     };
   }, []);
-
-  const handleClick = () => {
-    setShowSpeech(true);
-    setTimeout(() => setShowSpeech(false), 2600);
-  };
 
   return (
     <div
       ref={containerRef}
-      onClick={handleClick}
-      className={`relative w-full h-[420px] sm:h-[460px] md:h-[490px] lg:h-[520px] flex items-end justify-center cursor-pointer select-none ${className}`}
+      className={`relative w-full h-[420px] sm:h-[460px] md:h-[490px] lg:h-[520px] flex items-end justify-center select-none ${className}`}
     >
       {/* 1. TRUE 3D WEBGL ENGINE */}
       {webglSupported && (
         <>
-          {/* Loading skeleton shown while the WebGL scene builds */}
-          {!sceneReady && (
-            <div className="absolute inset-0 flex items-end justify-center" aria-hidden="true">
-              <div className="w-[220px] sm:w-[260px] h-[320px] sm:h-[380px] rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/10 overflow-hidden">
-                <div className="w-full h-full animate-pulse bg-[radial-gradient(circle_at_50%_30%,rgba(244,122,24,0.08),transparent_60%)]" />
-              </div>
-            </div>
-          )}
+          {/* No skeleton. The scene fades up once the rig is compiled. */}
+          <div
+            className={`absolute inset-0 transition-opacity duration-[900ms] ease-out ${
+              sceneReady ? "opacity-100" : "opacity-0"
+            }`}
+          >
           <RigBoundary>
             <Canvas
               camera={{ position: [0, -0.02, 5.35], fov: 38 }}
@@ -142,6 +127,7 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
             </Suspense>
           </Canvas>
         </RigBoundary>
+          </div>
         </>
       )}
 
@@ -162,23 +148,6 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
 
       {/* 2. LAPTOP SKILL STREAM (Streams from laptop to side corridors, bursting at apex without occluding face) */}
       <LaptopSkillStream />
-
-      {/* 3. CONTEXTUAL SPEECH BUBBLE */}
-      <AnimatePresence>
-        {showSpeech && (
-          <motion.div
-            initial={{ opacity: 0, y: -12, scale: 0.92 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.92 }}
-            transition={{ duration: 0.24, ease: "easeOut" }}
-            className="absolute top-[6%] left-1/2 -translate-x-1/2 rounded-full px-4 py-1.5 text-xs font-mono font-semibold text-[#F3F1E8] shadow-xl backdrop-blur-xl whitespace-nowrap z-30 border border-[rgba(244,122,24,0.35)] bg-[#050811]/95 pointer-events-none"
-            role="status"
-            aria-live="polite"
-          >
-            Hello! I&apos;m Mastan Vali 👋
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

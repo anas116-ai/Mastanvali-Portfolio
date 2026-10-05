@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion } from "framer-motion";
 
@@ -23,8 +23,8 @@ const rightCodeSnippets = [
 ];
 
 export function CharacterEffects({
-  accentColor = "#14B8A6",
-  secondaryAccent = "#F47A18",
+  accentColor = "#FACC15",
+  secondaryAccent = "#E2C799",
   isActive = true,
   className = "",
 }: CharacterEffectsProps) {
@@ -52,9 +52,9 @@ export function CharacterEffects({
           className="absolute top-[48%] left-[24%] px-2.5 py-1 rounded-md text-[10px] font-mono font-bold tracking-wider backdrop-blur-md shadow-lg border whitespace-nowrap pointer-events-none"
           style={{
             color: accentColor,
-            borderColor: "rgba(20, 184, 166, 0.35)",
+            borderColor: "rgba(250, 204, 21, 0.35)",
             backgroundColor: "rgba(5, 9, 20, 0.85)",
-            boxShadow: "0 0 16px rgba(20, 184, 166, 0.28)",
+            boxShadow: "0 0 16px rgba(250, 204, 21, 0.28)",
           }}
         >
           <span className="opacity-70 font-semibold">&gt;&nbsp;</span>
@@ -82,9 +82,9 @@ export function CharacterEffects({
           className="absolute top-[48%] right-[24%] px-2.5 py-1 rounded-md text-[10px] font-mono font-bold tracking-wider backdrop-blur-md shadow-lg border whitespace-nowrap pointer-events-none"
           style={{
             color: secondaryAccent,
-            borderColor: "rgba(244, 122, 24, 0.35)",
+            borderColor: "rgba(226, 199, 153, 0.35)",
             backgroundColor: "rgba(5, 9, 20, 0.85)",
-            boxShadow: "0 0 16px rgba(244, 122, 24, 0.28)",
+            boxShadow: "0 0 16px rgba(226, 199, 153, 0.28)",
           }}
         >
           <span className="opacity-70 font-semibold">&gt;&nbsp;</span>
@@ -106,7 +106,7 @@ export function CharacterEffects({
         }}
         className="absolute top-[52%] left-[46%] -translate-x-1/2 -translate-y-1/2 w-[160px] h-[65px] rounded-full border border-dashed pointer-events-none"
         style={{
-          borderColor: "rgba(20, 184, 166, 0.4)",
+          borderColor: "rgba(250, 204, 21, 0.35)",
           transformStyle: "preserve-3d",
           transform: "rotateX(74deg)",
         }}
@@ -125,7 +125,7 @@ export function CharacterEffects({
         }}
         className="absolute top-[52%] left-[46%] -translate-x-1/2 -translate-y-1/2 w-[205px] h-[80px] rounded-full border border-dotted pointer-events-none"
         style={{
-          borderColor: "rgba(244, 122, 24, 0.35)",
+          borderColor: "rgba(226, 199, 153, 0.30)",
           transformStyle: "preserve-3d",
           transform: "rotateX(70deg)",
         }}
@@ -133,10 +133,10 @@ export function CharacterEffects({
 
       {/* --- 4. DYNAMIC SIDE DATA NODES (Undulating on the outer perimeter) --- */}
       {[
-        { top: "42%", left: "18%", color: "#14B8A6", delay: 0 },
-        { top: "35%", right: "16%", color: "#F47A18", delay: 1.1 },
-        { top: "56%", left: "15%", color: "#38BDF8", delay: 2.3 },
-        { top: "54%", right: "18%", color: "#14B8A6", delay: 3.2 },
+        { top: "42%", left: "18%", color: "#FACC15", delay: 0 },
+        { top: "35%", right: "16%", color: "#E2C799", delay: 1.1 },
+        { top: "56%", left: "15%", color: "#FFFFFF", delay: 2.3 },
+        { top: "54%", right: "18%", color: "#FDE047", delay: 3.2 },
       ].map((node, i) => (
         <motion.div
           key={i}

@@ -2,7 +2,10 @@
 
 import React, { useRef, useEffect, useState, memo } from "react";
 
-export type IgnitionColorVariant = "amber" | "teal" | "emerald" | "violet" | "platinum";
+/* Named for lightness stops inside one hue, not for four metals. The old
+   names (amber / gold / platinum) survived a palette change and were
+   actively misleading, since every value inside them is lemon or bone. */
+export type IgnitionColorVariant = "lemonDeep" | "bone" | "lemon" | "lemonHi";
 
 interface ColorConfig {
   dustRgb: [number, number, number];
@@ -12,76 +15,58 @@ interface ColorConfig {
   flashRgb: [number, number, number];
   borderIdle: string;
   borderHover: string;
-  glowDrop: string;
   textGlow: string;
   bezelGrad: string;
 }
 
 const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
-  // 01. Solar Amber Core (Refined Burnished Amber)
-  amber: {
-    dustRgb: [0.13, 0.06, 0.02],
-    starLow: [1.0, 0.92, 0.82],
-    starHigh: [0.88, 0.43, 0.13],
-    glowRgb: [0.88, 0.43, 0.13],
-    flashRgb: [1.0, 0.97, 0.92],
-    borderIdle: "border-[#E06D20]/30",
-    borderHover: "group-hover:border-[#E06D20]/75",
-    glowDrop: "hover:shadow-[0_8px_24px_rgba(224,109,32,0.24)]",
-    textGlow: "rgba(224, 109, 32, 0.5)",
-    bezelGrad: "from-[#E06D20]/25 via-white/5 to-white/10",
+  // 01. Lemon core (primary accent)
+  lemon: {
+    dustRgb: [0.09, 0.09, 0.02],
+    starLow: [1.0, 1.0, 0.82],
+    starHigh: [0.89, 0.89, 0.29],
+    glowRgb: [0.89, 0.89, 0.29],
+    flashRgb: [1.0, 1.0, 0.94],
+    borderIdle: "border-[#E4E24A]/40",
+    borderHover: "group-hover:border-[#EDEC6B]/90",
+    textGlow: "rgba(237,236,107,0.65)",
+    bezelGrad: "from-[#E4E24A]/35 via-white/10 to-white/15",
   },
-  // 02. Cyber Teal Core
-  teal: {
-    dustRgb: [0.02, 0.12, 0.12],
-    starLow: [0.82, 0.98, 0.96],
-    starHigh: [0.15, 0.75, 0.7],
-    glowRgb: [0.35, 0.9, 0.85],
-    flashRgb: [0.9, 1.0, 0.98],
-    borderIdle: "border-[#14B8A6]/30",
-    borderHover: "group-hover:border-[#14B8A6]/75",
-    glowDrop: "hover:shadow-[0_8px_24px_rgba(20,184,166,0.28)]",
-    textGlow: "rgba(20, 184, 166, 0.6)",
-    bezelGrad: "from-[#14B8A6]/25 via-white/5 to-white/10",
+  // 02. Lemon hi, held back
+  lemonHi: {
+    dustRgb: [0.07, 0.07, 0.02],
+    starLow: [1.0, 1.0, 0.84],
+    starHigh: [0.79, 0.79, 0.24],
+    glowRgb: [0.79, 0.79, 0.24],
+    flashRgb: [1.0, 1.0, 0.95],
+    borderIdle: "border-[#EDEC6B]/35",
+    borderHover: "group-hover:border-[#EDEC6B]/85",
+    textGlow: "rgba(237,236,107,0.60)",
+    bezelGrad: "from-[#EDEC6B]/30 via-white/5 to-white/10",
   },
-  // 03. Liquid Platinum Core
-  platinum: {
-    dustRgb: [0.07, 0.08, 0.1],
-    starLow: [0.95, 0.97, 1.0],
-    starHigh: [0.65, 0.75, 0.88],
-    glowRgb: [0.85, 0.92, 1.0],
-    flashRgb: [1.0, 1.0, 1.0],
-    borderIdle: "border-white/25",
-    borderHover: "group-hover:border-white/75",
-    glowDrop: "hover:shadow-[0_8px_24px_rgba(255,255,255,0.18)]",
-    textGlow: "rgba(255, 255, 255, 0.65)",
-    bezelGrad: "from-white/30 via-white/5 to-white/10",
+  // 03. Bone (neutral, not blue-tinted white)
+  bone: {
+    dustRgb: [0.06, 0.06, 0.058],
+    starLow: [0.96, 0.96, 0.94],
+    starHigh: [0.82, 0.82, 0.79],
+    glowRgb: [0.92, 0.92, 0.89],
+    flashRgb: [1.0, 1.0, 0.98],
+    borderIdle: "border-[#C9C8C3]/25",
+    borderHover: "group-hover:border-[#EAE8E2]/70",
+    textGlow: "rgba(234,232,226,0.55)",
+    bezelGrad: "from-[#C9C8C3]/25 via-white/5 to-white/10",
   },
-  // 04. Emerald Core
-  emerald: {
-    dustRgb: [0.02, 0.12, 0.06],
-    starLow: [0.82, 0.98, 0.88],
-    starHigh: [0.15, 0.75, 0.42],
-    glowRgb: [0.35, 0.9, 0.58],
-    flashRgb: [0.9, 1.0, 0.94],
-    borderIdle: "border-emerald-500/30",
-    borderHover: "group-hover:border-emerald-400/75",
-    glowDrop: "hover:shadow-[0_8px_24px_rgba(16,185,129,0.28)]",
-    textGlow: "rgba(16, 185, 129, 0.6)",
-    bezelGrad: "from-emerald-500/25 via-white/5 to-white/10",
-  },
-  // 05. Cyber Violet Core
-  violet: {
-    dustRgb: [0.1, 0.04, 0.15],
-    starLow: [0.95, 0.88, 1.0],
-    starHigh: [0.6, 0.3, 0.95],
-    glowRgb: [0.75, 0.45, 1.0],
-    flashRgb: [0.97, 0.92, 1.0],
-    borderIdle: "border-[#8B5CF6]/30",
-    borderHover: "group-hover:border-[#8B5CF6]/75",
-    glowDrop: "hover:shadow-[0_8px_24px_rgba(139,92,246,0.28)]",
-    textGlow: "rgba(139, 92, 246, 0.6)",
-    bezelGrad: "from-[#8B5CF6]/25 via-white/5 to-white/10",
+  // 04. Lemon deep, the darkest lemon stop
+  lemonDeep: {
+    dustRgb: [0.07, 0.07, 0.015],
+    starLow: [1.0, 1.0, 0.79],
+    starHigh: [0.79, 0.79, 0.22],
+    glowRgb: [0.78, 0.78, 0.24],
+    flashRgb: [1.0, 1.0, 0.93],
+    borderIdle: "border-[#D2D041]/35",
+    borderHover: "group-hover:border-[#D2D041]/85",
+    textGlow: "rgba(228,226,74,0.55)",
+    bezelGrad: "from-[#D2D041]/30 via-white/10 to-white/15",
   },
 };
 
@@ -123,8 +108,8 @@ void main(){
   float a = atan(uv.y, uv.x);
   float t = u_time;
 
-  // 1. Deep Obsidian Space Interior
-  vec3 col = vec3(0.012, 0.011, 0.014);
+  // 1. Deep graphite chamber interior, cool and neutral
+  vec3 col = vec3(0.016, 0.016, 0.021);
 
   // 2. Cosmic Ambient FBM Dust (Soft & Gentle)
   float hz = fbm(uv * 2.6 + vec2(t * 0.35, 1.7));
@@ -188,7 +173,7 @@ export interface ShaderIgnitionButtonProps {
 
 export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
   children,
-  variant = "amber",
+  variant = "lemon",
   onClick,
   href,
   target,
@@ -214,7 +199,7 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
     isVisible: true,
   });
 
-  const config = COLOR_VARIANTS[variant] || COLOR_VARIANTS.amber;
+  const config = COLOR_VARIANTS[variant] || COLOR_VARIANTS.lemon;
 
   useEffect(() => {
     stateRef.current.warpTarget = isHovered ? 1 : 0;
@@ -378,10 +363,10 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
       onMouseLeave={() => setIsHovered(false)}
       onFocus={() => setIsHovered(true)}
       onBlur={() => setIsHovered(false)}
-      className={`group relative inline-flex p-[1.5px] rounded-xl bg-gradient-to-b ${config.bezelGrad} border ${config.borderIdle} ${config.borderHover} shadow-[0_4px_16px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.18)] ${config.glowDrop} transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.985] cursor-pointer select-none ${className}`}
+      className={`group relative inline-flex p-[1.5px] rounded-[3px] bg-gradient-to-b ${config.bezelGrad} border ${config.borderIdle} ${config.borderHover} transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.985] cursor-pointer select-none ${className}`}
     >
       {/* Inner Chamber Housing the Exact ThreeUI Warp Shader */}
-      <div className={`relative flex items-center justify-center gap-2 rounded-[10.5px] overflow-hidden bg-[#06050a] ${sizeStyles} shadow-[inset_0_1px_4px_rgba(0,0,0,0.85)]`}>
+      <div className={`relative flex items-center justify-center gap-2 rounded-[2px] overflow-hidden bg-[#090909] border border-[rgba(234,232,226,0.07)] ${sizeStyles}`}>
         {/* Full-bleed WebGL Canvas */}
         <canvas
           ref={canvasRef}
@@ -399,9 +384,9 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
           </span>
         )}
 
-        {/* Crisp Button Typography */}
+        {/* Crisp button typography */}
         <span
-          className="relative z-10 font-bold uppercase tracking-[0.08em] text-[#F3F1E8] group-hover:text-white transition-all duration-200 font-[family-name:var(--font-outfit)]"
+          className="relative z-10 font-[family-name:var(--font-geist-sans)] font-medium text-[0.95em] tracking-[0.005em] text-[#EAE8E2] group-hover:text-white transition-colors duration-200"
           style={{
             textShadow: isHovered
               ? `0 0 12px ${config.textGlow}, 0 1px 3px rgba(0,0,0,0.9)`

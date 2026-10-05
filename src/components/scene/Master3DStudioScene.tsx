@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
@@ -122,8 +122,8 @@ function HumanVibeCoderMesh({ mouseX, mouseY }: { mouseX: number; mouseY: number
         <mesh position={[0, 0.03, 0.25]}>
           <boxGeometry args={[0.36, 0.09, 0.04]} />
           <meshStandardMaterial
-            color="#38bdf8"
-            emissive="#0284c7"
+            color="#FACC15"
+            emissive="#EAB308"
             emissiveIntensity={1.2}
             transparent
             opacity={0.9}
@@ -137,17 +137,17 @@ function HumanVibeCoderMesh({ mouseX, mouseY }: { mouseX: number; mouseY: number
         <mesh>
           <sphereGeometry args={[0.13, 16, 16]} />
           <meshStandardMaterial
-            color="#14B8A6"
-            emissive="#14B8A6"
+            color="#E2C799"
+            emissive="#E2C799"
             emissiveIntensity={1.6}
             roughness={0.15}
           />
         </mesh>
         <mesh rotation={[Math.PI / 4, 0, 0]}>
           <torusGeometry args={[0.2, 0.012, 16, 32]} />
-          <meshBasicMaterial color="#38bdf8" />
+          <meshBasicMaterial color="#FACC15" />
         </mesh>
-        <pointLight color="#14B8A6" intensity={2.2} distance={3.5} />
+        <pointLight color="#FACC15" intensity={2.2} distance={3.5} />
       </group>
     </group>
   );
@@ -206,7 +206,7 @@ function StudioWorkstation() {
           <planeGeometry args={[3.5, 1.6]} />
           <meshStandardMaterial
             color="#040816"
-            emissive="#2563eb"
+            emissive="#E2C799"
             emissiveIntensity={0.85}
             roughness={0.15}
           />
@@ -227,7 +227,7 @@ function StudioWorkstation() {
           <planeGeometry args={[1.1, 1.85]} />
           <meshStandardMaterial
             color="#030712"
-            emissive="#14B8A6"
+            emissive="#FACC15"
             emissiveIntensity={0.6}
             roughness={0.2}
           />
@@ -243,7 +243,7 @@ function StudioWorkstation() {
         {/* Underglow Strip */}
         <mesh position={[0, -0.01, 0]}>
           <boxGeometry args={[1.44, 0.02, 0.52]} />
-          <meshBasicMaterial color="#14B8A6" transparent opacity={0.65} />
+          <meshBasicMaterial color="#FACC15" transparent opacity={0.65} />
         </mesh>
       </group>
 
@@ -265,8 +265,8 @@ function StudioWorkstation() {
 
       {/* Three-Point Studio Lighting */}
       <ambientLight intensity={0.5} />
-      <pointLight position={[0, 2.5, 0.8]} intensity={3.5} color="#14B8A6" distance={6} />
-      <pointLight position={[-2, 1.8, -0.5]} intensity={2.0} color="#14B8A6" distance={5} />
+      <pointLight position={[0, 2.5, 0.8]} intensity={3.5} color="#FACC15" distance={6} />
+      <pointLight position={[-2, 1.8, -0.5]} intensity={2.0} color="#E2C799" distance={5} />
       <directionalLight position={[4, 5, 3]} intensity={0.9} color="#ffffff" />
     </group>
   );
@@ -290,7 +290,7 @@ export function Master3DStudioScene() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle at 50% 42%, rgba(20, 184, 166, 0.09) 0%, transparent 65%), linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.95) 92%)",
+            "radial-gradient(circle at 50% 42%, rgba(250, 204, 21, 0.06) 0%, transparent 65%), linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.95) 92%)",
         }}
       />
     </div>

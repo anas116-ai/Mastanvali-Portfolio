@@ -22,11 +22,11 @@ export function VolumetricParticleSystem({
     const spd = new Float32Array(count * 3);
 
     const palette = [
-      new THREE.Color("#14B8A6"), // Vibrant Cyan
-      new THREE.Color("#38BDF8"), // Brilliant Sky Blue
-      new THREE.Color("#F47A18"), // Warm Golden Amber
-      new THREE.Color("#FFFFFF"), // Pure Diamond White
-      new THREE.Color("#FDE047"), // Sparkling Gold
+      new THREE.Color("#EDEC6B"), // brass dust
+      new THREE.Color("#B4B23A"), // bronze mote
+      new THREE.Color("#D2D041"), // burnished copper
+      new THREE.Color("#E4E24A"), // burnished gold
+      new THREE.Color("#C9C8C3"), // bone
     ];
 
     for (let i = 0; i < count; i++) {
@@ -137,9 +137,9 @@ export function VolumetricParticleSystem({
         size={0.062}
         vertexColors
         transparent
-        opacity={0.72}
+        opacity={0.85}
         map={particleTexture || undefined}
-        blending={THREE.AdditiveBlending}
+        blending={THREE.NormalBlending}
         depthWrite={false}
       />
     </points>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
@@ -36,7 +36,7 @@ export function HolographicDataRig() {
       <mesh ref={icosahedronRef} scale={0.16}>
         <icosahedronGeometry args={[1, 1]} />
         <meshBasicMaterial
-          color="#14B8A6"
+          color="#FACC15"
           wireframe
           transparent
           opacity={0.85}
@@ -48,7 +48,7 @@ export function HolographicDataRig() {
       <mesh scale={0.06}>
         <sphereGeometry args={[1, 16, 16]} />
         <meshBasicMaterial
-          color="#F47A18"
+          color="#E2C799"
           transparent
           opacity={0.9}
           blending={THREE.AdditiveBlending}
@@ -59,7 +59,7 @@ export function HolographicDataRig() {
       <mesh ref={ring1Ref} rotation={[Math.PI * 0.42, 0, 0]}>
         <ringGeometry args={[0.55, 0.57, 64]} />
         <meshBasicMaterial
-          color="#14B8A6"
+          color="#FACC15"
           side={THREE.DoubleSide}
           transparent
           opacity={0.6}
@@ -71,7 +71,7 @@ export function HolographicDataRig() {
       <mesh ref={ring2Ref} rotation={[Math.PI * 0.38, 0, 0]}>
         <ringGeometry args={[0.72, 0.735, 64]} />
         <meshBasicMaterial
-          color="#F47A18"
+          color="#E2C799"
           side={THREE.DoubleSide}
           transparent
           opacity={0.45}
@@ -83,13 +83,13 @@ export function HolographicDataRig() {
       <group position={[-0.85, 0.45, -0.1]}>
         <mesh scale={0.035}>
           <sphereGeometry args={[1, 16, 16]} />
-          <meshBasicMaterial color="#14B8A6" />
+          <meshBasicMaterial color="#FACC15" />
         </mesh>
       </group>
       <group position={[-1.15, 0.95, -0.2]}>
         <mesh scale={0.03}>
           <sphereGeometry args={[1, 16, 16]} />
-          <meshBasicMaterial color="#38BDF8" />
+          <meshBasicMaterial color="#FFFFFF" />
         </mesh>
       </group>
 
@@ -97,13 +97,13 @@ export function HolographicDataRig() {
       <group position={[0.85, 0.55, -0.1]}>
         <mesh scale={0.035}>
           <sphereGeometry args={[1, 16, 16]} />
-          <meshBasicMaterial color="#F47A18" />
+          <meshBasicMaterial color="#E2C799" />
         </mesh>
       </group>
       <group position={[1.15, 1.05, -0.2]}>
         <mesh scale={0.03}>
           <sphereGeometry args={[1, 16, 16]} />
-          <meshBasicMaterial color="#14B8A6" />
+          <meshBasicMaterial color="#FDE047" />
         </mesh>
       </group>
     </group>

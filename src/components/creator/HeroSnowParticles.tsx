@@ -44,9 +44,9 @@ export function HeroSnowParticles() {
       flakes.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        // Delicate pure white micro-particles (0.5px to 1.4px)
+        // Delicate micro-particles (0.6px to 1.6px)
         radius: isForeground ? Math.random() * 0.55 + 0.85 : Math.random() * 0.40 + 0.50,
-        // Soft pure white luminous presence
+        // Soft luminous presence
         opacity: isForeground ? Math.random() * 0.18 + 0.35 : Math.random() * 0.15 + 0.20,
         speedY: isForeground ? Math.random() * 0.35 + 0.25 : Math.random() * 0.22 + 0.15,
         speedX: (Math.random() - 0.5) * 0.15,
@@ -87,10 +87,12 @@ export function HeroSnowParticles() {
           if (flake.x > width) flake.x = 0;
           if (flake.x < 0) flake.x = width;
 
-          // Draw crisp, luminous white snowflake with zero expensive shadowBlur
+          // Brass and bone air motes, lit from the same gallery as the page
           ctx.beginPath();
           ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
+          ctx.fillStyle = i % 2 === 0
+            ? `rgba(237,236,107${flake.opacity * 0.42})`
+            : `rgba(201,200,195${flake.opacity * 0.30})`;
           ctx.fill();
         }
       }

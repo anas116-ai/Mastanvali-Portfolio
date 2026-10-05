@@ -5,118 +5,103 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Database, Cpu, Layers, Terminal, Binary } from "lucide-react";
 
 interface SkillStreamBadge {
-  id: number;
   text: string;
   category: string;
   side: "left" | "right";
   icon: React.ComponentType<{ size?: number; className?: string }>;
-  accentColor: string;
-  borderColor: string;
-  bgGlow: string;
-  // Arc trajectory keyframes: Launches from laptop, sweeps wide in smooth continuous arc around torso/shoulders, ascends to sky apex
+  /** Muted oxidised metal. Each badge gets its own tone from the family. */
+  accent: string;
   arcX: number[];
   arcY: number[];
 }
 
-// 6 Core Skills: Alternates cleanly between LEFT and RIGHT sides
-// Smooth continuous arc trajectory curves wide around the character body, never occluding torso, arms, or face/head
-// Color palette strictly follows the controlled warm amber, gold, and copper data-fragment system
-const SKILL_ITEMS = [
+/**
+ * Six disciplines lift out of the laptop one at a time, ride a slow arc clear of
+ * the figure, hold legibly at the top of the frame, then dissolve upward as
+ * motes of the same colour. Palette is drawn from the site's oxidised metal
+ * family (brass, copper, bronze, bone) so nothing reads as neon.
+ */
+const SKILL_ITEMS: SkillStreamBadge[] = [
   {
-    text: "SAP BODS Developer",
+    text: "SAP BODS 4.3",
     category: "ENTERPRISE ETL",
-    side: "left" as const,
+    side: "left",
     icon: Database,
-    accentColor: "#E06D20", // Burnished Amber
-    borderColor: "rgba(224, 109, 32, 0.45)",
-    bgGlow: "rgba(224, 109, 32, 0.12)",
-    arcX: [-68, -135, -205, -238, -242],
-    arcY: [232, 192, 132, 68, 38],
+    accent: "#EDEC6B",
+    arcX: [-72, -142, -212, -246, -250],
+    arcY: [236, 194, 132, 66, 34],
   },
   {
-    text: "SQL Pipelines",
+    text: "SQL Data Pipelines",
     category: "DATA ARCHITECTURE",
-    side: "right" as const,
+    side: "right",
     icon: Database,
-    accentColor: "#D9A036", // Brushed Gold
-    borderColor: "rgba(217, 160, 54, 0.45)",
-    bgGlow: "rgba(217, 160, 54, 0.12)",
-    arcX: [-16, 135, 205, 238, 242],
-    arcY: [232, 192, 132, 68, 38],
+    accent: "#C9C73C",
+    arcX: [-18, 140, 210, 244, 248],
+    arcY: [236, 194, 132, 68, 36],
   },
   {
-    text: "ServiceNow",
-    category: "ITSM PLATFORM",
-    side: "left" as const,
+    text: "ServiceNow ITSM",
+    category: "PLATFORM GOVERNANCE",
+    side: "left",
     icon: Layers,
-    accentColor: "#C86A26", // Warm Copper
-    borderColor: "rgba(200, 106, 38, 0.45)",
-    bgGlow: "rgba(200, 106, 38, 0.12)",
-    arcX: [-70, -138, -208, -240, -244],
-    arcY: [234, 194, 134, 70, 40],
+    accent: "#C9C8C3",
+    arcX: [-74, -144, -214, -248, -252],
+    arcY: [238, 196, 134, 68, 36],
   },
   {
-    text: "RAG Systems",
-    category: "GROUNDED RETRIEVAL",
-    side: "right" as const,
+    text: "RAG Retrieval",
+    category: "GROUNDED MEMORY",
+    side: "right",
     icon: Binary,
-    accentColor: "#E67E22", // Amber Bronze
-    borderColor: "rgba(230, 126, 34, 0.45)",
-    bgGlow: "rgba(230, 126, 34, 0.15)",
-    arcX: [-14, 138, 208, 240, 244],
-    arcY: [232, 192, 132, 70, 40],
+    accent: "#E4E24A",
+    arcX: [-16, 142, 212, 246, 250],
+    arcY: [236, 194, 132, 68, 36],
   },
   {
-    text: "Agentic AI",
+    text: "Agentic Systems",
     category: "AUTONOMOUS AGENTS",
-    side: "left" as const,
+    side: "left",
     icon: Cpu,
-    accentColor: "#E06D20", // Burnished Amber
-    borderColor: "rgba(224, 109, 32, 0.45)",
-    bgGlow: "rgba(224, 109, 32, 0.12)",
-    arcX: [-68, -135, -205, -238, -242],
-    arcY: [230, 190, 130, 66, 36],
+    accent: "#D2D041",
+    arcX: [-72, -142, -212, -246, -250],
+    arcY: [234, 192, 130, 64, 34],
   },
   {
-    text: "AI Orchestration",
-    category: "MULTI-AGENT DAG",
-    side: "right" as const,
+    text: "Multi-Agent DAG",
+    category: "DISTRIBUTED GRAPH",
+    side: "right",
     icon: Terminal,
-    accentColor: "#D9A036", // Brushed Gold
-    borderColor: "rgba(217, 160, 54, 0.45)",
-    bgGlow: "rgba(217, 160, 54, 0.12)",
-    arcX: [-16, 135, 205, 238, 242],
-    arcY: [230, 190, 130, 66, 36],
+    accent: "#B4B23A",
+    arcX: [-18, 140, 210, 244, 248],
+    arcY: [234, 192, 130, 64, 34],
   },
 ];
 
+const LIFETIME = 7.4;
+
 export function LaptopSkillStream() {
-  const [activeItems, setActiveItems] = useState<
-    Array<{
-      badge: (typeof SKILL_ITEMS)[0];
-      keyId: number;
-    }>
-  >([]);
+  const [activeItems, setActiveItems] = useState<Array<{ badge: SkillStreamBadge; keyId: number }>>(
+    []
+  );
 
   useEffect(() => {
     let counter = 0;
 
     const spawnBadge = () => {
       const nextBadge = SKILL_ITEMS[counter % SKILL_ITEMS.length];
-      const uniqueId = Date.now() + Math.random();
-      counter++;
+      const keyId = Date.now() + Math.random();
+      counter += 1;
 
       setActiveItems((prev) => {
-        const trimmed = prev.slice(-2);
-        return [...trimmed, { badge: nextBadge, keyId: uniqueId }];
+        // Never more than two words on screen: legibility beats density.
+        const trimmed = prev.slice(-1);
+        return [...trimmed, { badge: nextBadge, keyId }];
       });
     };
 
-    // Initial launch after 300ms
-    const initialTimer = setTimeout(spawnBadge, 300);
-
-    // Smooth rhythmic pacing: Spawns new badge right as the previous badge shatters at apex (every 3200ms)
-    const interval = setInterval(spawnBadge, 3200);
+    const initialTimer = setTimeout(spawnBadge, 400);
+    const interval = setInterval(spawnBadge, LIFETIME * 1000);
 
     return () => {
       clearTimeout(initialTimer);
@@ -124,32 +109,19 @@ export function LaptopSkillStream() {
     };
   }, []);
 
-  // 60 Color-matched Stardust particles that pop outward at shatter apex and FLOATS SLOWLY & GRACEFULLY DOWN TO FEET (~440px - 490px descent)
-  const stardustParticles = useMemo(() => {
-    return Array.from({ length: 60 }, (_, i) => {
-      const angle = (i / 60) * Math.PI * 2 + (i % 5) * 0.16;
-      const speed = 14 + (i % 8) * 5.0; // Radial bloom spread
-      const popDx = Math.cos(angle) * speed;
-      const popDy = Math.sin(angle) * (speed * 0.50) - 12; // Initial slight upward bloom
-      // SLOW, FLOATING DESCENT TO FEET: Descends gently 440px to 490px from apex (y=38) down to feet level (y=475-525)
-      const fallDy = popDy + 450 + (i % 12) * 4.0; 
-      // Gentle natural lateral flutter/sway during slow float
-      const fallDx = popDx * 1.5 + ((i % 2 === 0 ? 1 : -1) * (14 + (i % 7) * 4.0));
-      // Particle sizes (1.4px to 3.4px) matching ambient dust
-      const size = i % 4 === 0 ? 3.4 : i % 3 === 0 ? 2.5 : i % 2 === 0 ? 1.9 : 1.4;
-      const delay = (i % 10) * 0.007;
-
-      return {
+  // Motes of the badge's own colour, drifting up and dissolving. No shards,
+  // no radial blast: this is steam off warm metal.
+  const motes = useMemo(
+    () =>
+      Array.from({ length: 22 }, (_, i) => ({
         id: i,
-        popDx,
-        popDy,
-        fallDx,
-        fallDy,
-        size,
-        delay,
-      };
-    });
-  }, []);
+        dx: (i % 2 === 0 ? 1 : -1) * (6 + (i % 7) * 4),
+        dy: -(14 + (i % 9) * 9),
+        size: i % 5 === 0 ? 2.4 : i % 3 === 0 ? 1.7 : 1.1,
+        delay: (i % 12) * 0.02,
+      })),
+    []
+  );
 
   return (
     <div className="pointer-events-none absolute inset-0 z-30 overflow-visible select-none">
@@ -161,163 +133,107 @@ export function LaptopSkillStream() {
           return (
             <motion.div
               key={keyId}
-              initial={{
-                x: badge.arcX[0],
-                y: badge.arcY[0],
-                scale: 0.70,
-                opacity: 0,
-              }}
+              initial={{ x: badge.arcX[0], y: badge.arcY[0], opacity: 0 }}
               animate={{
-                // Continuous, non-stepped smooth arc path from Laptop -> Outer Flank -> Sky Apex
                 x: badge.arcX,
                 y: badge.arcY,
-                scale: [0.70, 0.80, 0.85, 0.85, 0.85],
-                opacity: [0, 1, 1, 1, 1],
+                opacity: [0, 1, 1, 1, 0],
               }}
-              exit={{ opacity: 0, scale: 0 }}
+              exit={{ opacity: 0 }}
               transition={{
-                duration: 6.2,
-                times: [0, 0.12, 0.28, 0.42, 1.0],
-                ease: [0.25, 0.85, 0.35, 1],
+                duration: LIFETIME,
+                times: [0, 0.14, 0.3, 0.86, 1],
+                ease: [0.32, 0.72, 0.24, 1],
               }}
               className="absolute left-1/2 -translate-x-1/2 top-0 flex flex-col transform-gpu will-change-transform"
-              style={{
-                filter: `drop-shadow(0 0 16px ${badge.accentColor}77)`,
-              }}
             >
-              {/* 1. Main Skill Badge: Crisp high-visibility box with smooth glide & visible shatter at apex */}
+              {/* The word itself. Dark plate, warm edge, readable at any size. */}
               <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
+                initial={{ opacity: 0, scale: 0.94 }}
                 animate={{
-                  scale: [0.95, 1, 1.02, 1.18, 0],
-                  opacity: [0, 1, 1, 1, 0],
-                  filter: [
-                    "blur(0px) brightness(1)",
-                    "blur(0px) brightness(1.05)",
-                    "blur(0px) brightness(1.25)",
-                    "blur(1px) brightness(2.4)",
-                    "blur(6px) brightness(3.2)",
-                  ],
+                  opacity: [0, 1, 1, 0],
+                  scale: [0.94, 1, 1, 0.985],
+                  y: [0, 0, 0, -14],
                 }}
                 transition={{
-                  duration: 6.2,
-                  times: [0, 0.05, 0.39, 0.43, 0.46],
-                  ease: "easeInOut",
+                  duration: LIFETIME,
+                  times: [0, 0.14, 0.86, 1],
+                  ease: [0.22, 0.7, 0.3, 1],
                 }}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-2xl shadow-2xl border transform-gpu"
+                className="flex items-center gap-2.5 pl-2.5 pr-3.5 py-2 border bg-[#0F0F12]/92 backdrop-blur-xl"
                 style={{
-                  backgroundColor: "rgba(7, 9, 14, 0.96)",
-                  borderColor: badge.accentColor,
-                  borderWidth: "1.5px",
-                  boxShadow: `0 8px 24px -2px rgba(0,0,0,0.95), 0 0 16px ${badge.bgGlow}`,
+                  borderColor: `${badge.accent}59`,
+                  boxShadow: `0 0 22px ${badge.accent}1F`,
                 }}
               >
-                <div
-                  className="w-4 h-4 rounded-md flex items-center justify-center shrink-0"
+                <span
+                  className="w-5 h-5 flex items-center justify-center shrink-0"
                   style={{
-                    backgroundColor: badge.bgGlow,
-                    color: badge.accentColor,
+                    backgroundColor: `${badge.accent}1F`,
+                    color: badge.accent,
                   }}
                 >
                   <Icon size={11} />
-                </div>
-                <div className="flex flex-col leading-none pr-1">
+                </span>
+
+                <span className="flex flex-col leading-none">
                   <span
-                    className="text-[8.5px] font-mono tracking-wider uppercase font-bold"
-                    style={{ color: badge.accentColor }}
+                    className="font-mono text-[8.5px] tracking-[0.2em] uppercase"
+                    style={{ color: `${badge.accent}DD` }}
                   >
                     {badge.category}
                   </span>
-                  <span className="text-[11px] font-semibold text-[#F8FAFC] whitespace-nowrap mt-0.5">
+                  <span className="mt-1 text-[12.5px] font-[family-name:var(--font-geist-sans)] font-medium tracking-[0.005em] text-[#EAE8E2] whitespace-nowrap">
                     {badge.text}
                   </span>
-                </div>
+                </span>
+
+                {/* Left cap picks up the badge colour, 2px, structural not decorative */}
+                <span
+                  className="absolute left-0 top-0 bottom-0 w-[2px]"
+                  style={{ backgroundColor: badge.accent, opacity: 0.85 }}
+                />
               </motion.div>
 
-              {/* 2. VISIBLE CRYSTAL SHATTER SHARDS: 6 Distinct shards visibly fly apart at shatter point */}
-              {[
-                { sx: isLeft ? -32 : 32, sy: -22, fDx: isLeft ? -56 : 56, fDy: 60, r: isLeft ? -50 : 50 },
-                { sx: isLeft ? 30 : -30, sy: -18, fDx: isLeft ? 52 : -52, fDy: 70, r: isLeft ? 55 : -55 },
-                { sx: isLeft ? -26 : 26, sy: 20, fDx: isLeft ? -48 : 48, fDy: 130, r: isLeft ? -40 : 40 },
-                { sx: isLeft ? 28 : -28, sy: 22, fDx: isLeft ? 50 : -50, fDy: 140, r: isLeft ? 60 : -60 },
-                { sx: isLeft ? -14 : 14, sy: -28, fDx: isLeft ? -32 : 32, fDy: 95, r: isLeft ? -65 : 65 },
-                { sx: isLeft ? 16 : -16, sy: 28, fDx: isLeft ? 34 : -34, fDy: 180, r: isLeft ? 70 : -70 },
-              ].map((shard, sIdx) => (
-                <motion.div
-                  key={sIdx}
-                  initial={{ opacity: 0, scale: 0, x: 0, y: 0, rotate: 0 }}
+              {/* Colour-matched motes */}
+              {motes.map((m) => (
+                <motion.span
+                  key={m.id}
+                  className="absolute left-1/2 top-1/2 pointer-events-none rounded-full"
+                  style={{
+                    width: m.size,
+                    height: m.size,
+                    backgroundColor: badge.accent,
+                    opacity: 0.5,
+                  }}
+                  initial={{ x: 0, y: 0, opacity: 0, scale: 0.6 }}
                   animate={{
-                    opacity: [0, 0, 1, 0.85, 0],
-                    scale: [0, 0, 1, 0.70, 0],
-                    x: [0, 0, shard.sx, shard.fDx],
-                    y: [0, 0, shard.sy, shard.fDy],
-                    rotate: [0, 0, shard.r * 0.5, shard.r],
+                    x: m.dx,
+                    y: m.dy,
+                    opacity: [0, 0.5, 0],
+                    scale: [0.6, 1, 0.2],
                   }}
                   transition={{
-                    duration: 6.2,
-                    times: [0, 0.42, 0.46, 0.58, 0.72],
+                    duration: LIFETIME,
+                    times: [0, 0.3 + m.delay * 0.1, 0.86, 0.9, 1],
                     ease: "easeOut",
                   }}
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none rounded-sm"
-                  style={{
-                    width: sIdx % 2 === 0 ? 9 : 7,
-                    height: sIdx % 2 === 0 ? 5 : 4,
-                    backgroundColor: "rgba(7, 9, 14, 0.94)",
-                    border: `1px solid ${badge.accentColor}`,
-                    boxShadow: `0 0 10px ${badge.accentColor}`,
-                  }}
                 />
               ))}
 
-              {/* 3. Radiant Prism Bloom Pulse at Shatter Point */}
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{
-                  scale: [0, 0, 0.8, 1.9, 2.8],
-                  opacity: [0, 0, 1, 0.45, 0],
+              {/* Faint trailing filament so the arc reads as a path */}
+              <motion.span
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none h-px origin-right"
+                style={{
+                  width: 210,
+                  right: isLeft ? undefined : "50%",
+                  left: isLeft ? "50%" : undefined,
+                  background: `linear-gradient(${isLeft ? "to left" : "to right"}, ${badge.accent}3D, transparent)`,
                 }}
-                transition={{
-                  duration: 6.2,
-                  times: [0, 0.41, 0.44, 0.50, 0.58],
-                  ease: "easeOut",
-                }}
-                className="absolute inset-0 flex items-center justify-center pointer-events-none transform-gpu"
-              >
-                <div
-                  className="w-12 h-12 rounded-full blur-[2px]"
-                  style={{
-                    background: `radial-gradient(circle, #FFFFFF 0%, ${badge.accentColor} 50%, transparent 80%)`,
-                    boxShadow: `0 0 28px ${badge.accentColor}`,
-                  }}
-                />
-              </motion.div>
-
-              {/* 4. EXACT COLOR-MATCHED STARDUST PARTICLES: Slow Graceful Floating Rain down ALL THE WAY TO FEET (~490px Rain) */}
-              {stardustParticles.map((pt) => (
-                <motion.div
-                  key={pt.id}
-                  initial={{ x: 0, y: 0, opacity: 0, scale: 0 }}
-                  animate={{
-                    x: [0, 0, pt.popDx, pt.fallDx],
-                    y: [0, 0, pt.popDy, pt.fallDy], // Drops gently & slowly all the way down to character's feet!
-                    opacity: [0, 0, 1, 0.95, 0.85, 0.60, 0],
-                    scale: [0, 0, 1.2, 1.0, 0.90, 0.75, 0],
-                  }}
-                  transition={{
-                    duration: 6.2,
-                    times: [0, 0.42 + pt.delay, 0.48, 0.65, 0.82, 0.94, 1.0],
-                    ease: [0.25, 0.9, 0.45, 1], // Smooth floating gravity curve
-                  }}
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transform-gpu will-change-transform"
-                  style={{
-                    width: pt.size,
-                    height: pt.size,
-                    borderRadius: "9999px",
-                    backgroundColor: badge.accentColor,
-                    boxShadow: `0 0 10px ${badge.accentColor}, 0 0 4px ${badge.accentColor}, 0 0 1.5px #FFFFFF`,
-                  }}
-                />
-              ))}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 0.55, 0] }}
+                transition={{ duration: LIFETIME, times: [0, 0.3, 0.8], ease: "easeInOut" }}
+              />
             </motion.div>
           );
         })}

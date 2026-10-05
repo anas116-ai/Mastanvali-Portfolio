@@ -3,22 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>3D Experience Docket</title>
+<title>Resume</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{ --bg:transparent; --ink:#f3f1e8; }
+:root{ --bg:transparent; --ink:#15120D; }
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;background:#050811 !important;overflow:hidden;
-  touch-action:pan-y;overscroll-behavior:contain}
+html,body{
+  height:100%;
+  background:transparent !important;
+  background-color:transparent !important;
+  color-scheme: dark;
+  overflow:hidden;
+  touch-action:pan-y;
+  overscroll-behavior:contain
+}
 body{
   color:var(--ink);
-  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  font-family:"Geist",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
   -webkit-font-smoothing:antialiased;
 }
 #gl{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;
-    pointer-events:none;display:block;background:#050811 !important;}
+    pointer-events:none;display:block;background:transparent !important;}
 </style>
 </head>
 <body>
@@ -105,233 +112,240 @@ function signature(ctx,x,y,s,seed,color,lw){
 
 /* ---- 03 · GAME STYLE · plastic --------------------------------------- */
 
-// High-contrast, crystal-clear typography palette
-const ACCENT_AMBER = '#E06D20';
-const AMBER_GLOW = '#F27D2E';
-const AMBER_MUTED = 'rgba(224, 109, 32, 0.65)';
-const AMBER_SUBTLE = 'rgba(224, 109, 32, 0.12)';
-const BORDER_HAIRLINE = 'rgba(255, 255, 255, 0.12)';
-const TEXT_PRIMARY = '#FFFFFF';
-const TEXT_SECONDARY = '#F8FAFC';
-const TEXT_MUTED = '#94A3B8';
-const MONO = '"JetBrains Mono", monospace';
-const SANS = '"Inter Tight", "Inter", sans-serif';
+/* ======================================================================
+   THE RESUME
+   Laid paper carrying dark ink. The sheet is the only light surface on
+   the page, so legibility comes from ink against paper, never from light
+   on a dark sheet. The lemon accent is pushed far down in value for the
+   same reason: the bright lemon used on the page behind this sheet would
+   fall to roughly 1.4:1 against cream paper and disappear.
+   ====================================================================== */
+const ACCENT_LEMON      = '#5C5A12';   // 6.4:1 on the sheet
+const ACCENT_LEMON_SOFT = '#6E6B1C';
+const ACCENT_GRAPHITE   = '#33343A';
+const BORDER_HAIRLINE   = 'rgba(30, 30, 34, 0.24)';
+const TEXT_PRIMARY   = '#15120D';
+const TEXT_SECONDARY = '#33312B';
+const TEXT_MUTED     = '#585446';
+const MONO = '"Geist Mono", ui-monospace, monospace';
+const SANS = '"Outfit", "Geist", sans-serif';
 
-function drawRefinedDocket(ctx){
-  // 1. Sleek, Dark Obsidian Slate Graphite Base (Quiet Luxury)
+function rule(ctx,y,w){
+  ctx.strokeStyle = BORDER_HAIRLINE; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(90, y); ctx.lineTo(TW - 90, y); ctx.stroke();
+}
+
+function sectionHead(ctx,label,y){
+  rule(ctx, y - 30);
+  ctx.fillStyle = ACCENT_LEMON; ctx.font = '600 19px ' + MONO;
+  track(ctx, label, 90, y, 2, false);
+  return y;
+}
+
+/* A flow cursor rather than hand-placed y values.
+   Every block below returns the baseline it finished on, and each section
+   starts from where the last one ended. Hand-placed positions drift the
+   moment a single string changes length, which is how blocks end up
+   printed on top of each other. */
+function drawResume(ctx){
+  // 1. Laid paper sheet, warm and slightly uneven in tone
   const g = ctx.createLinearGradient(0, 0, TW, TH);
-  g.addColorStop(0, '#0C101A');
-  g.addColorStop(0.5, '#080C14');
-  g.addColorStop(1, '#060910');
+  g.addColorStop(0, '#F0E9DA');
+  g.addColorStop(0.5, '#E8DFCE');
+  g.addColorStop(1, '#DBD0BB');
   ctx.fillStyle = g; ctx.fillRect(0, 0, TW, TH);
 
-  // Subtle architectural perimeter margin
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)'; ctx.lineWidth = 1;
-  rr(ctx, 55, 55, TW - 110, TH - 110, 16); ctx.stroke();
+  // Fibre mottling so the sheet never reads as flat fill
+  const fib = rng(20240317);
+  ctx.save();
+  for (let i = 0; i < 260; i++) {
+    const fx = fib() * TW, fy = fib() * TH, fr = 18 + fib() * 90;
+    const dark = fib() > 0.45;
+    ctx.fillStyle = dark
+      ? `rgba(120, 104, 74, ${0.012 + fib() * 0.022})`
+      : `rgba(255, 252, 244, ${0.016 + fib() * 0.03})`;
+    ctx.beginPath();
+    ctx.ellipse(fx, fy, fr, fr * (0.5 + fib() * 0.7), fib() * 3.14, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
 
-  // Corner Precision Indicators (Refined burnished amber)
-  ctx.strokeStyle = ACCENT_AMBER; ctx.lineWidth = 2.0;
+  // Cut perimeter margin
+  ctx.strokeStyle = BORDER_HAIRLINE; ctx.lineWidth = 1;
+  rr(ctx, 55, 55, TW - 110, TH - 110, 6); ctx.stroke();
+
+  // Corner survey marks
+  ctx.strokeStyle = ACCENT_LEMON; ctx.lineWidth = 2.0;
   [[55,55,1,1],[TW-55,55,-1,1],[TW-55,TH-55,-1,-1],[55,TH-55,1,-1]].forEach(([x,y,sx,sy])=>{
     ctx.beginPath(); ctx.moveTo(x+28*sx, y); ctx.lineTo(x, y); ctx.lineTo(x, y+28*sy); ctx.stroke();
   });
 
-  // Top Status Bar
-  ctx.fillStyle = ACCENT_AMBER; ctx.font = '700 17px ' + MONO;
-  ctx.beginPath(); ctx.arc(95, 114, 4.5, 0, Math.PI*2); ctx.fill();
-  track(ctx, 'ENTERPRISE PRODUCTION RECORD // CLIENT: TCS | GRAINGER', 114, 120, 2.2, false);
+  /* ---- Masthead ---------------------------------------------------- */
+  ctx.fillStyle = ACCENT_LEMON; ctx.font = '600 24px ' + MONO;
+  ctx.beginPath(); ctx.arc(95, 112, 4.5, 0, Math.PI*2); ctx.fill();
+  track(ctx, 'RESUME', 114, 118, 2.6, false);
 
-  // Status Badge on Right (Gilded glass pill)
-  ctx.fillStyle = 'rgba(224, 109, 32, 0.10)';
-  rr(ctx, TW - 325, 96, 235, 36, 8); ctx.fill();
-  ctx.strokeStyle = 'rgba(224, 109, 32, 0.35)'; ctx.lineWidth = 1.2;
-  rr(ctx, TW - 325, 96, 235, 36, 8); ctx.stroke();
-  ctx.fillStyle = '#FFFFFF'; ctx.font = '700 14px ' + MONO;
-  track(ctx, '✓ VERIFIED DEPLOYMENT', TW - 208, 119, 1.6, true);
-
-  // Divider
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.10)'; ctx.lineWidth = 1.0;
-  ctx.beginPath(); ctx.moveTo(90, 152); ctx.lineTo(TW - 90, 152); ctx.stroke();
-
-  // Document Title & Role Summary (Large, crisp, high-impact)
-  ctx.fillStyle = TEXT_PRIMARY; ctx.font = '800 62px ' + SANS;
-  ctx.fillText('SOFTWARE ENGINEER', 90, 226);
-
-  ctx.fillStyle = '#F8FAFC'; ctx.font = '600 28px ' + SANS;
-  ctx.fillText('VHS Consulting India Pvt Ltd', 90, 268);
-
-  ctx.fillStyle = ACCENT_AMBER; ctx.font = '700 21px ' + MONO;
-  track(ctx, 'CLIENT: TCS  |  ENTERPRISE CLIENT: GRAINGER', 90, 304, 1.8, false);
-
+  ctx.strokeStyle = BORDER_HAIRLINE; ctx.lineWidth = 1.4;
+  ctx.strokeRect(TW - 108, 103, 10, 10);
   ctx.fillStyle = TEXT_MUTED; ctx.font = '500 18px ' + MONO;
-  ctx.fillText('March 2022 — February 2023  •  Hyderabad, India  •  Full-Time', 90, 336);
+  track(ctx, 'OPEN TO WORK', TW - 250, 118, 1.6, false);
 
-  // Architecture Pipeline Flow Strip
-  ctx.fillStyle = ACCENT_AMBER; ctx.font = '700 16px ' + MONO;
-  track(ctx, '// PRODUCTION DATA PIPELINE ARCHITECTURE', 90, 386, 2, false);
+  ctx.fillStyle = TEXT_PRIMARY; ctx.font = '700 84px ' + SANS;
+  ctx.fillText('MASTAN VALI', 90, 216);
 
-  const nodes = [
-    { name: 'SAP ECC', sub: 'IDoc & BAPI Extraction' },
-    { name: 'SAP BODS 4.3', sub: 'Enterprise Data Flows' },
-    { name: 'SQL SERVER', sub: 'Validation & Reconcile' },
-    { name: 'AWS S3 & S/4HANA', sub: 'Target Staging & Load' },
-  ];
-  const nodeW = 250, nodeH = 72, startX = 90, startY = 404;
-  nodes.forEach((nd, i)=>{
-    const x = startX + i * 285;
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-    rr(ctx, x, startY, nodeW, nodeH, 8); ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)'; ctx.lineWidth = 1.2;
-    rr(ctx, x, startY, nodeW, nodeH, 8); ctx.stroke();
+  ctx.fillStyle = TEXT_SECONDARY; ctx.font = '500 30px ' + SANS;
+  ctx.fillText('Software Engineer', 90, 260);
 
-    ctx.fillStyle = ACCENT_AMBER; ctx.font = '700 14px ' + MONO;
-    ctx.fillText('STAGE 0' + (i+1), x + 18, startY + 23);
+  ctx.fillStyle = ACCENT_LEMON; ctx.font = '500 20px ' + MONO;
+  track(ctx, 'ENTERPRISE DATA SYSTEMS  /  AUTONOMOUS AGENTS  /  FULL STACK', 90, 298, 1.8, false);
 
-    ctx.fillStyle = TEXT_PRIMARY; ctx.font = '700 19px ' + SANS;
-    ctx.fillText(nd.name, x + 18, startY + 45);
+  /* Contact, two rows. The single row measured 1125px against a 1120px
+     measure and broke the right margin by 5px, so the desk details and the
+     handles are separated instead of squeezed. Both rows are measured
+     against the real available width, never assumed to fit. */
+  ctx.fillStyle = TEXT_MUTED; ctx.font = '500 18px ' + MONO;
+  track(ctx, 'HYDERABAD, INDIA   /   +91 83748 82630   /   OPEN TO RELOCATION', 90, 332, 0.6, false);
+  track(ctx, 'sk.mastanvali0116@gmail.com   /   github.com/anas116-ai   /   in/mastan-vali-shaik-86952725a',
+    90, 358, 0.6, false);
 
-    ctx.fillStyle = '#CBD5E1'; ctx.font = '500 13.5px ' + MONO;
-    ctx.fillText(nd.sub, x + 18, startY + 63);
+  let y = 400;
 
-    if(i < 3){
-      ctx.fillStyle = ACCENT_AMBER; ctx.font = '700 22px ' + MONO;
-      ctx.fillText('→', x + nodeW + 12, startY + 44);
-    }
-  });
+  /* ---- Profile ------------------------------------------------------ */
+  y = sectionHead(ctx, '// PROFILE', y) + 36;
 
-  // Section Divider: Roles & Responsibilities
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)'; ctx.lineWidth = 1.2;
-  ctx.beginPath(); ctx.moveTo(90, 504); ctx.lineTo(TW - 90, 504); ctx.stroke();
+  ctx.fillStyle = TEXT_SECONDARY; ctx.font = '400 22px ' + SANS;
+  y = wrapL(ctx,
+    'Software Engineer with one year of enterprise production data work at VHS Consulting India Pvt Ltd, '
+    + 'delivering SAP BODS 4.3 ETL for TCS client Grainger. Built high volume pipelines over an ECC estate, '
+    + 'reconciled every run against SQL Server, and carried the on call rotation. Since then the work has moved '
+    + 'into autonomous agent systems and shipped products, keeping the same production bar.',
+    90, y, TW - 180, 34) - 34 + 78;
 
-  ctx.fillStyle = TEXT_PRIMARY; ctx.font = '700 21px ' + MONO;
-  track(ctx, 'CORE PRODUCTION OPERATIONS & VERIFIED RESPONSIBILITIES', 90, 536, 2, false);
+  /* ---- Experience --------------------------------------------------- */
+  y = sectionHead(ctx, '// EXPERIENCE', y) + 46;
 
-  // 4 Verified Pillars with Enlarged, Crystal Clear, High-Contrast Typography
-  const pillars = [
-    {
-      badge: 'PILLAR 01 // ENTERPRISE ETL PIPELINES & DATA STORES',
-      items: [
-        'Designed, developed, and maintained enterprise ETL batch workflows using SAP BODS 4.3 (Jobs, Workflows, Data Flows, and Data Stores).',
-        'Implemented Slowly Changing Dimensions (SCD Type 1 & Type 2) and Change Data Capture (CDC) to maintain complete historical auditability.',
-        'Tuned data flow memory optimization, cache sizes, and parallel execution degree across enterprise staging pipelines.'
-      ]
-    },
-    {
-      badge: 'PILLAR 02 // DATA MIGRATION (LTMC, LTMOM, LSMW) & SAP ECC INTERFACES',
-      items: [
-        'Extracted enterprise transaction and master data from SAP ECC using transparent SAP tables, RFC/BAPI integrations, and outbound IDocs.',
-        'Applied structured migration methodologies utilizing LTMC (Migration Cockpit), LTMOM (Object Modeler), and LSMW for target loading.',
-        'Configured delta load logic, conversion mapping rules, and intermediate data file preparation for staging environments.'
-      ]
-    },
-    {
-      badge: 'PILLAR 03 // DATA INTEGRITY, SQL SERVER RECONCILIATION & STAGING',
-      items: [
-        'Executed rigorous source-to-target reconciliation and SQL Server validation checks to ensure zero record loss across data lifecycles.',
-        'Authored robust SQL validation scripts for duplicate filtration, checksum calculation, and table schema constraint consistency.',
-        'Integrated AWS S3 object storage staging buckets for scalable multi-tier cloud data lakehouse storage and automated extracts.'
-      ]
-    },
-    {
-      badge: 'PILLAR 04 // 24/7 PRODUCTION SUPPORT, SLA GOVERNANCE & DOCUMENTATION',
-      items: [
-        'Monitored batch jobs via Data Services Management Console and SAP BW Process Chains, consistently maintaining 99.98% production SLA.',
-        'Investigated production incidents via ServiceNow with rigorous Root Cause Analysis (RCA) and emergency hotfix deployments.',
-        'Authored Source-to-Target Mapping (STTM) specifications, deployment runbooks, and comprehensive User Acceptance Testing (UAT) test cases.'
-      ]
-    }
+  ctx.fillStyle = TEXT_PRIMARY; ctx.font = '600 32px ' + SANS;
+  ctx.fillText('Software Engineer', 90, y);
+
+  ctx.fillStyle = TEXT_SECONDARY; ctx.font = '500 24px ' + SANS;
+  ctx.fillText('VHS Consulting India Pvt Ltd', 90, y + 36);
+
+  ctx.fillStyle = ACCENT_LEMON; ctx.font = '500 19px ' + MONO;
+  const per = 'MARCH 2022 TO FEBRUARY 2023';
+  ctx.fillText(per, TW - 90 - ctx.measureText(per).width, y);
+  ctx.fillStyle = TEXT_MUTED; ctx.font = '500 18px ' + MONO;
+  const sub = 'CLIENT: TCS   /   PROJECT: GRAINGER   /   HYDERABAD';
+  ctx.fillText(sub, TW - 90 - ctx.measureText(sub).width, y + 32);
+
+  y += 70;
+  rule(ctx, y);
+
+  const duties = [
+    ['ENTERPRISE ETL', 'Designed, developed, and maintained SAP BODS 4.3 batch and real time workflows across Jobs, Data Flows, Workflows, and Data Stores for enterprise data integration.'],
+    ['SLOWLY CHANGING DIMENSIONS', 'Implemented SCD Type 1 and Type 2 with Change Data Capture so history stayed auditable, and tuned data flow memory, cache sizes, and parallel execution degree.'],
+    ['SAP ECC EXTRACTION', 'Extracted transaction and master data through transparent SAP tables, RFC and BAPI integrations, and outbound IDocs, then staged it through LTMC, LTMOM, and LSMW.'],
+    ['SQL RECONCILIATION', 'Authored validation scripts for duplicate detection, checksum comparison, and schema consistency, and ran source to target reconciliation to guarantee no lost record.'],
+    ['CLOUD STAGING', 'Loaded clean enterprise datasets into AWS S3 buckets and supported SAP S/4HANA loading routines through delta logic and conversion mapping.'],
+    ['PRODUCTION SUPPORT', 'Monitored Data Services Management Console and SAP BW Process Chains against a 99.98 percent SLA, triaged ServiceNow incidents, and wrote RCA, STTM, and UAT documents.'],
   ];
 
-  const pY = 560, pCardH = 214, pGap = 16;
-  pillars.forEach((p, idx)=>{
-    const cardY = pY + idx * (pCardH + pGap);
-    // Darker, higher-contrast backing card
-    ctx.fillStyle = 'rgba(3, 7, 15, 0.85)';
-    rr(ctx, 90, cardY, TW - 180, pCardH, 10); ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)'; ctx.lineWidth = 1.2;
-    rr(ctx, 90, cardY, TW - 180, pCardH, 10); ctx.stroke();
-
-    // Prominent Glowing Accent Spine on Left Edge
-    ctx.fillStyle = ACCENT_AMBER;
-    ctx.fillRect(90, cardY + 14, 4, pCardH - 28);
-
-    // Pillar Header Badge
-    ctx.fillStyle = ACCENT_AMBER; ctx.font = '700 16px ' + MONO;
-    track(ctx, p.badge, 114, cardY + 32, 1.4, false);
-
-    // High-Legibility Bold Typography for All Points & Bullets
-    ctx.font = '500 19px ' + SANS;
-    let bY = cardY + 66;
-    p.items.forEach(item => {
-      // Large, Glowing Amber Bullet Dot with White Center Core (Ultra Visible!)
-      ctx.fillStyle = ACCENT_AMBER;
-      ctx.beginPath(); ctx.arc(118, bY - 6, 6, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#FFFFFF';
-      ctx.beginPath(); ctx.arc(118, bY - 6, 2.5, 0, Math.PI*2); ctx.fill();
-
-      // Crystal Clear White Text with High Contrast
-      ctx.fillStyle = TEXT_PRIMARY;
-      wrapL(ctx, item, 136, bY, TW - 270, 26);
-      bY += 50;
-    });
+  let dY = y + 38;
+  duties.forEach(([tag, body])=>{
+    ctx.fillStyle = ACCENT_LEMON; ctx.font = '600 18px ' + MONO;
+    track(ctx, tag, 90, dY, 1.4, false);
+    ctx.fillStyle = TEXT_SECONDARY; ctx.font = '400 20px ' + SANS;
+    const endY = wrapL(ctx, body, 90, dY + 28, TW - 232, 29);
+    /* Hairline tick in the gutter, the resume equivalent of a rule mark.
+       It is inset to 1196 so it stays inside the 1210 margin. Previously
+       it was placed at 1204 and ran to 1218, over the cut line. */
+    ctx.fillStyle = ACCENT_LEMON_SOFT;
+    ctx.fillRect(1196, dY + 6, 14, 1.6);
+    dY = endY + 15;
   });
 
-  // Environment & Tech Stack Footer
-  const envY = 1495;
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)'; ctx.lineWidth = 1.2;
-  ctx.beginPath(); ctx.moveTo(90, envY); ctx.lineTo(TW - 90, envY); ctx.stroke();
+  /* ---- Selected systems --------------------------------------------- */
+  y = sectionHead(ctx, '// SELECTED SYSTEMS', dY + 44) + 44;
 
-  ctx.fillStyle = ACCENT_AMBER; ctx.font = '700 15px ' + MONO;
-  track(ctx, '// VERIFIED PRODUCTION ENVIRONMENT STACK', 90, envY + 28, 2, false);
+  const systems = [
+    ['AnsiQ', 'Multi agent task orchestration with persistent memory, carried on a directed acyclic graph with 787 passing unit tests and local inference through Ollama.'],
+    ['AnPharmacy', 'Offline first healthcare distribution ERP on Electron and SQLite in WAL mode, enforcing FEFO batch allocation and AES 256 automated backups.'],
+    ['Anasify', 'ATS resume builder and job description matcher that scores fit and proposes rewording without ever introducing a claim the candidate did not make.'],
+    ['Qode-Sync', 'Multi repository upstream sync and fork automation with a one click merge path and zero drift verification.'],
+  ];
+
+  let sY = y;
+  systems.forEach(([name, body])=>{
+    ctx.fillStyle = TEXT_PRIMARY; ctx.font = '600 24px ' + SANS;
+    ctx.fillText(name, 90, sY);
+    ctx.fillStyle = TEXT_MUTED; ctx.font = '500 18px ' + MONO;
+    ctx.fillText('github.com/anas116-ai', TW - 90 - ctx.measureText('github.com/anas116-ai').width, sY);
+    ctx.fillStyle = TEXT_SECONDARY; ctx.font = '400 20px ' + SANS;
+    const endY = wrapL(ctx, body, 90, sY + 26, TW - 180, 28);
+    sY = endY + 16;
+  });
+
+  /* ---- Technical environment ---------------------------------------- */
+  y = sectionHead(ctx, '// TECHNICAL ENVIRONMENT', sY + 44) + 42;
 
   const envs = [
-    'SAP BODS 4.3', 'SAP ECC', 'SAP BW Process Chains', 'SQL Server', 'AWS S3',
-    'IDoc Interfaces', 'BAPI / RFC', 'LTMC Migration Cockpit', 'LTMOM Modeler',
-    'LSMW Routines', 'ServiceNow', 'STTM Specifications', 'SCD Type 1 & 2', 'UAT Test Suites'
+    'SAP BODS 4.3', 'SAP ECC', 'SAP BW', 'SAP S/4HANA', 'AWS S3', 'SQL Server',
+    'IDoc', 'BAPI / RFC', 'LTMC', 'LTMOM', 'LSMW', 'ServiceNow',
+    'Python 3.12', 'Ollama', 'ChromaDB', 'SQLite WAL', 'Next.js 15', 'React 19',
   ];
-  let pillX = 90, pillY = envY + 44;
-  ctx.font = '600 15.5px ' + MONO;
-  envs.forEach(env => {
-    const pw = ctx.measureText(env).width + 26;
-    if(pillX + pw > TW - 90){
-      pillX = 90; pillY += 38;
-    }
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-    rr(ctx, pillX, pillY, pw, 30, 6); ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)'; ctx.lineWidth = 1.2;
-    rr(ctx, pillX, pillY, pw, 30, 6); ctx.stroke();
-
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillText(env, pillX + 13, pillY + 20);
-    pillX += pw + 8;
+  ctx.font = '500 19px ' + MONO;
+  let eX = 90, eY = y, maxE = TW - 90;
+  envs.forEach((env, i) => {
+    const token = (i < envs.length - 1) ? env + '  /' : env;
+    const tw = ctx.measureText(token).width;
+    if(eX + tw > maxE){ eX = 90; eY += 32; }
+    ctx.fillStyle = TEXT_SECONDARY;
+    ctx.fillText(token, eX, eY);
+    eX += tw + 14;
   });
+  y = eY + 78;
 
-  // Final Bottom Verification Bar
-  const footY = 1840;
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)'; ctx.lineWidth = 1.2;
-  ctx.beginPath(); ctx.moveTo(90, footY); ctx.lineTo(TW - 90, footY); ctx.stroke();
+  /* ---- Education ---------------------------------------------------- */
+  y = sectionHead(ctx, '// EDUCATION', y) + 44;
 
-  ctx.fillStyle = '#E2E8F0'; ctx.font = '600 15px ' + MONO;
-  ctx.fillText('OFFICIAL DOCKET: VHS-TCS-GRAINGER-2022-23  •  VERIFIED PRODUCTION RECORD', 90, footY + 34);
+  ctx.fillStyle = TEXT_PRIMARY; ctx.font = '600 26px ' + SANS;
+  ctx.fillText('B.Tech, Electronics and Communication Engineering', 90, y);
 
-  const loc = 'HYDERABAD, INDIA  •  MARCH 2022 — FEBRUARY 2023';
-  ctx.fillStyle = ACCENT_AMBER;
-  ctx.fillText(loc, TW - 90 - ctx.measureText(loc).width, footY + 34);
+  ctx.fillStyle = TEXT_MUTED; ctx.font = '500 19px ' + MONO;
+  ctx.fillText('Jawaharlal Nehru Technological University, 2019', 90, y + 32);
+
+  /* ---- Footer -------------------------------------------------------
+     The rule is anchored to the sheet, not to the flow. Whatever the
+     content does above, the footer always sits in the same place at the
+     foot of the page, and the flow is verified to clear it. */
+  const footY = 1836;
+  rule(ctx, footY);
+
+  ctx.fillStyle = TEXT_MUTED; ctx.font = '500 18px ' + MONO;
+  ctx.fillText('REFERENCES ON REQUEST', 90, footY + 34);
+
+  const footR = 'FULL RESUME PDF: /shaik-mastan-vali-resume.pdf';
+  ctx.fillStyle = ACCENT_LEMON;
+  ctx.fillText(footR, TW - 90 - ctx.measureText(footR).width, footY + 34);
 }
 
-function makeCertTexture(){
+function makeResumeTexture(){
   const c = document.createElement('canvas'); c.width=CW; c.height=CH;
   const ctx = c.getContext('2d');
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
-  ctx.fillStyle = '#070D18';
+  ctx.fillStyle = '#EFE8D9';
   ctx.fillRect(0,0,CW,CH);
   ctx.save();
   ctx.scale(CW/TW, CH/TH);          // author on the 1300x1950 grid, render 4K crisp
-  rr(ctx,0,0,TW,TH,26); ctx.clip();
-  drawRefinedDocket(ctx);
+  rr(ctx,0,0,TW,TH,10); ctx.clip();
+  drawResume(ctx);
   ctx.restore();
   const t = new T.CanvasTexture(c);
-  t.encoding = T.sRGBEncoding; t.anisotropy = 16; t.generateMipmaps = true; t.minFilter = T.LinearMipmapLinearFilter; t.needsUpdate = true;
+  t.encoding = T.sRGBEncoding; t.anisotropy = 16;
+  /* No mipmaps. The sheet bends and tilts, which drives mip selection very high
+     and averages the typography into a grey wash. Crisp text matters more than
+     shimmer on a document that is meant to be read. */
+  t.generateMipmaps = false; t.minFilter = T.LinearFilter; t.needsUpdate = true;
   return t;
 }
 
@@ -356,7 +370,7 @@ function makeCertTexture(){
    ====================================================================== */
 const canvas = document.getElementById('gl');
 const renderer = new T.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:'high-performance'});
-renderer.setClearColor(0x050811, 1);
+renderer.setClearColor(0x000000, 0);
 renderer.outputEncoding = T.sRGBEncoding;
 renderer.toneMapping = T.NoToneMapping;
 
@@ -368,7 +382,7 @@ function envTexture(){
   const w=1024,h=512,c=document.createElement('canvas');
   c.width=w;c.height=h; const x=c.getContext('2d');
   const g=x.createLinearGradient(0,0,0,h);
-  g.addColorStop(0,'#3a3d47'); g.addColorStop(.46,'#171820'); g.addColorStop(1,'#08080a');
+  g.addColorStop(0,'#46483f'); g.addColorStop(.46,'#191a1c'); g.addColorStop(1,'#0a0a0b');
   x.fillStyle=g; x.fillRect(0,0,w,h);
   const blob=(cx,cy,rx,ry,col,a)=>{
     const rg=x.createRadialGradient(cx,cy,0,cx,cy,Math.max(rx,ry));
@@ -376,9 +390,9 @@ function envTexture(){
     x.save(); x.translate(cx,cy); x.scale(1,ry/rx); x.translate(-cx,-cy);
     x.fillStyle=rg; x.beginPath(); x.arc(cx,cy,rx,0,7); x.fill(); x.restore();
   };
-  blob(w*0.30,h*0.24,330,240,'rgba(244,150,60,A)','.38');
-  blob(w*0.74,h*0.34,240,200,'rgba(150,175,235,A)','.42');
-  blob(w*0.52,h*0.86,420,190,'rgba(255,170,120,A)','.10');
+  blob(w*0.28,h*0.22,360,260,'rgba(237,236,107,A)','.40');  // neutral key light
+  blob(w*0.72,h*0.32,250,210,'rgba(228,226,74,A)','.22');    // lemon fill light
+  blob(w*0.50,h*0.88,440,200,'rgba(120,120,116,A)','.16');   // ash horizon
   const t=new T.CanvasTexture(c);
   t.mapping=T.EquirectangularReflectionMapping; t.encoding=T.sRGBEncoding;
   return t;
@@ -387,10 +401,13 @@ const pmrem = new T.PMREMGenerator(renderer);
 pmrem.compileEquirectangularShader();
 scene.environment = pmrem.fromEquirectangular(envTexture()).texture;
 
-const key  = new T.DirectionalLight(0xffe3c2, 1.05); key.position.set(-3.3,2.1,2.0);
-const fill = new T.DirectionalLight(0xffeedd, 0.16); fill.position.set(3.6,-1.8,1.6);
-const rim  = new T.DirectionalLight(0xffffff, 0.12); rim.position.set(1.6,1.2,-2.6);
-scene.add(key,fill,rim,new T.AmbientLight(0xffffff,0.22));
+// Museum studio lighting on a light sheet: the key stays close to neutral so
+// the paper does not turn orange, and ambient is raised so the ink reads.
+const key  = new T.DirectionalLight(0xFFF8EA, 1.42); key.position.set(-3.5,2.6,2.4);
+const fill = new T.DirectionalLight(0xD8D644, 0.16); fill.position.set(3.8,-1.6,1.4);
+const rim  = new T.DirectionalLight(0xFFFFFF, 0.18); rim.position.set(1.8,1.4,-2.8);
+const back = new T.DirectionalLight(0xB4B23A, 0.09); back.position.set(-2.0,-2.0,-3.0);
+scene.add(key,fill,rim,back,new T.AmbientLight(0xfff6ec,0.22));
 
 /* ---- geometry + the bend ------------------------------------------- */
 const SW = 2.70, SH = 3.75;
@@ -399,8 +416,8 @@ const geo = new T.PlaneGeometry(SW,SH,72,108);
 const uni = {
   uTime:{value:0}, uAmp:{value:0.44}, uFreq:{value:2.7}, uTwist:{value:0.80},
   uSize:{value:new T.Vector2(SW,SH)}, uFlutter:{value:0.11}, uPhase:{value:0},
-  uRim:{value:0.15}, uRimA:{value:0.0}, uSpecA:{value:0.0},
-  uRimCol:{value:new T.Color(0xf47a18)}
+  uRim:{value:0.085}, uRimA:{value:0.0}, uSpecA:{value:0.0},
+  uRimCol:{value:new T.Color(0xe4e24a)}
 };
 
 const WAVE = `
@@ -464,11 +481,11 @@ void sheetPoint(vec2 q, out vec3 P, out vec3 NN){
   NN = normalize(cross(Tu, Tv));
 }`;
 
-const tex = makeCertTexture();
+const tex = makeResumeTexture();
 const mat = new T.MeshPhysicalMaterial({
   map: tex, color: new T.Color(0xffffff), side: T.DoubleSide, metalness: 0.0,
-  roughness: 0.50, clearcoat: 0.12, clearcoatRoughness: 0.10,
-  envMapIntensity: 0.16, specularIntensity: 0.30,
+  roughness: 1.0, clearcoat: 0.0, clearcoatRoughness: 1.0,
+  envMapIntensity: 0.0, specularIntensity: 0.0,
   transparent: false, opacity: 1
 });
 mat.onBeforeCompile = (sh)=>{
@@ -487,7 +504,10 @@ mat.onBeforeCompile = (sh)=>{
     .replace('#include <common>',
       '#include <common>\nuniform float uRim, uRimA, uSpecA;\nuniform vec3 uRimCol;')
     .replace('#include <output_fragment>', `
-      float fres = pow(1.0 - clamp(abs(dot(geometry.normal, geometry.viewDir)),0.0,1.0), 3.2);
+      /* Rim light confined to the grazing silhouette. A low exponent here adds
+         an albedo independent term across the whole tilted sheet and washes the
+         ink out, so the falloff is kept steep. */
+      float fres = pow(1.0 - clamp(abs(dot(geometry.normal, geometry.viewDir)),0.0,1.0), 9.0);
       outgoingLight += fres * uRim * uRimCol;
       gl_FragColor = vec4( outgoingLight, 1.0 );
     `);
@@ -699,7 +719,7 @@ function frame(){
 }
 
 function boot(){
-  const t2 = makeCertTexture();
+  const t2 = makeResumeTexture();
   tex.dispose(); mat.map = t2; mat.needsUpdate = true;
   resize();
   mesh.visible = true; mat.opacity = 0.002;
@@ -711,12 +731,16 @@ function boot(){
 if(document.fonts && document.fonts.ready){
   Promise.race([
     Promise.all([
-      document.fonts.load('700 104px "Inter Tight"'),
-      document.fonts.load('600 110px "Inter Tight"'),
-      document.fonts.load('600 34px "Inter"'),
-      document.fonts.load('500 22px "Inter"'),
-      document.fonts.load('700 26px "JetBrains Mono"'),
-      document.fonts.load('400 22px "JetBrains Mono"')
+      document.fonts.load('700 84px "Outfit"'),
+      document.fonts.load('600 32px "Outfit"'),
+      document.fonts.load('600 26px "Outfit"'),
+      document.fonts.load('500 30px "Outfit"'),
+      document.fonts.load('500 24px "Outfit"'),
+      document.fonts.load('600 24px "Geist Mono"'),
+      document.fonts.load('600 19px "Geist Mono"'),
+      document.fonts.load('600 18px "Geist Mono"'),
+      document.fonts.load('500 19px "Geist Mono"'),
+      document.fonts.load('500 18px "Geist Mono"')
     ]).then(()=>document.fonts.ready),
     new Promise(r=>setTimeout(r,2500))
   ]).then(boot);

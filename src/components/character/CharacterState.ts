@@ -1,4 +1,4 @@
-﻿export type CharacterStateMode =
+export type CharacterStateMode =
   | "INTRO"
   | "IDLE"
   | "CURSOR_FOCUS"
@@ -31,8 +31,8 @@ export const CHARACTER_ASSETS: Record<string, CharacterAssetConfig> = {
     subtitle: "Midnight Navy Blazer + Open Laptop with Live Glowing Code",
     src: "/images/avatar/style_01_4k_transparent.png",
     src4k: "/images/avatar/style_01_4k_transparent.png",
-    accentColor: "#14B8A6",
-    secondaryAccent: "#F47A18",
+    accentColor: "#FACC15",
+    secondaryAccent: "#E2C799",
     scaleOffset: 1.0,
     yOffset: 0,
   },
@@ -42,8 +42,8 @@ export const CHARACTER_ASSETS: Record<string, CharacterAssetConfig> = {
     subtitle: "Navy Tailored Blazer + Luminous Glass Data Tablet",
     src: "/images/avatar/style_07_4k_transparent.png",
     src4k: "/images/avatar/style_07_4k_transparent.png",
-    accentColor: "#F47A18",
-    secondaryAccent: "#14B8A6",
+    accentColor: "#E2C799",
+    secondaryAccent: "#FACC15",
     scaleOffset: 1.0,
     yOffset: 0,
   },
@@ -53,19 +53,19 @@ export const CHARACTER_ASSETS: Record<string, CharacterAssetConfig> = {
     subtitle: "Navy Bomber + Floating 3D Neural DAG Nodes",
     src: "/images/avatar/style_04_transparent.png",
     src4k: "/images/avatar/style_04_transparent.png",
-    accentColor: "#14B8A6",
-    secondaryAccent: "#38BDF8",
+    accentColor: "#FACC15",
+    secondaryAccent: "#E2C799",
     scaleOffset: 1.0,
     yOffset: 0,
   },
   "12": {
     id: "12",
     name: "Dual Stream Vibe Coder",
-    subtitle: "Charcoal Bomber + Cyan & Solar Orange Stream Rays",
+    subtitle: "Charcoal Bomber + Lemon & Champagne Stream Rays",
     src: "/images/avatar/style_12_transparent.png",
     src4k: "/images/avatar/style_12_transparent.png",
-    accentColor: "#38BDF8",
-    secondaryAccent: "#F47A18",
+    accentColor: "#E2C799",
+    secondaryAccent: "#FACC15",
     scaleOffset: 1.0,
     yOffset: 0,
   },

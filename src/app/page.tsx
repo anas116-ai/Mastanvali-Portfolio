@@ -9,51 +9,62 @@ import { ProjectsSection } from "@/components/creator/ProjectsSection";
 import { FinalSection } from "@/components/creator/FinalSection";
 import { AmbientBackgroundLayers } from "@/components/creator/AmbientBackgroundLayers";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
+import { SpotlightCursor } from "@/components/ui/SpotlightCursor";
 
 export default function Home() {
   return (
-    <div className="relative bg-[#07090E] min-h-screen text-[#F8FAFC] antialiased selection:bg-[#E06D20]/25 selection:text-[#FFFFFF]" id="top">
+    <div
+      className="relative bg-[#0B0B0D] min-h-screen text-[#EAE8E2] antialiased selection:bg-[#E4E24A]/25 selection:text-[#EAE8E2]"
+      id="top"
+    >
       {/* Top Scroll Progress Indicator */}
       <ScrollProgressBar />
+
+      {/* Luminous pointer light pool */}
+      <SpotlightCursor />
 
       {/* Skip to content for keyboard users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#E06D20] focus:text-[#07090E] focus:rounded-lg focus:font-semibold focus:outline-none focus:ring-2 focus:ring-[#E06D20]"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#EDEC6B] focus:text-[#0B0B0D] focus:text-xs focus:font-medium focus:tracking-[0.16em] focus:uppercase focus:outline-none"
       >
         Skip to content
       </a>
 
-      {/* Creative Technical & Professional Ambient Background Architecture */}
+      {/* Ambient background architecture */}
       <AmbientBackgroundLayers />
 
-      {/* Subtle Atmospheric Vignette framing the edges with soft luxury depth */}
+      {/* Warm vignette framing the composition */}
       <div
         className="fixed inset-0 pointer-events-none z-[50]"
         style={{
-          background: "radial-gradient(145% 115% at 50% 40%, transparent 72%, rgba(5, 8, 17, 0.32) 100%)",
+          background:
+            "radial-gradient(150% 118% at 50% 38%, transparent 66%, rgba(6,6,80.58) 100%)",
         }}
       />
 
-      {/* 01. Hero Section with 4K Character & Avatar */}
-      <HeroSection />
+      {/* The single main landmark every reader navigates by */}
+      <main id="main-content">
+        {/* 01. Hero Section */}
+        <HeroSection />
 
-      {/* 02. Two-Row Scroll-Synchronized Marquee */}
-      <MarqueeSection />
+        {/* 02. Scroll-synchronised technology marquee */}
+        <MarqueeSection />
 
-      {/* 03. About Section with High-End Bento Architecture */}
-      <AboutSection />
+        {/* 03. About: three live capability ponds */}
+        <AboutSection />
 
-      {/* 04. Verified Enterprise Experience (VHS / TCS / Fortune 500 Grainger) */}
-      <ExperienceSection />
+        {/* 04. Verified enterprise experience */}
+        <ExperienceSection />
 
-      {/* 05. Technical Capabilities — 3 Master Hardcover Tomes (Enterprise Data, AI, Full-Stack) */}
-      <SkillsSection />
+        {/* 05. Core engineering disciplines */}
+        <SkillsSection />
 
-      {/* 06. Sticky-Stacking Engineered Projects (AnPharmacy, AnsiQ, Anasify, Qode-Sync) */}
-      <ProjectsSection />
+        {/* 06. Selected engineering work */}
+        <ProjectsSection />
+      </main>
 
-      {/* 07. Final Contact Hub & Verified Information Footer */}
+      {/* 07. Contact and site footer */}
       <FinalSection />
     </div>
   );

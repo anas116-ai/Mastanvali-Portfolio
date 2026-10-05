@@ -28,7 +28,7 @@ export function GroundShadow3D({ mousePosition }: GroundShadow3DProps) {
           opacity={0.45}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
-          map={createUltraSoftRadialTexture(0.35, 0.0)}
+          map={createWarmFloorPoolTexture(0.30)}
         />
       </mesh>
 
@@ -68,7 +68,7 @@ export function GroundShadow3D({ mousePosition }: GroundShadow3DProps) {
         />
       </mesh>
 
-      {/* 5. SOFT BROAD STUDIO FLOOR AMBIENT OCCLUSION (Smooth feathered falloff matching #050811) */}
+      {/* 5. SOFT BROAD STUDIO FLOOR AMBIENT OCCLUSION (feathered into the warm obsidian field) */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-0.02, -0.004, -0.04]}>
         <planeGeometry args={[2.2, 0.75]} />
         <meshBasicMaterial
@@ -95,11 +95,35 @@ function createUltraSoftRadialTexture(innerAlpha: number, outerAlpha: number): T
   if (ctx) {
     const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
     // Smooth cosine-weighted falloff for zero visible hard edges
-    gradient.addColorStop(0, `rgba(1,3,8,${innerAlpha})`);
-    gradient.addColorStop(0.25, `rgba(1,3,8,${innerAlpha * 0.78})`);
-    gradient.addColorStop(0.55, `rgba(2,5,14,${innerAlpha * 0.32})`);
-    gradient.addColorStop(0.82, `rgba(2,5,14,${innerAlpha * 0.08})`);
-    gradient.addColorStop(1, `rgba(2,5,14,${outerAlpha})`);
+    gradient.addColorStop(0, `rgba(10,9,8,${innerAlpha})`);
+    gradient.addColorStop(0.25, `rgba(12,10,9,${innerAlpha * 0.78})`);
+    gradient.addColorStop(0.55, `rgba(13,13,16,${innerAlpha * 0.32})`);
+    gradient.addColorStop(0.82, `rgba(16,13,11,${innerAlpha * 0.08})`);
+    gradient.addColorStop(1, `rgba(16,13,11,${outerAlpha})`);
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 256, 256);
+  }
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+// Additive warm pool of light on the studio floor, brass fading to nothing.
+function createWarmFloorPoolTexture(intensity: number): THREE.CanvasTexture {
+  if (typeof document === "undefined") {
+    return new THREE.CanvasTexture(null as unknown as HTMLCanvasElement);
+  }
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 256;
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gradient.addColorStop(0, `rgba(120, 92, 44${intensity})`);
+    gradient.addColorStop(0.38, `rgba(96, 70, 34${intensity * 0.55})`);
+    gradient.addColorStop(0.72, `rgba(60, 42, 22${intensity * 0.16})`);
+    gradient.addColorStop(1, "rgba(0,0,0,0)");
 
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 256, 256);

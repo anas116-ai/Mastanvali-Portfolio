@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -20,35 +20,35 @@ const websiteVersions: VersionItem[] = [
     href: "/",
     tag: "V1",
     name: "Keynote Creator",
-    accent: "#F47A18",
+    accent: "#FACC15",
   },
   {
     id: "v2",
     href: "/v2",
     tag: "V2",
     name: "Modular Tech",
-    accent: "#14B8A6",
+    accent: "#E2C799",
   },
   {
     id: "v3",
     href: "/redesign",
     tag: "V3",
     name: "Luxury Editorial",
-    accent: "#38BDF8",
+    accent: "#F8FAFC",
   },
   {
     id: "v4",
     href: "/kage",
     tag: "V4",
     name: "3D Cyber World",
-    accent: "#E0231C",
+    accent: "#FDE047",
   },
   {
     id: "compare",
     href: "/versions",
     tag: "STUDIO",
     name: "Compare All",
-    accent: "#A855F7",
+    accent: "#CBD5E1",
   },
 ];
 

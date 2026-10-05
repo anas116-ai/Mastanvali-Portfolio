@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { Check, type LucideIcon } from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 
 export interface CapabilityArea {
   num: string;
@@ -13,7 +13,7 @@ export interface CapabilityArea {
   borderColor: string;
   icon: LucideIcon;
   systemTag: string;
-  fishCount: number; // 1, 2, or 3
+  fishCount: number;
 }
 
 interface ZenKoiPondCardProps {
@@ -21,13 +21,12 @@ interface ZenKoiPondCardProps {
   index: number;
 }
 
-// Autonomous Wandering Cute Slender Baby Koi
-interface CuteBabyKoi {
+interface Koi {
   x: number;
   y: number;
   baseSpeed: number;
   speed: number;
-  currentAngle: number;
+  angle: number;
   targetAngle: number;
   targetX: number;
   targetY: number;
@@ -36,15 +35,14 @@ interface CuteBabyKoi {
   scaleX: number;
   scaleY: number;
   turnSpeed: number;
-  burstPhase: number;
-  burstSpeed: number;
-  retargetTimer: number;
-  swimSway: number;
-  lastRippleTimer: number;
+  surgePhase: number;
+  surgeSpeed: number;
+  retarget: number;
+  sway: number;
+  rippleCooldown: number;
 }
 
-// Authentic Spreading Liquid Water Ripple (Looks like real water vibration)
-interface LiquidWaterWave {
+interface Ripple {
   x: number;
   y: number;
   radius: number;
@@ -55,574 +53,560 @@ interface LiquidWaterWave {
   aspect: number;
 }
 
-// Glistening Water Drops & Micro-Bubbles
-interface WaterDrop {
+interface Mote {
   x: number;
   y: number;
-  radius: number;
-  speedY: number;
-  wobblePhase: number;
-  wobbleSpeed: number;
+  r: number;
+  vy: number;
+  phase: number;
+  speed: number;
   alpha: number;
-  sparklePhase: number;
 }
+
+/** Darken a #rrggbb accent and return hex, so alpha digits can be appended. */
+const dim = (hex: string, amount: number) => {
+  const n = parseInt(hex.slice(1), 16);
+  const ch = (shift: number) =>
+    Math.max(0, Math.round(((n >> shift) & 255) * (1 - amount)))
+      .toString(16)
+      .padStart(2, "0");
+  return `#${ch(16)}${ch(8)}${ch(0)}`;
+};
+
+/** 0..255 alpha as a two digit hex pair. */
+const a = (v: number) =>
+  Math.max(0, Math.min(255, Math.round(v * 255)))
+    .toString(16)
+    .padStart(2, "0");
 
 export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const mousePosRef = useRef<{ x: number; y: number; isHovering: boolean }>({
-    x: 0,
-    y: 0,
-    isHovering: false,
-  });
+  const pointer = useRef({ x: 0, y: 0, active: false });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    mousePosRef.current = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-      isHovering: true,
-    };
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    mousePosRef.current.isHovering = true;
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    mousePosRef.current.isHovering = false;
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    pointer.current.x = e.clientX - rect.left;
+    pointer.current.y = e.clientY - rect.top;
   };
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d", { alpha: true });
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animationFrameId: number;
-    let width = (canvas.width = canvas.offsetWidth);
-    let height = (canvas.height = canvas.offsetHeight);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let width = 0;
+    let height = 0;
 
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = canvas.offsetWidth;
-      height = canvas.height = canvas.offsetHeight;
-    };
-    window.addEventListener("resize", handleResize);
-
-    // 1. Load Feathered Seamless Koi Sprites (Head/Torso + Tail with Zero Seam)
-    const torsoImg = new Image();
-    torsoImg.src = "/koi_kohaku_torso.png";
-    let isTorsoLoaded = false;
-    torsoImg.onload = () => {
-      isTorsoLoaded = true;
+    const resize = () => {
+      const host = canvas.parentElement;
+      if (!host) return;
+      width = host.clientWidth;
+      height = host.clientHeight;
+      canvas.width = Math.max(1, Math.round(width * dpr));
+      canvas.height = Math.max(1, Math.round(height * dpr));
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const tailImg = new Image();
-    tailImg.src = "/koi_kohaku_tail.png";
-    let isTailLoaded = false;
-    tailImg.onload = () => {
-      isTailLoaded = true;
+    resize();
+    window.addEventListener("resize", resize);
+
+    const torso = new Image();
+    torso.src = "/koi_kohaku_torso.png";
+    let torsoReady = false;
+    torso.onload = () => {
+      torsoReady = true;
     };
 
-    // Cute Slender Baby Fish Sizing (Slender, Petite, Cute - NOT fat)
-    // ScaleY is set to 70% of ScaleX so the body is slender and streamlined!
-    const fishDimensions =
+    const tail = new Image();
+    tail.src = "/koi_kohaku_tail.png";
+    let tailReady = false;
+    tail.onload = () => {
+      tailReady = true;
+    };
+
+    const dims =
       index === 0
-        ? [{ sx: 0.22, sy: 0.155 }] // ~70px length, ~26px width (cute petite baby koi)
+        ? [{ sx: 0.215, sy: 0.15 }]
         : index === 1
         ? [
-            { sx: 0.185, sy: 0.13 }, // ~59px length, ~22px width
-            { sx: 0.16, sy: 0.115 }, // ~51px length, ~19px width
+            { sx: 0.18, sy: 0.126 },
+            { sx: 0.155, sy: 0.111 },
           ]
         : [
-            { sx: 0.165, sy: 0.12 }, // ~53px length
-            { sx: 0.145, sy: 0.105 }, // ~46px length
-            { sx: 0.13, sy: 0.095 }, // ~41px length
+            { sx: 0.16, sy: 0.115 },
+            { sx: 0.142, sy: 0.102 },
+            { sx: 0.126, sy: 0.092 },
           ];
 
-    const fishCount = area.fishCount; // 1, 2, or 3
+    const pickTarget = () => ({
+      x: width * 0.09 + Math.random() * width * 0.82,
+      y: height * 0.16 + Math.random() * height * 0.7,
+    });
 
-    // Waypoint picker across the entire card pond area (full edge-to-edge & top-to-bottom)
-    const pickNewTarget = () => {
-      const minX = width * 0.06;
-      const maxX = width * 0.94;
-      const minY = height * 0.08;
-      const maxY = height * 0.94;
-      return {
-        x: minX + Math.random() * (maxX - minX),
-        y: minY + Math.random() * (maxY - minY),
-      };
-    };
-
-    // Initialize Autonomous Cute Baby Koi Fishes across full card
-    const fishes: CuteBabyKoi[] = Array.from({ length: fishCount }, (_, i) => {
-      const startX = width * (0.12 + (i / Math.max(1, fishCount)) * 0.76);
-      const startY = height * (0.18 + (i % 2) * 0.54);
-      const target = pickNewTarget();
-      const initialAngle = Math.atan2(target.y - startY, target.x - startX);
-      const dims = fishDimensions[i % fishDimensions.length] || { sx: 0.18, sy: 0.13 };
-
+    const koi: Koi[] = Array.from({ length: area.fishCount }, (_, i) => {
+      const d = dims[i % dims.length];
+      const startX = width * (0.14 + (i / Math.max(1, area.fishCount)) * 0.72);
+      const startY = height * (0.28 + (i % 2) * 0.4);
+      const tg = pickTarget();
+      const ang = Math.atan2(tg.y - startY, tg.x - startX);
       return {
         x: startX,
         y: startY,
-        baseSpeed: 1.60 + Math.random() * 0.18,
-        speed: 1.60,
-        currentAngle: initialAngle,
-        targetAngle: initialAngle,
-        targetX: target.x,
-        targetY: target.y,
+        baseSpeed: 1.42 + Math.random() * 0.2,
+        speed: 1.42,
+        angle: ang,
+        targetAngle: ang,
+        targetX: tg.x,
+        targetY: tg.y,
         tailPhase: i * 2.3,
-        tailSpeed: 0.155,
-        scaleX: dims.sx,
-        scaleY: dims.sy,
-        turnSpeed: 0.068,
-        burstPhase: Math.random() * Math.PI * 2,
-        burstSpeed: 0.032 + Math.random() * 0.014,
-        retargetTimer: 90 + Math.random() * 80,
-        swimSway: 0,
-        lastRippleTimer: i * 20,
+        tailSpeed: 0.15,
+        scaleX: d.sx,
+        scaleY: d.sy,
+        turnSpeed: 0.062,
+        surgePhase: Math.random() * Math.PI * 2,
+        surgeSpeed: 0.03 + Math.random() * 0.014,
+        retarget: 90 + Math.random() * 80,
+        sway: 0,
+        rippleCooldown: i * 24,
       };
     });
 
-    // 2. Liquid Water Wave Vibrations (Spreading natural water ripples)
-    const waterWaves: LiquidWaterWave[] = [
+    const ripples: Ripple[] = [
       {
         x: width * 0.5,
-        y: height * 0.55,
-        radius: 8,
-        maxRadius: 145,
-        speed: 0.78,
-        alpha: 0.35,
-        decay: 0.0028,
-        aspect: 0.76,
+        y: height * 0.5,
+        radius: 10,
+        maxRadius: 180,
+        speed: 0.68,
+        alpha: 0.3,
+        decay: 0.0022,
+        aspect: 0.7,
       },
     ];
 
-    // 3. Glistening Water Drops & Bubbles (Crisp, sparkling, realistic)
-    const waterDrops: WaterDrop[] = Array.from({ length: 18 }, () => ({
-      x: width * (0.10 + Math.random() * 0.80),
-      y: height * (0.25 + Math.random() * 0.70),
-      radius: 1.1 + Math.random() * 1.6,
-      speedY: 0.25 + Math.random() * 0.35,
-      wobblePhase: Math.random() * Math.PI * 2,
-      wobbleSpeed: 0.025 + Math.random() * 0.02,
-      alpha: 0.35 + Math.random() * 0.40,
-      sparklePhase: Math.random() * Math.PI * 2,
+    const motes: Mote[] = Array.from({ length: 26 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: 0.5 + Math.random() * 1.3,
+      vy: 0.06 + Math.random() * 0.2,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.012 + Math.random() * 0.02,
+      alpha: 0.1 + Math.random() * 0.22,
     }));
 
-    let lastMouseWaveTime = 0;
-    let time = 0;
-    let isVisible = true;
+    const accentMid = dim(area.accent, 0.5);
+    const accentDeep = dim(area.accent, 0.76);
 
-    const observer = new IntersectionObserver(
+    let t = 0;
+    let lastPointerRipple = 0;
+    let visible = true;
+    let raf = 0;
+
+    const io = new IntersectionObserver(
       ([entry]) => {
-        isVisible = entry.isIntersecting;
+        visible = entry.isIntersecting;
       },
       { threshold: 0.05 }
     );
-    observer.observe(canvas);
+    io.observe(canvas);
 
-    // RENDER LOOP
-    const render = () => {
-      if (!isVisible) {
-        animationFrameId = requestAnimationFrame(render);
-        return;
+    /**
+     * Light on the pond floor. Built from soft elliptical pools rather than
+     * stroked paths, so the water reads as depth and light instead of as
+     * wave lines drawn across the card.
+     */
+    const drawCaustics = (energy: number) => {
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      const pools = 11;
+      for (let p = 0; p < pools; p++) {
+        /* Deterministic per pool, so the pattern drifts without reshuffling. */
+        const seed = p * 2.399963;
+        const drift = t * (0.055 + (p % 3) * 0.016);
+        const cx =
+          width * (0.5 + Math.sin(seed * 3.7 + drift) * 0.46) +
+          Math.sin(t * 0.21 + seed) * width * 0.045;
+        const depth = 0.28 + ((p * 0.37) % 1) * 0.6;
+        const cy = height * depth;
+        const rx = width * (0.13 + ((p * 0.53) % 1) * 0.17);
+        const ry = rx * (0.24 + ((p * 0.29) % 1) * 0.16);
+        /* Each pool breathes on its own slow cycle. */
+        const pulse = 0.55 + 0.45 * Math.sin(t * 0.42 + seed * 2.1);
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, rx);
+        const strength = (0.1 + depth * 0.09) * pulse * energy;
+        grad.addColorStop(0, `${accentMid}${a(strength)}`);
+        grad.addColorStop(0.45, `${accentDeep}${a(strength * 0.42)}`);
+        grad.addColorStop(1, `${accentDeep}00`);
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.scale(1, ry / rx);
+        ctx.translate(-cx, -cy);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, rx, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       }
+      ctx.restore();
+    };
 
-      time += 0.016;
+    /** Raking shafts: the reason the water looks deep rather than painted. */
+    const drawShafts = () => {
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      for (let s = 0; s < 3; s++) {
+        const x = width * (0.2 + s * 0.29) + Math.sin(t * 0.16 + s * 2.1) * 34;
+        const w = width * (0.09 + s * 0.02);
+        const grad = ctx.createLinearGradient(x, 0, x + w * 0.7, height * 0.82);
+        grad.addColorStop(0, `${accentMid}${a(0.13)}`);
+        grad.addColorStop(0.5, `${accentDeep}${a(0.05)}`);
+        grad.addColorStop(1, `${accentDeep}00`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(x, -10);
+        ctx.lineTo(x + w, -10);
+        ctx.lineTo(x + w * 2.1, height);
+        ctx.lineTo(x + w * 0.55, height);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+    };
+
+    const render = () => {
+      raf = requestAnimationFrame(render);
+      if (!visible || width === 0 || height === 0) return;
+
+      t += 0.016;
+      const energy = pointer.current.active ? 1.35 : 1;
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. CRYSTAL-CLEAR LIQUID WATER GRADIENT (Pure Obsidian-Sapphire Depth)
-      const waterGrad = ctx.createLinearGradient(0, 0, 0, height);
-      waterGrad.addColorStop(0, "rgba(2, 9, 18, 0.48)");
-      waterGrad.addColorStop(0.40, "rgba(3, 14, 26, 0.58)");
-      waterGrad.addColorStop(0.75, "rgba(2, 10, 20, 0.72)");
-      waterGrad.addColorStop(1, "rgba(1, 5, 12, 0.85)");
-      ctx.fillStyle = waterGrad;
+      /* 1. Volume. Light enters at the surface and dies out toward the floor. */
+      const body = ctx.createLinearGradient(0, 0, 0, height);
+      body.addColorStop(0, "rgba(20,24,340.45)");
+      body.addColorStop(0.03, "rgba(16,20,300.62)");
+      body.addColorStop(0.34, "rgba(12,15,230.72)");
+      body.addColorStop(0.7, "rgba(7,9,150.9)");
+      body.addColorStop(1, "rgba(4,5,90.96)");
+      ctx.fillStyle = body;
       ctx.fillRect(0, 0, width, height);
 
-      // 1B. SUBTLE UNDERWATER LIGHT CAUSTICS REFRACTION (Liquid Luxury Shimmer)
+      /* 2. Caustics, drifting. */
       ctx.save();
-      const causticAlpha = mousePosRef.current.isHovering ? 0.040 : 0.020;
-      const causticTime = time * 0.7;
-      ctx.strokeStyle = `rgba(220, 245, 255, ${causticAlpha})`;
-      ctx.lineWidth = 1.1;
-      for (let c = 0; c < 2; c++) {
-        const offsetC = c * 38;
-        ctx.beginPath();
-        for (let cx = 0; cx < width; cx += 22) {
-          const cy = height * 0.48 + Math.sin(cx * 0.024 + causticTime + c) * 14 + Math.cos(cx * 0.038 - causticTime) * 10 + offsetC;
-          if (cx === 0) ctx.moveTo(cx, cy);
-          else ctx.lineTo(cx, cy);
-        }
-        ctx.stroke();
-      }
+      ctx.translate(0, -Math.sin(t * 0.5) * 4);
+      drawCaustics(energy);
       ctx.restore();
 
-      // 2. SPREADING LIQUID WATER RIPPLES / VIBRATIONS (Natural spreading wave like stone in water)
-      ctx.save();
-      for (let wIdx = waterWaves.length - 1; wIdx >= 0; wIdx--) {
-        const wave = waterWaves[wIdx];
-        wave.radius += wave.speed;
-        wave.alpha -= wave.decay;
+      /* 3. Light shafts. */
+      drawShafts();
 
-        if (wave.alpha <= 0 || wave.radius >= wave.maxRadius) {
-          waterWaves.splice(wIdx, 1);
+      /* 4. Ripples: dark trough beneath a bright crest. */
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const rp = ripples[i];
+        rp.radius += rp.speed * energy;
+        rp.alpha -= rp.decay;
+        if (rp.alpha <= 0 || rp.radius >= rp.maxRadius) {
+          ripples.splice(i, 1);
           continue;
         }
 
-        const radX = wave.radius;
-        const radY = wave.radius * wave.aspect;
+        const rx = rp.radius;
+        const ry = rp.radius * rp.aspect;
 
-        // Subtle water trough shadow (underneath wave crest)
         ctx.beginPath();
-        ctx.ellipse(wave.x, wave.y + 1.2, radX, radY, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(0, 6, 15, ${wave.alpha * 0.30})`;
-        ctx.lineWidth = 1.4;
+        ctx.ellipse(rp.x, rp.y + 1.6, rx, ry, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(0, 0, 0${rp.alpha * 0.5})`;
+        ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Delicate liquid water crest highlight (looks like real spreading liquid water)
         ctx.beginPath();
-        ctx.ellipse(wave.x, wave.y, radX, radY, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(200, 235, 255, ${wave.alpha * 0.38})`;
-        ctx.lineWidth = 1.2;
+        ctx.ellipse(rp.x, rp.y, rx, ry, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(234,232,226${rp.alpha * 0.7})`;
+        ctx.lineWidth = 1.1;
         ctx.stroke();
 
-        // Secondary gentle trailing ripple ring
-        if (wave.radius > 22) {
-          const innerRadX = radX - 16;
-          const innerRadY = radY - 12;
-          if (innerRadX > 0 && innerRadY > 0) {
-            ctx.beginPath();
-            ctx.ellipse(wave.x, wave.y, innerRadX, innerRadY, 0, 0, Math.PI * 2);
-            ctx.strokeStyle = `rgba(215, 245, 255, ${wave.alpha * 0.18})`;
-            ctx.lineWidth = 0.9;
-            ctx.stroke();
-          }
+        if (rx > 26) {
+          ctx.beginPath();
+          ctx.ellipse(rp.x, rp.y, rx - 18, ry - 12, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(234,232,226${rp.alpha * 0.26})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
         }
       }
-      ctx.restore();
 
-      // Interactive Water Wave on Mouse Movement (Like touching calm water)
-      if (mousePosRef.current.isHovering && time - lastMouseWaveTime > 0.38) {
-        lastMouseWaveTime = time;
-        waterWaves.push({
-          x: mousePosRef.current.x,
-          y: mousePosRef.current.y,
-          radius: 4,
-          maxRadius: 95,
-          speed: 0.68,
-          alpha: 0.42,
-          decay: 0.0035,
-          aspect: 0.78,
+      /* 5. The pointer touches the surface. */
+      if (pointer.current.active && t - lastPointerRipple > 0.45) {
+        lastPointerRipple = t;
+        ripples.push({
+          x: pointer.current.x,
+          y: pointer.current.y,
+          radius: 5,
+          maxRadius: 110,
+          speed: 0.62,
+          alpha: 0.34,
+          decay: 0.003,
+          aspect: 0.72,
         });
       }
 
-      // 3. SPARKLING WATER DROPS & FLOATING BUBBLES
-      ctx.save();
-      waterDrops.forEach((drop) => {
-        drop.y -= drop.speedY;
-        drop.wobblePhase += drop.wobbleSpeed;
-        drop.sparklePhase += 0.05;
-        const currentX = drop.x + Math.sin(drop.wobblePhase) * 2.0;
-
-        if (drop.y < height * 0.22) {
-          drop.y = height + 6;
-          drop.x = width * (0.10 + Math.random() * 0.80);
+      /* 6. Silt hanging in the light. */
+      for (const m of motes) {
+        m.y -= m.vy;
+        m.phase += m.speed;
+        if (m.y < -4) {
+          m.y = height + 4;
+          m.x = Math.random() * width;
         }
-
-        const sparkle = 0.8 + Math.sin(drop.sparklePhase) * 0.2;
-        const effectiveAlpha = drop.alpha * sparkle;
-
+        const x = m.x + Math.sin(m.phase) * 6;
         ctx.beginPath();
-        ctx.arc(currentX, drop.y, drop.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(186, 230, 253, ${effectiveAlpha})`;
-        ctx.lineWidth = 0.9;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(
-          currentX - drop.radius * 0.32,
-          drop.y - drop.radius * 0.32,
-          drop.radius * 0.36,
-          0,
-          Math.PI * 2
-        );
-        ctx.fillStyle = `rgba(255, 255, 255, ${effectiveAlpha * 0.9})`;
+        ctx.arc(x, m.y, m.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(234,232,226${m.alpha})`;
         ctx.fill();
-      });
-      ctx.restore();
+      }
 
-      // 4. UPDATE & DRAW CUTE SLENDER BABY KOI
-      fishes.forEach((fish, fIdx) => {
-        // Navigation & Gentle Waypoint Retargeting
-        fish.retargetTimer--;
-        const distToTarget = Math.hypot(fish.targetX - fish.x, fish.targetY - fish.y);
-        if (distToTarget < 40 || fish.retargetTimer <= 0) {
-          const newT = pickNewTarget();
-          fish.targetX = newT.x;
-          fish.targetY = newT.y;
-          fish.retargetTimer = 160 + Math.random() * 140;
+      /* 7. Koi. */
+      koi.forEach((f, fi) => {
+        f.retarget -= 1;
+        if (Math.hypot(f.targetX - f.x, f.targetY - f.y) < 42 || f.retarget <= 0) {
+          const tg = pickTarget();
+          f.targetX = tg.x;
+          f.targetY = tg.y;
+          f.retarget = 170 + Math.random() * 150;
         }
 
-        let steerX = fish.targetX - fish.x;
-        let steerY = fish.targetY - fish.y;
+        let sx = f.targetX - f.x;
+        let sy = f.targetY - f.y;
 
-        // Card Boundary Soft Cushion (Full edge-to-edge and top-to-bottom roam)
-        const marginX = width * 0.05;
-        const marginY = height * 0.06;
-        if (fish.x < marginX) steerX += (marginX - fish.x) * 3.4;
-        if (fish.x > width - marginX) steerX -= (fish.x - (width - marginX)) * 3.4;
-        if (fish.y < marginY) steerY += (marginY - fish.y) * 3.4;
-        if (fish.y > height - marginY) steerY -= (fish.y - (height - marginY)) * 3.4;
+        const mx = width * 0.05;
+        const my = height * 0.08;
+        if (f.x < mx) sx += (mx - f.x) * 3.6;
+        if (f.x > width - mx) sx -= (f.x - (width - mx)) * 3.6;
+        if (f.y < my) sy += (my - f.y) * 3.6;
+        if (f.y > height - my) sy -= (f.y - (height - my)) * 3.6;
 
-        // Companion Spacing
-        fishes.forEach((otherFish, oIdx) => {
-          if (fIdx === oIdx) return;
-          const odx = fish.x - otherFish.x;
-          const ody = fish.y - otherFish.y;
-          const odist = Math.hypot(odx, ody);
-          if (odist < 50 && odist > 1) {
-            steerX += (odx / odist) * 40;
-            steerY += (ody / odist) * 40;
+        koi.forEach((o, oi) => {
+          if (oi === fi) return;
+          const dx = f.x - o.x;
+          const dy = f.y - o.y;
+          const d = Math.hypot(dx, dy);
+          if (d < 56 && d > 1) {
+            sx += (dx / d) * 44;
+            sy += (dy / d) * 44;
           }
         });
 
-        // Mouse Avoidance
-        if (mousePosRef.current.isHovering) {
-          const mdx = fish.x - mousePosRef.current.x;
-          const mdy = fish.y - mousePosRef.current.y;
-          const mdist = Math.hypot(mdx, mdy);
-          if (mdist < 75 && mdist > 1) {
-            steerX += (mdx / mdist) * 80;
-            steerY += (mdy / mdist) * 80;
+        if (pointer.current.active) {
+          const dx = f.x - pointer.current.x;
+          const dy = f.y - pointer.current.y;
+          const d = Math.hypot(dx, dy);
+          if (d < 86 && d > 1) {
+            sx += (dx / d) * 88;
+            sy += (dy / d) * 88;
           }
         }
 
-        // Smooth Heading Turn Angle
-        fish.targetAngle = Math.atan2(steerY, steerX);
-        let angleDiff = fish.targetAngle - fish.currentAngle;
-        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-        fish.currentAngle += angleDiff * fish.turnSpeed;
+        f.targetAngle = Math.atan2(sy, sx);
+        let diff = f.targetAngle - f.angle;
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+        f.angle += diff * f.turnSpeed;
 
-        // Burst & Glide Dynamics (Calm, graceful glide)
-        fish.burstPhase += fish.burstSpeed;
-        const surge = Math.max(0, Math.sin(fish.burstPhase));
-        fish.speed = fish.baseSpeed * (0.86 + surge * 0.42);
-        fish.tailSpeed = 0.145 + surge * 0.095;
+        f.surgePhase += f.surgeSpeed;
+        const surge = Math.max(0, Math.sin(f.surgePhase));
+        f.speed = f.baseSpeed * (0.84 + surge * 0.44);
+        f.tailSpeed = 0.14 + surge * 0.1;
 
-        // Propel forward
-        fish.x += Math.cos(fish.currentAngle) * fish.speed;
-        fish.y += Math.sin(fish.currentAngle) * fish.speed;
+        f.x += Math.cos(f.angle) * f.speed;
+        f.y += Math.sin(f.angle) * f.speed;
 
-        // Tail wave & yaw sway
-        fish.tailPhase += fish.tailSpeed;
-        fish.swimSway = Math.sin(fish.tailPhase) * 0.070;
+        f.tailPhase += f.tailSpeed;
+        f.sway = Math.sin(f.tailPhase) * 0.065;
 
-        // Fish Water Vibration Ripple: Emit a gentle water wave when fish flicks its tail
-        fish.lastRippleTimer++;
-        if (surge > 0.80 && fish.lastRippleTimer > 50 && waterWaves.length < 7) {
-          fish.lastRippleTimer = 0;
-          const tailX = fish.x - Math.cos(fish.currentAngle) * (fish.scaleX * 100);
-          const tailY = fish.y - Math.sin(fish.currentAngle) * (fish.scaleX * 100);
-          waterWaves.push({
-            x: tailX,
-            y: tailY,
-            radius: 5,
-            maxRadius: 95 + Math.random() * 25,
-            speed: 0.74,
-            alpha: 0.32,
-            decay: 0.0032,
-            aspect: 0.78,
+        f.rippleCooldown += 1;
+        if (surge > 0.82 && f.rippleCooldown > 56 && ripples.length < 7) {
+          f.rippleCooldown = 0;
+          ripples.push({
+            x: f.x - Math.cos(f.angle) * f.scaleX * 100,
+            y: f.y - Math.sin(f.angle) * f.scaleX * 100,
+            radius: 6,
+            maxRadius: 100 + Math.random() * 30,
+            speed: 0.68,
+            alpha: 0.26,
+            decay: 0.0028,
+            aspect: 0.74,
           });
         }
 
-        // A. 3D Soft Underwater Shadow
+        // Cast shadow, sitting on the pond floor behind the fish
         ctx.save();
-        ctx.translate(fish.x + 7, fish.y + 10);
-        ctx.rotate(fish.currentAngle + fish.swimSway);
-        ctx.scale(fish.scaleX * 0.95, fish.scaleY * 0.85);
+        ctx.translate(f.x + 9, f.y + 13);
+        ctx.rotate(f.angle + f.sway);
+        ctx.scale(f.scaleX * 0.95, f.scaleY * 0.8);
         ctx.beginPath();
-        ctx.ellipse(0, 0, 95, 26, 0, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(1, 6, 14, 0.38)";
+        ctx.ellipse(0, 0, 98, 24, 0, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(3,4,70.34)";
         ctx.filter = "blur(6px)";
         ctx.fill();
         ctx.restore();
 
-        // B. Draw Cute Slender Baby Koi (Streamlined, Petite & Cute)
         ctx.save();
-        ctx.translate(fish.x, fish.y);
-        ctx.rotate(fish.currentAngle + fish.swimSway);
-        ctx.scale(fish.scaleX, fish.scaleY);
+        ctx.translate(f.x, f.y);
+        ctx.rotate(f.angle + f.sway);
+        ctx.scale(f.scaleX, f.scaleY);
 
-        if (
-          isTorsoLoaded &&
-          isTailLoaded &&
-          torsoImg.complete &&
-          tailImg.complete
-        ) {
-          const sw = 322;
-          const sh = 169;
+        if (torsoReady && tailReady && torso.complete && tail.complete) {
+          const w = 322;
+          const h = 169;
+          ctx.drawImage(torso, -161, -h * 0.5, w, h);
 
-          // 1. Torso & Head (Zero Seams, Slender & Cute)
-          ctx.drawImage(torsoImg, -161, -sh * 0.5, sw, sh);
-
-          // 2. Tail Fin with Organic Wave Flexion
-          const tailAngle = Math.sin(fish.tailPhase - 0.4) * 0.17;
+          const flex = Math.sin(f.tailPhase - 0.4) * 0.16;
           ctx.save();
           ctx.translate(-16, 0);
-          ctx.rotate(tailAngle);
-          ctx.drawImage(tailImg, -145, -sh * 0.5, sw, sh);
+          ctx.rotate(flex);
+          ctx.drawImage(tail, -145, -h * 0.5, w, h);
           ctx.restore();
         } else {
           ctx.beginPath();
           ctx.ellipse(0, 0, 50, 14, 0, 0, Math.PI * 2);
-          ctx.fillStyle = "#E06D20";
+          ctx.fillStyle = "#B4591F";
           ctx.fill();
         }
 
-        // C. Clean Water Glint over Fish Spine
         ctx.beginPath();
-        ctx.ellipse(20, -2, 38, 7, -0.08, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.16)";
+        ctx.ellipse(18, -3, 40, 6, -0.09, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(234,232,2260.18)";
         ctx.fill();
 
         ctx.restore();
       });
 
-      animationFrameId = requestAnimationFrame(render);
+      /* 8. Meniscus: the surface itself has to be visible. */
+      const top = ctx.createLinearGradient(0, 0, 0, 26);
+      top.addColorStop(0, "rgba(234,232,2260.14)");
+      top.addColorStop(1, "rgba(234,232,2260)");
+      ctx.fillStyle = top;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      for (let x = 0; x <= width; x += 8) {
+        ctx.lineTo(x, Math.sin(x * 0.035 + t * 0.9) * 2.2 + Math.sin(x * 0.011 - t * 0.5) * 3.4);
+      }
+      ctx.lineTo(width, 0);
+      ctx.closePath();
+      ctx.fill();
     };
 
-    render();
+    raf = requestAnimationFrame(render);
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      window.removeEventListener("resize", resize);
     };
-  }, [area.fishCount, index]);
-
-  const Icon = area.icon;
+  }, [area.accent, area.fishCount, index]);
 
   return (
     <div
       ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className={`group relative rounded-2xl sm:rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col justify-between h-full min-h-[480px] sm:min-h-[510px] select-none ${
-        isHovered
-          ? "border-white/30 shadow-[0_16px_50px_rgba(0,0,0,0.85),0_0_24px_rgba(224,109,32,0.12)]"
-          : "border-white/[0.10] shadow-[0_10px_35px_rgba(0,0,0,0.6)]"
-      }`}
+      onMouseMove={handleMove}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        pointer.current.active = true;
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        pointer.current.active = false;
+      }}
+      className="group relative rounded-[3px] overflow-hidden flex flex-col justify-between h-full min-h-[500px] sm:min-h-[540px] select-none transition-[border-color] duration-500"
       style={{
-        backgroundColor: "rgba(14, 18, 27, 0.70)",
-        backdropFilter: "blur(8px)",
+        border: `1px solid ${isHovered ? dim(area.accent, 0) : dim(area.accent, 0.42)}`,
+        backgroundColor: "#090B10",
       }}
     >
-      {/* 1. CRYSTAL LIVING WATER CANVAS */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
+        aria-hidden="true"
       />
 
-      {/* 2. Frosted Edge Vignette & Top Specular Sheen */}
+      {/* Light falls from above onto the plate */}
       <div
-        className="absolute inset-0 pointer-events-none rounded-2xl sm:rounded-3xl"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          boxShadow:
-            "inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 45px rgba(1, 4, 10, 0.70)",
+          background: `linear-gradient(184deg, ${dim(area.accent, 0.72)}1F 0%, transparent 34%, transparent 72%, rgba(0,0,0,0.4) 100%)`,
         }}
       />
 
-      {/* 3. CLEAN TYPOGRAPHY (No Enclosing Boxes on Head — Pure, Elegant Typography) */}
-      <div className="relative z-20 p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-5">
-        <div className="space-y-3">
-          {/* Top Row: Clean Numeral, Plain Text Tag & Clean Icon (NO BOXES) */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+      {/* Cut corner, top right: a machined plate, not a soft card */}
+      <div
+        className="absolute top-0 right-0 w-9 h-9 pointer-events-none"
+        style={{
+          background: `linear-gradient(225deg, ${dim(area.accent, 0.3)}24 0%, ${dim(
+            area.accent,
+            0.3
+          )}24 49.5%, transparent 50%)`,
+        }}
+      />
+
+      <div className="relative z-20 p-6 sm:p-7 flex-1 flex flex-col justify-between gap-6">
+        <div className="space-y-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-baseline gap-3">
               <span
-                className="font-mono text-2xl sm:text-3xl font-light tracking-widest"
-                style={{
-                  color: area.accent,
-                  textShadow: `0 0 20px ${area.accent}60`,
-                }}
+                className="font-mono text-[26px] sm:text-[30px] font-light leading-none tracking-[0.02em]"
+                style={{ color: area.accent }}
               >
                 {area.num}
               </span>
-              <span className="text-[11px] font-mono tracking-[0.22em] text-[#94A3B8] uppercase font-medium">
+              <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#8C8C86]">
                 {area.systemTag}
               </span>
             </div>
-
-            {/* Clean Icon without Enclosing Box */}
-            <Icon
-              size={20}
-              className="transition-transform duration-300 group-hover:scale-110 opacity-90"
+            <area.icon
+              size={18}
+              className="shrink-0 opacity-90"
               style={{ color: area.accent }}
             />
           </div>
 
-          {/* Domain Title Hierarchy — 100% Crisp & High Contrast */}
-          <div className="pt-1">
-            <div className="text-[11px] font-mono tracking-widest uppercase text-[#E06D20] font-medium">
-              // CORE DOMAIN
-            </div>
-            <h3
-              className="text-lg sm:text-xl font-medium text-white tracking-tight mt-0.5 font-[family-name:var(--font-outfit)] leading-snug"
-              style={{
-                textShadow: "0 2px 12px rgba(0, 0, 0, 0.95)",
-              }}
-            >
+          <div className="space-y-2 pt-1">
+            <h3 className="stylish-header text-[19px] sm:text-[22px] text-[#EAE8E2] leading-[1.12]">
               {area.title}
             </h3>
             <div
-              className="text-xs font-mono text-[#E06D20] tracking-wide mt-0.5 font-medium"
-              style={{
-                textShadow: "0 1px 6px rgba(0, 0, 0, 0.95)",
-              }}
+              className="font-[family-name:var(--font-geist-sans)] text-[13px] font-normal tracking-[-0.005em]"
+              style={{ color: area.accent }}
             >
               {area.subtitle}
             </div>
-
-            {/* Clear Body Description */}
-            <p
-              className="text-xs text-[#94A3B8] font-light leading-relaxed mt-2"
-              style={{
-                textShadow: "0 1px 8px rgba(0, 0, 0, 0.95)",
-              }}
-            >
+            <p className="font-[family-name:var(--font-geist-sans)] text-[13px] text-[#8C8C86] leading-[1.68] pt-1.5">
               {area.desc}
             </p>
           </div>
         </div>
 
-        {/* Minimalist Production Checkpoints (Spacious Clean Finish) */}
-        <div className="pt-4 border-t border-white/10 space-y-2 mt-auto">
-          {area.points.map((point, pIdx) => (
-            <div
-              key={pIdx}
-              className="flex items-start gap-2 text-xs text-[#F8FAFC] font-normal"
-              style={{
-                textShadow: "0 2px 6px rgba(0, 0, 0, 0.98)",
-              }}
+        <ul className="pt-5 border-t border-[rgba(234,232,226,0.09)] space-y-2.5 mt-auto">
+          {area.points.map((point, i) => (
+            <li
+              key={i}
+              className="flex items-start gap-3 font-[family-name:var(--font-geist-sans)] text-[12.5px] text-[#C9C8C3] leading-[1.6]"
             >
-              <Check
-                size={13}
-                className="shrink-0 mt-0.5"
-                style={{ color: area.accent }}
+              <span
+                className="mt-[7px] h-px w-3 shrink-0"
+                style={{ backgroundColor: area.accent, opacity: 0.7 }}
+                aria-hidden="true"
               />
-              <span className="leading-relaxed">{point}</span>
-            </div>
+              <span>{point}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ export const experience: Experience = {
   company: "VHS Consulting India Pvt Ltd",
   client: "TCS",
   project: "Grainger",
-  period: "March 2022 — February 2023",
+  period: "March 2022 to February 2023",
   location: "Hyderabad, India",
   environment: [
     "SAP BODS 4.3",
