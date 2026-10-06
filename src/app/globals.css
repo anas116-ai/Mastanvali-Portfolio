@@ -1,5 +1,8 @@
 @import "tailwindcss";
-@import "../shaders/threeui.css";
+/* threeui.css was imported here. It held 122 class rules (42KB) styling lab
+   pages that no longer exist, plus a @font-face for "ThreeUI Fragment Mono"
+   that only threeui.css itself consumed. Every selector was class-scoped and
+   none of the 122 appeared anywhere in src, so the import was pure weight. */
 
 /* ═══════════════════════════════════════════════════════════════
    FONTS
