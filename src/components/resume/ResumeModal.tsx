@@ -40,7 +40,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   ];
 
   const downloadClass =
-    "px-3.5 py-2 bg-[#EDEC6B] hover:bg-[#E4E24A] text-[#0B0B0D] font-[family-name:var(--font-geist-sans)] text-[12px] font-medium tracking-[0.04em] flex items-center gap-1.5 transition-colors duration-300";
+    "px-3.5 py-2 bg-[#DCFD3C] hover:bg-[#CDFD02] text-[#0A0A0B] font-[family-name:var(--font-geist-sans)] text-[12px] font-medium tracking-[0.04em] flex items-center gap-1.5 transition-colors duration-300";
 
   return (
     <AnimatePresence>
@@ -63,17 +63,17 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.99 }}
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
-            className="relative w-full max-w-5xl h-[94vh] bg-[#0C0C0F] text-[#EAE8E2] rounded-[3px] overflow-hidden flex flex-col z-10 border border-[rgba(234,232,226,0.14)]"
+            className="relative w-full max-w-5xl h-[94vh] glass-strong text-[#F5F2EB] rounded-[3px] overflow-hidden flex flex-col z-10 border border-[rgba(245,242,235,0.14)]"
           >
             {/* Control rail */}
-            <div className="px-3 sm:px-6 py-3 border-b border-[rgba(234,232,226,0.09)] flex flex-wrap items-center justify-between gap-2 shrink-0 select-none bg-[rgba(234,232,226,0.02)]">
+            <div className="px-3 sm:px-6 py-3 border-b border-[rgba(245,242,235,0.09)] flex flex-wrap items-center justify-between gap-2 shrink-0 select-none bg-[rgba(245,242,235,0.02)]">
               <div className="flex items-center gap-2.5">
-                <span className="h-[5px] w-[5px] rounded-full bg-[#E4E24A] animate-pulse" />
+                <span className="h-[5px] w-[5px] rounded-full bg-[#CDFD02] animate-pulse" />
                 <div className="flex items-center gap-2.5">
-                  <span className="font-[family-name:var(--font-geist-mono)] text-[11px] sm:text-xs text-[#EAE8E2] tracking-[0.18em] uppercase">
+                  <span className="font-[family-name:var(--font-geist-mono)] text-[11px] sm:text-xs text-[#F5F2EB] tracking-[0.18em] uppercase">
                     Shaik Mastan Vali
                   </span>
-                  <span className="hidden sm:inline text-[10px] font-[family-name:var(--font-geist-mono)] tracking-[0.18em] uppercase text-[#6A6A66] px-2 py-0.5 border border-[rgba(234,232,226,0.11)]">
+                  <span className="hidden sm:inline text-[10px] font-[family-name:var(--font-geist-mono)] tracking-[0.18em] uppercase text-[#6A6A66] px-2 py-0.5 border border-[rgba(245,242,235,0.11)]">
                     3 page record
                   </span>
                 </div>
@@ -84,7 +84,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   href={resumePdfPath}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1.5 bg-transparent hover:bg-[rgba(234,232,226,0.05)] text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.14em] uppercase text-[#C9C8C3] hover:text-[#EAE8E2] flex items-center gap-1.5 transition-colors duration-300 cursor-pointer border border-[rgba(234,232,226,0.11)]"
+                  className="px-3 py-1.5 bg-transparent hover:bg-[rgba(245,242,235,0.05)] text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.14em] uppercase text-[#C9C8C3] hover:text-[#F5F2EB] flex items-center gap-1.5 transition-colors duration-300 cursor-pointer border border-[rgba(245,242,235,0.11)]"
                   title="Open the original PDF in a new tab"
                 >
                   <ExternalLink size={13} />
@@ -104,7 +104,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 <button
                   ref={closeBtnRef}
                   onClick={onClose}
-                  className="w-8 h-8 flex items-center justify-center bg-transparent hover:bg-[rgba(234,232,226,0.05)] text-[#8C8C86] hover:text-[#EAE8E2] transition-colors duration-300 cursor-pointer border border-[rgba(234,232,226,0.11)]"
+                  className="w-8 h-8 flex items-center justify-center bg-transparent hover:bg-[rgba(245,242,235,0.05)] text-[#8C8C86] hover:text-[#F5F2EB] transition-colors duration-300 cursor-pointer border border-[rgba(245,242,235,0.11)]"
                   aria-label="Close resume"
                 >
                   <X size={16} />
@@ -121,13 +121,13 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                       <span className="text-[#43433F] mr-2">Page {idx + 1}</span>
                       {page.title}
                     </span>
-                    <span className="text-[#E4E24A] tabular-nums">
+                    <span className="text-[#CDFD02] tabular-nums">
                       {idx + 1} / {resumePages.length}
                     </span>
                   </div>
 
                   {/* The page itself stays paper white. That is the document, not the UI. */}
-                  <div className="w-full bg-[#EFEBE2] rounded-[2px] overflow-hidden border border-[rgba(234,232,226,0.16)]">
+                  <div className="w-full bg-[#EFEBE2] rounded-[2px] overflow-hidden border border-[rgba(245,242,235,0.16)]">
                     <img
                       src={page.src}
                       alt={`Shaik Mastan Vali resume, page ${idx + 1}`}
@@ -138,7 +138,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 </div>
               ))}
 
-              <div className="max-w-3xl mx-auto pt-5 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[rgba(234,232,226,0.09)] text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.18em] uppercase text-[#43433F]">
+              <div className="max-w-3xl mx-auto pt-5 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[rgba(245,242,235,0.09)] text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.18em] uppercase text-[#43433F]">
                 <span>Verified record / Shaik Mastan Vali</span>
                 <a href={resumePdfPath} download="Shaik-Mastan-Vali-Resume.pdf" className={downloadClass}>
                   <Download size={14} />

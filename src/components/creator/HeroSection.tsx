@@ -7,10 +7,8 @@ import { InteractiveCharacter } from "./InteractiveCharacter";
 import { ArrowDown, FileText } from "lucide-react";
 import { ResumeModal } from "@/components/resume/ResumeModal";
 
-import { HeroSnowParticles } from "./HeroSnowParticles";
 import { ShaderIgnitionButton } from "@/components/ui/ShaderIgnitionButton";
 import { TextAnimationCollection } from "./TextAnimationCollection";
-import { ScrollCue } from "./ScrollCue";
 
 export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,22 +33,34 @@ export function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[92vh] sm:min-h-screen w-full flex flex-col justify-between overflow-hidden bg-transparent px-5 sm:px-8 md:px-12 lg:px-16 pt-16 sm:pt-20 pb-12 select-none"
+      className="relative min-h-[92vh] sm:min-h-screen w-full flex flex-col justify-center overflow-hidden bg-transparent px-5 sm:px-8 md:px-12 lg:px-16 pt-16 sm:pt-20 pb-12 select-none"
     >
-      {/* ── 01. Stage lighting ─────────────────────────────────────── */}
+      {/* ── 01. Stage lighting — calm luxury wash, no tinted glows ─────── */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {/* Warm key light behind the character */}
-        <div className="absolute right-[-8%] sm:right-[4%] lg:right-[7%] top-[16%] sm:top-[22%] w-[540px] sm:w-[700px] h-[540px] sm:h-[700px] bg-[radial-gradient(circle,rgba(237,236,107,0.14)_0%,rgba(228,226,74,0.055)_40%,transparent_70%)] blur-[110px]" />
+        {/* Single neutral key light behind the character */}
+        <div className="absolute right-[-8%] sm:right-[4%] lg:right-[7%] top-[16%] sm:top-[22%] w-[540px] sm:w-[700px] h-[540px] sm:h-[700px] bg-[radial-gradient(circle,rgba(245,242,235,0.07)_0%,transparent_68%)] blur-[110px]" />
 
-        {/* Ash fill, opposite side, keeps the palette from going monotone */}
-        <div className="absolute left-[-6%] sm:left-[3%] top-[14%] sm:top-[18%] w-[500px] sm:w-[640px] h-[500px] sm:h-[640px] bg-[radial-gradient(circle,rgba(201,200,195,0.055)_0%,rgba(120,120,116,0.04)_44%,transparent_74%)] blur-[110px]" />
+        {/* Soft neutral fill, opposite side */}
+        <div className="absolute left-[-6%] sm:left-[3%] top-[14%] sm:top-[18%] w-[500px] sm:w-[640px] h-[500px] sm:h-[640px] bg-[radial-gradient(circle,rgba(245,242,235,0.045)_0%,transparent_72%)] blur-[110px]" />
 
-        {/* Slow motes in the beam */}
-        <HeroSnowParticles />
+        {/* Liquid flow: directional molten bands in bone light, not blobs.
+            Bespoke pour lines — the opposite of generic AI gradient mush. */}
+        <div className="absolute left-[-10%] top-[10%] h-[200px] sm:h-[280px] w-[130%] rotate-[-14deg] bg-[linear-gradient(90deg,transparent_0%,rgba(245,242,235,0.08)_30%,rgba(255,255,255,0.13)_50%,rgba(245,242,235,0.08)_70%,transparent_100%)] blur-[60px]" />
+        <div className="absolute left-[-10%] top-[48%] h-[140px] sm:h-[200px] w-[130%] rotate-[-14deg] bg-[linear-gradient(90deg,transparent_0%,rgba(245,242,235,0.06)_35%,rgba(255,255,255,0.10)_55%,transparent_80%)] blur-[60px]" />
+
+        {/* Droplet glints riding the flow — glossy liquid beads with a hot
+            top-left specular, like light on a real bead. Static, zero motion
+            cost, plain spans so the glass stays cheap. */}
+        <span aria-hidden className="absolute left-[22%] top-[24%] h-[9px] w-[9px] rounded-full bg-[radial-gradient(circle_at_32%_28%,#FFFFFF_0%,rgba(255,255,255,0.8)_45%,rgba(245,242,235,0.18)_100%)] shadow-[0_1px_3px_rgba(0,0,0,0.5),0_0_14px_rgba(255,255,255,0.6)]" />
+        <span aria-hidden className="absolute right-[15%] top-[46%] h-[6px] w-[6px] rounded-full bg-[radial-gradient(circle_at_32%_28%,#FFFFFF_0%,rgba(255,255,255,0.8)_45%,rgba(245,242,235,0.15)_100%)] shadow-[0_1px_2px_rgba(0,0,0,0.5),0_0_11px_rgba(255,255,255,0.55)]" />
+        <span aria-hidden className="absolute left-[34%] top-[72%] h-[5px] w-[5px] rounded-full bg-[radial-gradient(circle_at_32%_28%,#FFFFFF_0%,rgba(255,255,255,0.75)_50%,rgba(205,253,2,0.35)_100%)] shadow-[0_0_10px_rgba(205,253,2,0.8)]" />
+        <span aria-hidden className="absolute right-[30%] top-[78%] h-[4px] w-[4px] rounded-full bg-[radial-gradient(circle_at_32%_28%,#FFFFFF_0%,rgba(255,255,255,0.7)_50%,rgba(245,242,235,0.2)_100%)] shadow-[0_0_9px_rgba(255,255,255,0.5)]" />
+        {/* Long liquid specular: a hairline sheen crossing the flow, not a blob */}
+        <span aria-hidden className="absolute left-[12%] top-[60%] h-px w-[38%] rotate-[-14deg] bg-gradient-to-r from-transparent via-white/70 to-transparent blur-[0.5px]" />
 
         {/* Floor settling into the obsidian foundation */}
-        <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-[#0B0B0D] via-[#0B0B0D]/88 to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#E4E24A]/22 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/88 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       </div>
 
       {/* ── 02. Hero composition ───────────────────────────────────── */}
@@ -62,7 +72,7 @@ export function HeroSection() {
           {/* Eyebrow: plain mono type, no capsule, with a live diode */}
           <FadeIn y={12} delay={0.1} duration={0.7}>
             <div className="flex items-center gap-2.5 eyebrow">
-              <span className="h-[5px] w-[5px] rounded-full bg-[#E4E24A] animate-pulse" />
+              <span className="h-[5px] w-[5px] rounded-full bg-[#CDFD02] animate-pulse" />
               <span>// PORTFOLIO · ENTERPRISE SYSTEMS ARCHITECT</span>
             </div>
           </FadeIn>
@@ -70,16 +80,14 @@ export function HeroSection() {
           {/* Signature wordmark */}
           <FadeIn y={22} delay={0.16} duration={0.8}>
             <div className="relative inline-block select-none group max-w-full">
-              <div className="absolute -inset-10 bg-[radial-gradient(ellipse_at_center,rgba(228,226,74,0.16)_0%,rgba(228,226,74,0.06)_46%,transparent_72%)] blur-[70px] pointer-events-none -z-10" />
-
               <h1
-                className="font-warpaint inline-block max-w-full text-[clamp(2.6rem,11vw,4.5rem)] sm:text-7xl md:text-8xl lg:text-[7rem] xl:text-[9rem] tracking-[0.06em] uppercase select-none leading-[0.95]"
+                className="font-warpaint inline-block max-w-full text-[clamp(2.6rem,11vw,4.5rem)] sm:text-7xl md:text-8xl xl:text-[7.875rem] tracking-[0.11em] uppercase select-none leading-[0.95]"
                 style={{
                   WebkitFontSmoothing: "antialiased",
                   textRendering: "geometricPrecision",
                 }}
               >
-                {/* One lemon, struck one letter at a time. */}
+                {/* One lime, struck one letter at a time. */}
                 <TextAnimationCollection variant="threeui-intro" mode="dark" text="MASTAN VALI" />
               </h1>
             </div>
@@ -88,11 +96,11 @@ export function HeroSection() {
           {/* Discipline line */}
           <FadeIn y={16} delay={0.25} duration={0.7}>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[13px] sm:text-sm md:text-[15px] font-[family-name:var(--font-geist-sans)] font-normal tracking-[-0.005em]">
-              <span className="text-[#EDEC6B]">Enterprise Data &amp; Cloud Pipelines</span>
+              <span className="text-[#DCFD3C]">Enterprise Data &amp; Cloud Pipelines</span>
               <span className="text-[#43433F] select-none">/</span>
               <span className="text-[#C9C8C3]">SAP BODS 4.3</span>
               <span className="text-[#43433F] select-none">/</span>
-              <span className="text-[#D2D041]">Autonomous LLM Agent Architect</span>
+              <span className="text-[#CDFD02]">Autonomous LLM Agent Architect</span>
             </div>
           </FadeIn>
 
@@ -101,7 +109,7 @@ export function HeroSection() {
             <div className="max-w-xl">
               <p className="text-[#8C8C86] text-sm sm:text-[15px] leading-[1.7] font-[family-name:var(--font-geist-sans)] font-normal">
                 Software Engineer with enterprise production data expertise at{" "}
-                <span className="text-[#EAE8E2]">VHS Consulting India Pvt Ltd</span>. Architecting
+                <span className="text-[#F5F2EB]">VHS Consulting India Pvt Ltd</span>. Architecting
                 mission-critical SAP ETL pipelines, AWS S3 cloud data lakes, and autonomous agent
                 systems that hold their shape under load.
               </p>
@@ -111,16 +119,21 @@ export function HeroSection() {
           {/* Actions and availability */}
           <FadeIn y={16} delay={0.45} duration={0.8} className="space-y-5">
             <div className="flex flex-wrap items-center gap-3.5 sm:gap-4">
-              <ShaderIgnitionButton
-                variant="lemon"
-                href="#projects"
-                ariaLabel="Explore Work, view projects"
-                icon={<ArrowDown size={14} className="stroke-[2.6]" />}
-                iconPosition="right"
-                size="lg"
-              >
-                Explore Work
-              </ShaderIgnitionButton>
+              {/* Primary CTA carries a soft lemon halo so the eye lands
+                  on the single action first — the reference-grade pop. */}
+              <span className="relative inline-flex">
+                <span aria-hidden className="absolute -inset-2 rounded-[6px] bg-[radial-gradient(ellipse_at_center,rgba(205,253,2,0.28)_0%,transparent_70%)] blur-md pointer-events-none" />
+                <ShaderIgnitionButton
+                  variant="lemon"
+                  href="#projects"
+                  ariaLabel="Explore Work, view projects"
+                  icon={<ArrowDown size={14} className="stroke-[2.6]" />}
+                  iconPosition="right"
+                  size="lg"
+                >
+                  Explore Work
+                </ShaderIgnitionButton>
+              </span>
 
               <ShaderIgnitionButton
                 variant="bone"
@@ -146,8 +159,8 @@ export function HeroSection() {
             {/* Availability, set as plain inline text */}
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] font-[family-name:var(--font-geist-sans)] text-[#8C8C86]">
               <span className="relative flex h-[6px] w-[6px]">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E4E24A] opacity-60" />
-                <span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-[#E4E24A]" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#CDFD02] opacity-60" />
+                <span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-[#CDFD02]" />
               </span>
               <span className="text-[#C9C8C3]">Available for hire</span>
               <span className="text-[#43433F] select-none">/</span>
@@ -172,26 +185,13 @@ export function HeroSection() {
               effectMode="webgl3d"
             />
 
-            {/* Contact grounding under the figure */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[280px] h-[64px] pointer-events-none z-10">
-              <div className="absolute inset-x-0 bottom-1 h-[36px] rounded-[100%] bg-gradient-to-r from-transparent via-[rgba(228,226,74,0.16)] to-transparent blur-md" />
-              <div className="absolute inset-x-8 bottom-2 h-[22px] rounded-[100%] bg-gradient-to-r from-transparent via-[rgba(234,232,226,0.12)] to-transparent blur-sm" />
-              <div className="absolute inset-x-6 bottom-1 h-[26px] rounded-[100%] bg-black/90 blur-[8px]" />
-              <div className="absolute left-[calc(50%+38px)] bottom-1 w-[62px] h-[18px] -translate-x-1/2 rounded-[100%] bg-black/95 blur-[2px]" />
-              <div className="absolute left-[calc(50%-38px)] bottom-[30px] w-[56px] h-[16px] -translate-x-1/2 rounded-[100%] bg-black/80 blur-[4px]" />
+            {/* Natural contact shadow — single soft neutral grounding, no color glow */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[280px] h-[48px] pointer-events-none z-10">
+              <div className="absolute inset-x-10 bottom-2 h-[24px] rounded-[100%] bg-black/60 blur-[14px]" />
+              <div className="absolute inset-x-16 bottom-3 h-[14px] rounded-[100%] bg-black/50 blur-[8px]" />
             </div>
           </motion.div>
         </div>
-      </motion.div>
-
-      {/* ── 04. Scroll cue ─────────────────────────────────────────── */}
-      <motion.div
-        style={{ opacity: heroOpacity }}
-        className="relative z-20 flex justify-center shrink-0"
-      >
-        <FadeIn y={10} delay={0.9} duration={1.1}>
-          <ScrollCue targetId="about" />
-        </FadeIn>
       </motion.div>
     </section>
   );

@@ -20,26 +20,26 @@ import {
 /**
  * Borderless inventory tape. No capsules, no chips, no boxes: a single run of
  * words separated by hairline slashes, drifting in two counter-moving rows.
- * Accents come from the site's oxidised metal family.
+ * Accents come from the site's lime ramp family.
  */
 const row1Nodes = [
-  { icon: Database, name: "SAP BODS 4.3", color: "#EDEC6B" },
-  { icon: GitBranch, name: "Multi-Agent DAGs", color: "#C9C73C" },
+  { icon: Database, name: "SAP BODS 4.3", color: "#DCFD3C" },
+  { icon: GitBranch, name: "Multi-Agent DAGs", color: "#8A8918" },
   { icon: Database, name: "SQL Data Architecture", color: "#C9C8C3" },
-  { icon: Cpu, name: "Python 3.12 and Async APIs", color: "#D2D041" },
+  { icon: Cpu, name: "Python 3.12 and Async APIs", color: "#DCFD3C" },
   { icon: Code2, name: "Next.js 15 and React 19", color: "#C9C8C3" },
-  { icon: Workflow, name: "Enterprise ETL Workflows", color: "#E4E24A" },
-  { icon: Bot, name: "Autonomous LLM Agents", color: "#B4B23A" },
+  { icon: Workflow, name: "Enterprise ETL Workflows", color: "#CDFD02" },
+  { icon: Bot, name: "Autonomous LLM Agents", color: "#8A8918" },
 ];
 
 const row2Nodes = [
   { icon: MonitorSmartphone, name: "Offline Desktop ERP", color: "#C9C8C3" },
-  { icon: Zap, name: "Ollama and Local LLMs", color: "#E4E24A" },
-  { icon: Server, name: "SAP HANA and S/4HANA", color: "#EDEC6B" },
+  { icon: Zap, name: "Ollama and Local LLMs", color: "#CDFD02" },
+  { icon: Server, name: "SAP HANA and S/4HANA", color: "#DCFD3C" },
   { icon: Layers, name: "ServiceNow and ITSM", color: "#C9C8C3" },
-  { icon: Binary, name: "RAG Retrieval Systems", color: "#C9C73C" },
-  { icon: ShieldCheck, name: "Tesseract OCR Engines", color: "#D2D041" },
-  { icon: Terminal, name: "SQLite WAL and Vector Indexing", color: "#B4B23A" },
+  { icon: Binary, name: "RAG Retrieval Systems", color: "#8A8918" },
+  { icon: ShieldCheck, name: "Tesseract OCR Engines", color: "#DCFD3C" },
+  { icon: Terminal, name: "SQLite WAL and Vector Indexing", color: "#8A8918" },
 ];
 
 const quadrupledRow1 = [...row1Nodes, ...row1Nodes, ...row1Nodes, ...row1Nodes];
@@ -106,12 +106,12 @@ export function MarqueeSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-transparent py-7 sm:py-8 border-y border-[rgba(234,232,226,0.06)] select-none"
+      className="relative w-full overflow-hidden bg-transparent py-7 sm:py-8 border-y border-[rgba(245,242,235,0.06)] select-none"
       aria-label="Technologies and platforms"
     >
       {/* Feathered ends so the tape dissolves rather than stopping */}
-      <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-40 bg-gradient-to-r from-[#0B0B0D] via-[#0B0B0D]/92 to-transparent z-20 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-28 sm:w-40 bg-gradient-to-l from-[#0B0B0D] via-[#0B0B0D]/92 to-transparent z-20 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-40 bg-gradient-to-r from-[#0A0A0B] via-[#0A0A0B]/92 to-transparent z-20 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-28 sm:w-40 bg-gradient-to-l from-[#0A0A0B] via-[#0A0A0B]/92 to-transparent z-20 pointer-events-none" />
 
       <div className="flex flex-col gap-2.5">
         {renderRow(quadrupledRow1, "r1", 1)}

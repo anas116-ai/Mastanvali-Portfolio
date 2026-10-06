@@ -27,7 +27,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "ENTERPRISE ETL",
     side: "left",
     icon: Database,
-    accent: "#EDEC6B",
+    accent: "#DCFD3C",
     arcX: [-72, -142, -212, -246, -250],
     arcY: [236, 194, 132, 66, 34],
   },
@@ -36,7 +36,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "DATA ARCHITECTURE",
     side: "right",
     icon: Database,
-    accent: "#C9C73C",
+    accent: "#8A8918",
     arcX: [-18, 140, 210, 244, 248],
     arcY: [236, 194, 132, 68, 36],
   },
@@ -54,7 +54,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "GROUNDED MEMORY",
     side: "right",
     icon: Binary,
-    accent: "#E4E24A",
+    accent: "#CDFD02",
     arcX: [-16, 142, 212, 246, 250],
     arcY: [236, 194, 132, 68, 36],
   },
@@ -63,7 +63,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "AUTONOMOUS AGENTS",
     side: "left",
     icon: Cpu,
-    accent: "#D2D041",
+    accent: "#CDFD02",
     arcX: [-72, -142, -212, -246, -250],
     arcY: [234, 192, 130, 64, 34],
   },
@@ -72,7 +72,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "DISTRIBUTED GRAPH",
     side: "right",
     icon: Terminal,
-    accent: "#B4B23A",
+    accent: "#8A8918",
     arcX: [-18, 140, 210, 244, 248],
     arcY: [234, 192, 130, 64, 34],
   },
@@ -160,7 +160,7 @@ export function LaptopSkillStream() {
                   times: [0, 0.14, 0.86, 1],
                   ease: [0.22, 0.7, 0.3, 1],
                 }}
-                className="flex items-center gap-2.5 pl-2.5 pr-3.5 py-2 border bg-[#0F0F12]/92 backdrop-blur-xl"
+                className="flex items-center gap-2.5 pl-2.5 pr-3.5 py-2 rounded-[3px] border glass-strong"
                 style={{
                   borderColor: `${badge.accent}59`,
                   boxShadow: `0 0 22px ${badge.accent}1F`,
@@ -183,7 +183,7 @@ export function LaptopSkillStream() {
                   >
                     {badge.category}
                   </span>
-                  <span className="mt-1 text-[12.5px] font-[family-name:var(--font-geist-sans)] font-medium tracking-[0.005em] text-[#EAE8E2] whitespace-nowrap">
+                  <span className="mt-1 text-[12.5px] font-[family-name:var(--font-geist-sans)] font-medium tracking-[0.005em] text-[#F5F2EB] whitespace-nowrap">
                     {badge.text}
                   </span>
                 </span>

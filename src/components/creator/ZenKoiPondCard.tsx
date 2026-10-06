@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { type LucideIcon } from "lucide-react";
+import { WaterFlow } from "./WaterFlow";
 
 export interface CapabilityArea {
   num: string;
@@ -118,14 +119,14 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
     window.addEventListener("resize", resize);
 
     const torso = new Image();
-    torso.src = "/koi_kohaku_torso.png";
+    torso.src = "/koi_kohaku_torso_v2.png";
     let torsoReady = false;
     torso.onload = () => {
       torsoReady = true;
     };
 
     const tail = new Image();
-    tail.src = "/koi_kohaku_tail.png";
+    tail.src = "/koi_kohaku_tail_v2.png";
     let tailReady = false;
     tail.onload = () => {
       tailReady = true;
@@ -199,6 +200,17 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
       phase: Math.random() * Math.PI * 2,
       speed: 0.012 + Math.random() * 0.02,
       alpha: 0.1 + Math.random() * 0.22,
+    }));
+
+    /* Bubble field: scattered static dots plus a few thin rings, seeded
+       once per mount. Fractions, so they survive resize. */
+    const bubbles = Array.from({ length: 16 }, (_, i) => ({
+      fx: Math.random(),
+      fy: Math.random(),
+      r: i % 5 === 0 ? 5 + Math.random() * 4 : 0.8 + Math.random() * 1.6,
+      ring: i % 5 === 0,
+      tw: Math.random() * Math.PI * 2,
+      base: 0.08 + Math.random() * 0.06,
     }));
 
     const accentMid = dim(area.accent, 0.5);
@@ -280,6 +292,62 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
       ctx.restore();
     };
 
+    /* Faint long wave curves drifting across mid-water, reference-style. */
+    const drawWaves = () => {
+      ctx.save();
+      for (let wv = 0; wv < 3; wv++) {
+        const yBase = height * (0.3 + wv * 0.22);
+        const amp = 6 + wv * 3;
+        const k = (Math.PI * 2) / (width * (0.9 - wv * 0.18));
+        const drift = t * (0.12 + wv * 0.04);
+        ctx.beginPath();
+        for (let x = -10; x <= width + 10; x += 10) {
+          const y = yBase + Math.sin(x * k + drift + wv * 2.1) * amp;
+          if (x === -10) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(245,242,235,${0.05 - wv * 0.008})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.restore();
+    };
+
+    /* Bubble field and thin static rings. */
+    const drawBubbles = () => {
+      ctx.save();
+      for (const b of bubbles) {
+        const x = b.fx * width;
+        const y = b.fy * height;
+        const tw = 0.75 + 0.25 * Math.sin(t * 0.8 + b.tw);
+        if (b.ring) {
+          ctx.beginPath();
+          ctx.arc(x, y, b.r, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(245,242,235,${0.1 * tw})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        } else {
+          ctx.beginPath();
+          ctx.arc(x, y, b.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(245,242,235,${b.base * tw})`;
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+    };
+
+    /* Edge falloff so the pond closes into the dark like the reference. */
+    const drawVignette = () => {
+      const vig = ctx.createRadialGradient(
+        width / 2, height * 0.45, Math.min(width, height) * 0.35,
+        width / 2, height * 0.5, Math.max(width, height) * 0.75
+      );
+      vig.addColorStop(0, "rgba(0,0,0,0)");
+      vig.addColorStop(1, "rgba(2,3,6,0.42)");
+      ctx.fillStyle = vig;
+      ctx.fillRect(0, 0, width, height);
+    };
+
     const render = () => {
       raf = requestAnimationFrame(render);
       if (!visible || width === 0 || height === 0) return;
@@ -289,13 +357,14 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
 
       ctx.clearRect(0, 0, width, height);
 
-      /* 1. Volume. Light enters at the surface and dies out toward the floor. */
+      /* 1. Volume. Translucent neutral water — the section depth shows
+         through the pond like the reference. No blue cast. */
       const body = ctx.createLinearGradient(0, 0, 0, height);
-      body.addColorStop(0, "rgba(20,24,340.45)");
-      body.addColorStop(0.03, "rgba(16,20,300.62)");
-      body.addColorStop(0.34, "rgba(12,15,230.72)");
-      body.addColorStop(0.7, "rgba(7,9,150.9)");
-      body.addColorStop(1, "rgba(4,5,90.96)");
+      body.addColorStop(0, "rgba(20,20,22,0.28)");
+      body.addColorStop(0.03, "rgba(17,17,19,0.45)");
+      body.addColorStop(0.34, "rgba(13,13,15,0.55)");
+      body.addColorStop(0.7, "rgba(9,9,11,0.8)");
+      body.addColorStop(1, "rgba(5,5,7,0.9)");
       ctx.fillStyle = body;
       ctx.fillRect(0, 0, width, height);
 
@@ -307,6 +376,9 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
 
       /* 3. Light shafts. */
       drawShafts();
+
+      /* 3b. Faint wave curves. */
+      drawWaves();
 
       /* 4. Ripples: dark trough beneath a bright crest. */
       for (let i = ripples.length - 1; i >= 0; i--) {
@@ -323,20 +395,20 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
 
         ctx.beginPath();
         ctx.ellipse(rp.x, rp.y + 1.6, rx, ry, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(0, 0, 0${rp.alpha * 0.5})`;
+        ctx.strokeStyle = `rgba(0, 0, 0, ${rp.alpha * 0.5})`;
         ctx.lineWidth = 2;
         ctx.stroke();
 
         ctx.beginPath();
         ctx.ellipse(rp.x, rp.y, rx, ry, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(234,232,226${rp.alpha * 0.7})`;
+        ctx.strokeStyle = `rgba(245,242,235, ${rp.alpha * 0.7})`;
         ctx.lineWidth = 1.1;
         ctx.stroke();
 
         if (rx > 26) {
           ctx.beginPath();
           ctx.ellipse(rp.x, rp.y, rx - 18, ry - 12, 0, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(234,232,226${rp.alpha * 0.26})`;
+          ctx.strokeStyle = `rgba(245,242,235, ${rp.alpha * 0.26})`;
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
@@ -368,9 +440,12 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
         const x = m.x + Math.sin(m.phase) * 6;
         ctx.beginPath();
         ctx.arc(x, m.y, m.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(234,232,226${m.alpha})`;
+        ctx.fillStyle = `rgba(245,242,235, ${m.alpha})`;
         ctx.fill();
       }
+
+      /* 6b. Bubble field and static rings. */
+      drawBubbles();
 
       /* 7. Koi. */
       koi.forEach((f, fi) => {
@@ -452,7 +527,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
         ctx.scale(f.scaleX * 0.95, f.scaleY * 0.8);
         ctx.beginPath();
         ctx.ellipse(0, 0, 98, 24, 0, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(3,4,70.34)";
+        ctx.fillStyle = "rgba(3,4,7,0.34)";
         ctx.filter = "blur(6px)";
         ctx.fill();
         ctx.restore();
@@ -482,7 +557,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
 
         ctx.beginPath();
         ctx.ellipse(18, -3, 40, 6, -0.09, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(234,232,2260.18)";
+        ctx.fillStyle = "rgba(245,242,235,0.18)";
         ctx.fill();
 
         ctx.restore();
@@ -490,8 +565,8 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
 
       /* 8. Meniscus: the surface itself has to be visible. */
       const top = ctx.createLinearGradient(0, 0, 0, 26);
-      top.addColorStop(0, "rgba(234,232,2260.14)");
-      top.addColorStop(1, "rgba(234,232,2260)");
+      top.addColorStop(0, "rgba(245,242,235,0.14)");
+      top.addColorStop(1, "rgba(245,242,235,0)");
       ctx.fillStyle = top;
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -501,6 +576,9 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
       ctx.lineTo(width, 0);
       ctx.closePath();
       ctx.fill();
+
+      /* 9. Edge falloff. */
+      drawVignette();
     };
 
     raf = requestAnimationFrame(render);
@@ -524,12 +602,19 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
         setIsHovered(false);
         pointer.current.active = false;
       }}
-      className="group relative rounded-[3px] overflow-hidden flex flex-col justify-between h-full min-h-[500px] sm:min-h-[540px] select-none transition-[border-color] duration-500"
+      className="group relative rounded-[18px] overflow-hidden flex flex-col justify-between h-full min-h-[500px] sm:min-h-[540px] select-none transition-all duration-700 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-1.5"
       style={{
-        border: `1px solid ${isHovered ? dim(area.accent, 0) : dim(area.accent, 0.42)}`,
-        backgroundColor: "#090B10",
+        border: `1px solid ${isHovered ? "rgba(245,242,235,0.28)" : "rgba(245,242,235,0.12)"}`,
+        background: "linear-gradient(180deg, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.028) 34%, rgba(10,12,16,0.55) 100%)",
+        backdropFilter: "blur(22px) saturate(1.25)",
+        WebkitBackdropFilter: "blur(22px) saturate(1.25)",
+        boxShadow: isHovered
+          ? "0 24px 70px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.14)"
+          : "0 12px 40px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.09)",
       }}
     >
+      {/* Realistic clear-cut flowing water bed */}
+      <WaterFlow />
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
@@ -577,7 +662,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
           </div>
 
           <div className="space-y-2 pt-1">
-            <h3 className="stylish-header text-[19px] sm:text-[22px] text-[#EAE8E2] leading-[1.12]">
+            <h3 className="stylish-header text-[19px] sm:text-[22px] text-[#F5F2EB] leading-[1.12]">
               {area.title}
             </h3>
             <div
@@ -592,7 +677,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
           </div>
         </div>
 
-        <ul className="pt-5 border-t border-[rgba(234,232,226,0.09)] space-y-2.5 mt-auto">
+        <ul className="pt-5 border-t border-[rgba(245,242,235,0.09)] space-y-2.5 mt-auto">
           {area.points.map((point, i) => (
             <li
               key={i}

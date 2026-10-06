@@ -20,8 +20,8 @@ const capabilityAreas: CapabilityArea[] = [
       "SAP BW process chains and S/4HANA migration via LTMOM, LSMW, LTMC",
       "SCD Type 1 and 2 dimensions reconciled against SQL Server",
     ],
-    accent: "#E4E24A",
-    borderColor: "rgba(228,226,74,0.34)",
+    accent: "#CDFD02",
+    borderColor: "rgba(205,253,2,0.34)",
     icon: Database,
     systemTag: "SAP BODS 4.3 // S/4HANA",
     fishCount: 1,
@@ -36,8 +36,8 @@ const capabilityAreas: CapabilityArea[] = [
       "Local inference through Ollama (Llama 3, Mistral) alongside cloud APIs",
       "Persistent memory via SQLite FTS5 indexing and ChromaDB vector search",
     ],
-    accent: "#C9C73C",
-    borderColor: "rgba(228,226,74,0.34)",
+    accent: "#8A8918",
+    borderColor: "rgba(205,253,2,0.34)",
     icon: Bot,
     systemTag: "MULTI-AGENT // DAG NODES",
     fishCount: 2,
@@ -52,8 +52,8 @@ const capabilityAreas: CapabilityArea[] = [
       "Anasify: AI resume optimiser with strict truth verification",
       "Next.js 15, React 19, TypeScript, Prisma and Tailwind CSS architectures",
     ],
-    accent: "#EDEC6B",
-    borderColor: "rgba(228,226,74,0.34)",
+    accent: "#DCFD3C",
+    borderColor: "rgba(205,253,2,0.34)",
     icon: MonitorSmartphone,
     systemTag: "ZERO-LATENCY // WAL ERP",
     fishCount: 3,
@@ -64,13 +64,13 @@ export function AboutSection() {
   return (
     <section
       id="about"
-      className="relative w-full bg-transparent py-24 sm:py-28 md:py-32 text-[#EAE8E2] z-20 select-none border-t border-[rgba(234,232,226,0.06)] font-[family-name:var(--font-geist-sans)]"
+      className="relative w-full bg-transparent py-24 sm:py-28 md:py-32 text-[#F5F2EB] z-20 select-none border-t border-[rgba(245,242,235,0.06)] font-[family-name:var(--font-geist-sans)]"
     >
       {/* Two low, cool light sources. Lemon on one side, bone on the other,
           both held far below the threshold where they read as a glow. */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-[22%] left-[28%] w-[680px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(201,200,195,0.055)_0%,transparent_70%)] blur-[90px]" />
-        <div className="absolute top-[34%] right-[20%] w-[600px] h-[360px] bg-[radial-gradient(ellipse_at_center,rgba(228,226,74,0.06)_0%,transparent_70%)] blur-[90px]" />
+        <div className="absolute top-[22%] left-[28%] w-[680px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(245,242,235,0.05)_0%,transparent_70%)] blur-[90px]" />
+        <div className="absolute top-[34%] right-[20%] w-[600px] h-[360px] bg-[radial-gradient(ellipse_at_center,rgba(245,242,235,0.04)_0%,transparent_70%)] blur-[90px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 lg:px-16 space-y-12 sm:space-y-14 relative z-20">
@@ -78,7 +78,7 @@ export function AboutSection() {
           <div className="flex flex-col items-start space-y-4 max-w-3xl">
             <FadeIn y={18} delay={0.1} duration={0.8}>
               <div className="eyebrow">// ABOUT ME · ARCHITECTURAL FOUNDATION</div>
-              <h2 className="stylish-header text-[2rem] sm:text-[2.6rem] md:text-[3.15rem] lg:text-[3.6rem] text-[#EAE8E2] mt-3">
+              <h2 className="stylish-header text-[2rem] sm:text-[2.6rem] md:text-[3.15rem] lg:text-[3.6rem] text-[#F5F2EB] mt-3">
                 Engineering and vision
               </h2>
             </FadeIn>

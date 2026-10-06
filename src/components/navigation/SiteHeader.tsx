@@ -64,14 +64,14 @@ export function SiteHeader() {
 
   const social = {
     className:
-      "h-9 w-9 flex items-center justify-center border border-[rgba(234,232,226,0.11)] text-[#8C8C86] hover:text-[#EDEC6B] hover:border-[rgba(237,236,107,0.42)] transition-colors duration-300 cursor-pointer",
+      "h-9 w-9 flex items-center justify-center border border-[rgba(245,242,235,0.11)] text-[#8C8C86] hover:text-[#DCFD3C] hover:border-[rgba(220,253,60,0.42)] transition-colors duration-300 cursor-pointer",
   };
 
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-colors duration-500 ${
         pastHero
-          ? "bg-[rgba(11,11,13,0.82)] backdrop-blur-xl border-b border-[rgba(234,232,226,0.10)]"
+          ? "glass-bar border-b border-[rgba(245,242,235,0.10)]"
           : "bg-transparent border-b border-transparent"
       }`}
     >
@@ -81,8 +81,8 @@ export function SiteHeader() {
           className="group inline-flex items-center gap-2.5 cursor-pointer"
           aria-label="Mastan Vali, back to top"
         >
-          <span className="h-[5px] w-[5px] rounded-full bg-[#E4E24A] shrink-0" />
-          <span className="font-[family-name:var(--font-geist-sans)] text-[13px] font-medium tracking-[0.02em] text-[#C9C8C3] group-hover:text-[#EAE8E2] transition-colors duration-300 select-none">
+          <span className="h-[5px] w-[5px] rounded-full bg-[#CDFD02] shrink-0" />
+          <span className="font-[family-name:var(--font-geist-sans)] text-[13px] font-medium tracking-[0.02em] text-[#C9C8C3] group-hover:text-[#F5F2EB] transition-colors duration-300 select-none">
             Mastan Vali
           </span>
         </a>

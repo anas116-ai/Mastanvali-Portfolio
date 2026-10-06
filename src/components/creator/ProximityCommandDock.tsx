@@ -35,7 +35,7 @@ function parseRGB(value: string): RGB {
    means a palette change in globals.css carries the ramp with it. */
 function readRamp(el: HTMLElement) {
   const rest = parseRGB(getComputedStyle(el).color);
-  return { from: rest, to: [228, 226, 74] as RGB };
+  return { from: rest, to: [205, 253, 2] as RGB };
 }
 
 function mix(a: RGB, b: RGB, t: number) {
@@ -270,7 +270,7 @@ export function ProximityCommandDock({ activeId = "" }: { activeId?: string }) {
                 setting an inline opacity, because an inline value written
                 once by React is overwritten by the loop on the next frame. */}
             <span
-              className="dock-rule absolute -bottom-0.5 left-0 h-px w-full origin-left bg-[#E4E24A]"
+              className="dock-rule absolute -bottom-0.5 left-0 h-px w-full origin-left bg-[#CDFD02]"
               style={{ opacity: 0, transform: "scaleX(0)" }}
             />
           </a>
@@ -296,7 +296,7 @@ export function MobileNav() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={open ? "Close navigation menu" : "Open navigation menu"}
-        className="h-9 w-9 flex items-center justify-center border border-[rgba(234,232,226,0.11)] bg-transparent text-[#C9C8C3] hover:border-[rgba(237,236,107,0.42)] hover:text-[#EDEC6B] transition-colors duration-300 cursor-pointer"
+        className="h-9 w-9 flex items-center justify-center border border-[rgba(245,242,235,0.11)] bg-transparent text-[#C9C8C3] hover:border-[rgba(220,253,60,0.42)] hover:text-[#DCFD3C] transition-colors duration-300 cursor-pointer"
       >
         {open ? <X size={16} /> : <Menu size={16} />}
       </button>
@@ -304,7 +304,7 @@ export function MobileNav() {
         <div /* Anchored to the masthead's measured height (57px) plus a 4px gap.
              This was 4.25rem, tuned for the older taller bar, which left the
              panel floating 11px below the header it belongs to. */
-        className="fixed inset-x-4 top-[61px] z-50 border border-[rgba(234,232,226,0.13)] bg-[#0F0F12]/97 backdrop-blur-2xl p-2">
+        className="fixed inset-x-4 top-[61px] z-50 rounded-[3px] border border-[rgba(245,242,235,0.13)] glass-strong p-2">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.id}
@@ -313,7 +313,7 @@ export function MobileNav() {
                 e.preventDefault();
                 go(item);
               }}
-              className="block px-4 py-3 text-sm font-normal tracking-[0.01em] text-[#8C8C86] hover:text-[#EDEC6B] hover:bg-[rgba(234,232,226,0.03)] transition-colors duration-200 font-[family-name:var(--font-geist-sans)]"
+              className="block px-4 py-3 text-sm font-normal tracking-[0.01em] text-[#8C8C86] hover:text-[#DCFD3C] hover:bg-[rgba(245,242,235,0.03)] transition-colors duration-200 font-[family-name:var(--font-geist-sans)]"
             >
               {item.label}
             </a>

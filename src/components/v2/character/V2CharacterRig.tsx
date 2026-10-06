@@ -3,8 +3,6 @@
 import React, { useRef, Suspense, useState, useEffect, Component, type ReactNode } from "react";import { Canvas } from "@react-three/fiber";
 import { DepthCharacterMesh } from "@/components/character/webgl/DepthCharacterMesh";
 import { GroundShadow3D } from "@/components/character/webgl/GroundShadow3D";
-import { VolumetricParticleSystem } from "@/components/character/webgl/VolumetricParticleSystem";
-import { LaptopSkillStream } from "@/components/character/LaptopSkillStream";
 import Image from "next/image";
 
 function webglAvailable(): boolean {
@@ -122,8 +120,8 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
               {/* 3D Ground Contact Shadow Plane directly under the feet */}
               <GroundShadow3D mousePosition={mousePosition} />
 
-              {/* 3D Volumetric Drifting Atmospheric Dust Particles */}
-              <VolumetricParticleSystem count={isMobile ? 60 : 150} mousePosition={mousePosition} />
+              {/* Calm stage — volumetric dust removed for clean luxury */}
+              {/* Dust particles removed for clean luxury */}
             </Suspense>
           </Canvas>
         </RigBoundary>
@@ -146,8 +144,8 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
 
 
 
-      {/* 2. LAPTOP SKILL STREAM (Streams from laptop to side corridors, bursting at apex without occluding face) */}
-      <LaptopSkillStream />
+      {/* Floating skill badges removed for clean luxury */}
+      {/* Skill stream removed for clean luxury */}
     </div>
   );
 }

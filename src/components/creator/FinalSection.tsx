@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FadeIn } from "./FadeIn";
+import { PremiumNightBackdrop } from "./PremiumNightBackdrop";
 import { Mail, Linkedin, Github, FileText } from "lucide-react";
 import { ResumeModal } from "@/components/resume/ResumeModal";
 import { ShaderIgnitionButton } from "@/components/ui/ShaderIgnitionButton";
@@ -14,18 +15,20 @@ export function FinalSection() {
   return (
     <footer
       id="contact"
-      className="relative w-full overflow-hidden bg-transparent text-[#EAE8E2] pt-24 sm:pt-28 md:pt-32 pb-16 px-5 sm:px-8 md:px-12 lg:px-16 select-none border-t border-[rgba(234,232,226,0.07)]"
+      className="relative w-full overflow-hidden bg-transparent text-[#F5F2EB] pt-24 sm:pt-28 md:pt-32 pb-16 px-5 sm:px-8 md:px-12 lg:px-16 select-none border-t border-[rgba(245,242,235,0.07)]"
     >
       {/* Floor wash. Lemon pooled low and held at a low alpha, so the page
           appears to end in light rather than in a glow. */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute bottom-[-140px] left-1/2 -translate-x-1/2 w-[900px] h-[420px] bg-[radial-gradient(ellipse_at_center,rgba(228,226,74,0.075)_0%,transparent_72%)] blur-[110px]" />
+        <div className="absolute bottom-[-140px] left-1/2 -translate-x-1/2 w-[900px] h-[420px] bg-[radial-gradient(ellipse_at_center,rgba(205,253,2,0.075)_0%,transparent_72%)] blur-[110px]" />
+        {/* Premium night beams over the closing floor */}
+        <PremiumNightBackdrop side="left" mood="calm" />
       </div>
 
       <div className="mx-auto max-w-4xl flex flex-col items-center text-center relative z-10 space-y-11">
         <FadeIn y={20} duration={0.8}>
           <div className="flex items-center gap-2.5 eyebrow justify-center">
-            <span className="h-[5px] w-[5px] rounded-full bg-[#E4E24A] animate-pulse" />
+            <span className="h-[5px] w-[5px] rounded-full bg-[#CDFD02] animate-pulse" />
             // Start a conversation
           </div>
 
@@ -33,7 +36,7 @@ export function FinalSection() {
               caption is set to its own measure on the same optical centre. Neither
               is allowed to run long: the caption holds a 62 character line, which
               is where this face still reads as a sentence rather than a block. */}
-          <h2 className="stylish-header text-[clamp(1.95rem,5.6vw,3.4rem)] text-[#EAE8E2] mt-4 max-w-[16ch] text-balance">
+          <h2 className="stylish-header text-[clamp(1.95rem,5.6vw,3.4rem)] text-[#F5F2EB] mt-4 max-w-[16ch] text-balance">
             Let&apos;s Build Something Extraordinary
           </h2>
 
@@ -76,7 +79,7 @@ export function FinalSection() {
           <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 text-[12.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.02em] text-[#8C8C86]">
             <a
               href={`mailto:${EMAIL}`}
-              className="text-[#C9C8C3] hover:text-[#EDEC6B] transition-colors duration-300"
+              className="text-[#C9C8C3] hover:text-[#DCFD3C] transition-colors duration-300"
             >
               {EMAIL}
             </a>
@@ -104,7 +107,7 @@ export function FinalSection() {
             href="https://github.com/anas116-ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 flex items-center justify-center border border-[rgba(234,232,226,0.11)] text-[#8C8C86] hover:text-[#EDEC6B] hover:border-[rgba(237,236,107,0.42)] transition-colors duration-300"
+            className="w-10 h-10 flex items-center justify-center border border-[rgba(245,242,235,0.11)] text-[#8C8C86] hover:text-[#DCFD3C] hover:border-[rgba(220,253,60,0.42)] transition-colors duration-300"
             title="GitHub"
             aria-label="GitHub Profile"
           >
@@ -115,7 +118,7 @@ export function FinalSection() {
             href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 flex items-center justify-center border border-[rgba(234,232,226,0.11)] text-[#8C8C86] hover:text-[#EDEC6B] hover:border-[rgba(237,236,107,0.42)] transition-colors duration-300"
+            className="w-10 h-10 flex items-center justify-center border border-[rgba(245,242,235,0.11)] text-[#8C8C86] hover:text-[#DCFD3C] hover:border-[rgba(220,253,60,0.42)] transition-colors duration-300"
             title="LinkedIn"
             aria-label="LinkedIn Profile"
           >
@@ -123,7 +126,7 @@ export function FinalSection() {
           </a>
         </FadeIn>
 
-        <div className="pt-8 border-t border-[rgba(234,232,226,0.07)] w-full text-center text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] uppercase text-[#43433F]">
+        <div className="pt-8 border-t border-[rgba(245,242,235,0.07)] w-full text-center text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] uppercase text-[#43433F]">
           &copy; {new Date().getFullYear()} Shaik Mastan Vali
           <span className="mx-2 text-[#2A2A2E]">/</span>
           Enterprise data engineering, autonomous agents, full-stack systems

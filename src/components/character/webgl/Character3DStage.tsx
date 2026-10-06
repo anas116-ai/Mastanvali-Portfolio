@@ -1,11 +1,10 @@
-"use client";
+﻿"use client";
 
 import React, { Suspense, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { motion } from "framer-motion";
 import { DepthCharacterMesh } from "./DepthCharacterMesh";
 import { GroundShadow3D } from "./GroundShadow3D";
-import { VolumetricParticleSystem } from "./VolumetricParticleSystem";
 
 interface Character3DStageProps {
   onInteract?: () => void;
@@ -81,8 +80,6 @@ export function Character3DStage({ onInteract, className = "" }: Character3DStag
           {/* Ground Contact Shadow */}
           <GroundShadow3D mousePosition={mousePosition} />
 
-          {/* Drifting Ambient Dust Particles */}
-          <VolumetricParticleSystem count={280} mousePosition={mousePosition} />
         </Suspense>
       </Canvas>
 

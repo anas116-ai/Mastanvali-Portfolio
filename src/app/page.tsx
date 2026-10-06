@@ -9,25 +9,22 @@ import { ProjectsSection } from "@/components/creator/ProjectsSection";
 import { FinalSection } from "@/components/creator/FinalSection";
 import { AmbientBackgroundLayers } from "@/components/creator/AmbientBackgroundLayers";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
-import { SpotlightCursor } from "@/components/ui/SpotlightCursor";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
 
 export default function Home() {
   return (
     <div
-      className="relative bg-[#0B0B0D] min-h-screen text-[#EAE8E2] antialiased selection:bg-[#E4E24A]/25 selection:text-[#EAE8E2]"
+      className="relative bg-[#0A0A0B] min-h-screen text-[#F5F2EB] antialiased selection:bg-white/20 selection:text-[#F5F2EB]"
       id="top"
     >
       {/* Top Scroll Progress Indicator */}
       <ScrollProgressBar />
 
-      {/* Luminous pointer light pool */}
-      <SpotlightCursor />
 
       {/* Skip to content for keyboard users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#EDEC6B] focus:text-[#0B0B0D] focus:text-xs focus:font-medium focus:tracking-[0.16em] focus:uppercase focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#F5F2EB] focus:text-[#0A0A0B] focus:text-xs focus:font-medium focus:tracking-[0.16em] focus:uppercase focus:outline-none"
       >
         Skip to content
       </a>
@@ -36,14 +33,12 @@ export default function Home() {
       <AmbientBackgroundLayers />
 
       {/* Corner vignette framing the composition.
-          The alpha was missing its comma, so this was resolving to a solid
-          opaque blue instead of a near-black wash: rgba(6,6,80.58) parses
-          as a fully opaque rgb(6,6,80). */}
+          Updated to royal blue tint for the new theme. */}
       <div
         className="fixed inset-0 pointer-events-none z-[50]"
         style={{
           background:
-            "radial-gradient(150% 118% at 50% 38%, transparent 66%, rgba(6,6,8,0.58) 100%)",
+            "radial-gradient(150% 118% at 50% 38%, transparent 66%, rgba(0,0,0,0.55) 100%)",
         }}
       />
 

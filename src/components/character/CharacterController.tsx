@@ -1,14 +1,12 @@
-"use client";
+﻿"use client";
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { CharacterLighting } from "./CharacterLighting";
 import { CharacterShadow } from "./CharacterShadow";
 import { CharacterEffects } from "./CharacterEffects";
-import { GlitterShimmerParticles } from "./GlitterShimmerParticles";
 import { Character3DStage } from "./webgl/Character3DStage";
 
-import { LaptopFloatingStreams } from "./LaptopFloatingStreams";
 
 export interface CharacterProps {
   src?: string;
@@ -114,11 +112,11 @@ function Character2DFallback({
         />
       </motion.div>
 
-      {/* Small Shimmer Particles & Glitter Glimpses around Character & Hands */}
-      <GlitterShimmerParticles />
+      {/* Clean stage — no AI spark systems */}
+      {/* Clean stage — no glitter spark systems */}
 
-      {/* Laptop Code & Skill Boxes Emission Streams (Sequenced One By One) */}
-      <LaptopFloatingStreams />
+      {/* Clean stage — calm, no floating badge streams */}
+      {/* Floating badge streams removed for clean luxury */}
     </div>
   );
 }

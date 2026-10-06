@@ -22,10 +22,10 @@ export function VolumetricParticleSystem({
     const spd = new Float32Array(count * 3);
 
     const palette = [
-      new THREE.Color("#EDEC6B"), // brass dust
-      new THREE.Color("#B4B23A"), // bronze mote
-      new THREE.Color("#D2D041"), // burnished copper
-      new THREE.Color("#E4E24A"), // burnished gold
+      new THREE.Color("#DCFD3C"), // brass dust
+      new THREE.Color("#8A8918"), // lime-deep mote
+      new THREE.Color("#DCFD3C"), // lime-hi mote
+      new THREE.Color("#CDFD02"), // burnished gold
       new THREE.Color("#C9C8C3"), // bone
     ];
 

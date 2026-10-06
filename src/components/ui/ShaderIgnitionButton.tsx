@@ -27,10 +27,10 @@ const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
     starHigh: [0.89, 0.89, 0.29],
     glowRgb: [0.89, 0.89, 0.29],
     flashRgb: [1.0, 1.0, 0.94],
-    borderIdle: "border-[#E4E24A]/40",
-    borderHover: "group-hover:border-[#EDEC6B]/90",
-    textGlow: "rgba(237,236,107,0.65)",
-    bezelGrad: "from-[#E4E24A]/35 via-white/10 to-white/15",
+    borderIdle: "border-[#CDFD02]/40",
+    borderHover: "group-hover:border-[#DCFD3C]/90",
+    textGlow: "rgba(220,253,60,0.65)",
+    bezelGrad: "from-[#CDFD02]/35 via-white/10 to-white/15",
   },
   // 02. Lemon hi, held back
   lemonHi: {
@@ -39,10 +39,10 @@ const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
     starHigh: [0.79, 0.79, 0.24],
     glowRgb: [0.79, 0.79, 0.24],
     flashRgb: [1.0, 1.0, 0.95],
-    borderIdle: "border-[#EDEC6B]/35",
-    borderHover: "group-hover:border-[#EDEC6B]/85",
-    textGlow: "rgba(237,236,107,0.60)",
-    bezelGrad: "from-[#EDEC6B]/30 via-white/5 to-white/10",
+    borderIdle: "border-[#DCFD3C]/35",
+    borderHover: "group-hover:border-[#DCFD3C]/85",
+    textGlow: "rgba(220,253,60,0.60)",
+    bezelGrad: "from-[#DCFD3C]/30 via-white/5 to-white/10",
   },
   // 03. Bone (neutral, not blue-tinted white)
   bone: {
@@ -52,8 +52,8 @@ const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
     glowRgb: [0.92, 0.92, 0.89],
     flashRgb: [1.0, 1.0, 0.98],
     borderIdle: "border-[#C9C8C3]/25",
-    borderHover: "group-hover:border-[#EAE8E2]/70",
-    textGlow: "rgba(234,232,226,0.55)",
+    borderHover: "group-hover:border-[#F5F2EB]/70",
+    textGlow: "rgba(245,242,235,0.55)",
     bezelGrad: "from-[#C9C8C3]/25 via-white/5 to-white/10",
   },
   // 04. Lemon deep, the darkest lemon stop
@@ -63,10 +63,10 @@ const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
     starHigh: [0.79, 0.79, 0.22],
     glowRgb: [0.78, 0.78, 0.24],
     flashRgb: [1.0, 1.0, 0.93],
-    borderIdle: "border-[#D2D041]/35",
-    borderHover: "group-hover:border-[#D2D041]/85",
-    textGlow: "rgba(228,226,74,0.55)",
-    bezelGrad: "from-[#D2D041]/30 via-white/10 to-white/15",
+    borderIdle: "border-[#CDFD02]/35",
+    borderHover: "group-hover:border-[#CDFD02]/85",
+    textGlow: "rgba(205,253,2,0.55)",
+    bezelGrad: "from-[#CDFD02]/30 via-white/10 to-white/15",
   },
 };
 
@@ -349,11 +349,11 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
     if (onClick) onClick(e);
   };
 
-  // Compact, Balanced Dimensions
+  // Sleek, slim luxury dimensions
   const sizeStyles = {
-    sm: "px-3.5 py-2 text-xs",
-    md: "px-4.5 py-2.5 sm:px-5 sm:py-2.5 text-xs sm:text-[13px]",
-    lg: "px-6 py-3 sm:px-6.5 sm:py-3 text-sm",
+    sm: "px-3.5 py-1.5 text-[11px]",
+    md: "px-4 py-2 sm:px-5 sm:py-2 text-xs sm:text-xs",
+    lg: "px-5 py-2 sm:px-6 sm:py-2.5 text-xs sm:text-[13px]",
   }[size];
 
   /* Bezel geometry.
@@ -374,14 +374,14 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
       onMouseLeave={() => setIsHovered(false)}
       onFocus={() => setIsHovered(true)}
       onBlur={() => setIsHovered(false)}
-      className={`group relative inline-flex p-[1.5px] rounded-[4px] bg-gradient-to-b ${config.bezelGrad} border ${config.borderIdle} ${config.borderHover} transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.985] cursor-pointer select-none ${className}`}
+      className={`group relative inline-flex p-[1.5px] rounded-full bg-gradient-to-b ${config.bezelGrad} border ${config.borderIdle} ${config.borderHover} transition-all duration-500 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.985] cursor-pointer select-none ${className}`}
     >
       {/* Inner chamber housing the shader. The radius is applied inline
           because Tailwind only sees class names that appear literally in
           the source: `rounded-[${CHAMBER_RADIUS}px]` was never emitted, so
           the chamber silently rendered with a square corner. */}
       <div
-        className={`relative flex items-center justify-center gap-2 overflow-hidden bg-[#090909] border border-[rgba(234,232,226,0.07)] ${sizeStyles}`}
+        className={`relative flex items-center justify-center gap-2 overflow-hidden glass border border-[rgba(245,242,235,0.07)] ${sizeStyles}`}
         style={{ borderRadius: CHAMBER_RADIUS }}
       >
         {/* Full-bleed WebGL Canvas */}
@@ -403,7 +403,7 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
 
         {/* Crisp button typography */}
         <span
-          className="relative z-10 font-[family-name:var(--font-geist-sans)] font-medium text-[0.95em] tracking-[0.005em] text-[#EAE8E2] group-hover:text-white transition-colors duration-200"
+          className="relative z-10 font-[family-name:var(--font-geist-sans)] font-medium text-[0.95em] tracking-[0.005em] text-[#F5F2EB] group-hover:text-white transition-colors duration-200"
           style={{
             textShadow: isHovered
               ? `0 0 12px ${config.textGlow}, 0 1px 3px rgba(0,0,0,0.9)`

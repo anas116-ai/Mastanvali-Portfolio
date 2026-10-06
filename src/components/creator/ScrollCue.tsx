@@ -32,20 +32,20 @@ export function ScrollCue({ targetId = "about" }: { targetId?: string }) {
       {/* The rule: a 64px hairline. Fills downward on a 3.4s cycle. */}
       <span
         aria-hidden
-        className="relative block h-16 w-px overflow-hidden bg-[rgba(234,232,226,0.11)]"
+        className="relative block h-16 w-px overflow-hidden bg-[rgba(245,242,235,0.11)]"
       >
         {!reduced && (
           <>
             {/* the fill, wiping from top to bottom */}
             <span
-              className="absolute inset-x-0 top-0 h-full origin-top bg-[#E4E24A]"
+              className="absolute inset-x-0 top-0 h-full origin-top bg-[#CDFD02]"
               style={{
                 animation: "cue-fill 3.4s cubic-bezier(0.165,0.84,0.44,1) infinite",
               }}
             />
             {/* one light body travelling the rule, slower than the fill */}
             <span
-              className="absolute inset-x-0 h-6 bg-[linear-gradient(to_bottom,transparent,rgba(228,226,74,0.9),transparent)]"
+              className="absolute inset-x-0 h-6 bg-[linear-gradient(to_bottom,transparent,rgba(205,253,2,0.9),transparent)]"
               style={{
                 animation: "cue-travel 3.4s cubic-bezier(0.44,0,0.56,1) infinite",
               }}

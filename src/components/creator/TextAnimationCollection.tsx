@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, type CSSProperties } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
@@ -43,11 +43,11 @@ interface TextAnimationCollectionProps {
 const clamp = (v: number, a: number, b: number) => (v < a ? a : v > b ? b : v);
 const seg = (t: number, a: number, b: number) => clamp((t - a) / (b - a || 1e-6), 0, 1);
 
-/** Impact-free drop: fast approach, hard stop, no bounce. */
-const eDrop = (t: number) => 1 - Math.pow(1 - t, 5);
+/** Silk descent: slow approach, weightless stop, no impact snap. */
+const eDrop = (t: number) => 1 - Math.pow(1 - t, 3);
 
-/** Compression curve for the settle. Peaks at 26% of the settle window. */
-const settle = (t: number) => Math.sin(clamp(t, 0, 1) * Math.PI) * (1 - clamp(t, 0, 1) * 0.25);
+/** Soft settle curve for the luxury release. Peaks gently at 32% of the window. */
+const settle = (t: number) => Math.sin(clamp(t, 0, 1) * Math.PI) * (1 - clamp(t, 0, 1) * 0.15);
 
 /**
  * Each letter must be unambiguously its own event. At 85ms the eleven glyphs
@@ -55,10 +55,10 @@ const settle = (t: number) => Math.sin(clamp(t, 0, 1) * Math.PI) * (1 - clamp(t,
  * arrival. 240ms per letter gives every glyph a visible drop, impact, and settle
  * before the next one is released, so M lands, then N, then E, then X.
  */
-const LETTER_DELAY = 0.24; // seconds between letters
-const FALL_TIME = 0.30; // seconds of free fall before impact
-const SETTLE_TIME = 0.46; // seconds of compress-and-release after impact
-const DROP_HEIGHT = 0.62; // fraction of glyph height, in em
+const LETTER_DELAY = 0.16; // seconds between letters — quicker cascade, silk overlap
+const FALL_TIME = 0.55; // seconds of slow luxury descent
+const SETTLE_TIME = 0.65; // seconds of soft fluid settle
+const DROP_HEIGHT = 0.38; // fraction of glyph height — shorter, calmer rise
 
 /** Hold this long after the full word has settled, then re-strike. */
 const REPLAY_MS = 10000;
@@ -150,9 +150,9 @@ export function TextAnimationCollection({
           }
 
           if (elapsed < land + SETTLE_TIME) {
-            // Impact: compress, then ease back to the exact final slot.
+            // Silk settle: gentle breathe, then exact final slot.
             const s = settle(seg(elapsed, land, land + SETTLE_TIME));
-            n.style.transform = `translateY(${(s * 0.052).toFixed(4)}em) scaleY(${(1 - s * 0.075).toFixed(4)})`;
+            n.style.transform = `translateY(${(s * 0.028).toFixed(4)}em) scaleY(${(1 - s * 0.035).toFixed(4)})`;
             n.style.opacity = "1";
             n.style.filter = "none";
             continue;
@@ -226,6 +226,10 @@ export function TextAnimationCollection({
                     if (el) charsRef.current[idx] = el;
                   }}
                   className="threeui-intro-char"
+                  /* Each letter samples a different slice of the worn plate:
+                     --sx drifts by 0.61em per character (non-multiple of the
+                     tile width), so no two glyphs show the same streak. */
+                  style={{ "--sx": `${(idx * 0.61).toFixed(2)}em` } as CSSProperties}
                 >
                   {c}
                 </span>

@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { FadeIn } from "./FadeIn";
+import { PremiumNightBackdrop } from "./PremiumNightBackdrop";
 import { Maximize2, X } from "lucide-react";
 import Image from "next/image";
 import { ShaderIgnitionButton, IgnitionColorVariant } from "@/components/ui/ShaderIgnitionButton";
@@ -46,7 +47,7 @@ const projectList: ProjectItem[] = [
     telemetry: "ACID WAL / zero read latency",
     stat1: "FEFO enforced",
     stat2: "Offline SQLite",
-    accent: "#B4B23A",
+    accent: "#8A8918",
   },
   {
     no: "02",
@@ -69,7 +70,7 @@ const projectList: ProjectItem[] = [
     telemetry: "ATS match engine",
     stat1: "98% target score",
     stat2: "No invented claims",
-    accent: "#E4E24A",
+    accent: "#CDFD02",
   },
   {
     no: "03",
@@ -92,7 +93,7 @@ const projectList: ProjectItem[] = [
     telemetry: "Persistent memory DAG",
     stat1: "787 tests passing",
     stat2: "Ollama Llama 3",
-    accent: "#D2D041",
+    accent: "#DCFD3C",
   },
   {
     no: "04",
@@ -124,7 +125,7 @@ const buttonVariants: IgnitionColorVariant[] = ["bone", "lemon", "lemonDeep", "l
 
 const cutCorner = {
   backgroundImage:
-    "linear-gradient(225deg, transparent 18px, rgba(18,18,22,0.96) 18px), linear-gradient(180deg, rgba(18,18,22,0.96) 0%, rgba(18,18,22,0.96) 100%)",
+    "linear-gradient(225deg, transparent 18px, rgba(10,10,11,0.96) 18px), linear-gradient(180deg, rgba(10,10,11,0.96) 0%, rgba(10,10,11,0.96) 100%)",
 };
 
 export function ProjectsSection() {
@@ -143,12 +144,17 @@ export function ProjectsSection() {
     <section
       id="projects"
       ref={containerRef}
-      className="relative w-full bg-transparent pt-24 sm:pt-28 md:pt-32 pb-32 text-[#EAE8E2] z-20 select-none border-t border-[rgba(234,232,226,0.07)]"
+      className="relative w-full bg-transparent pt-24 sm:pt-28 md:pt-32 pb-32 text-[#F5F2EB] z-20 select-none border-t border-[rgba(245,242,235,0.07)]"
     >
       {/* Warm depth wash. Blur is atmosphere, never a drop shadow. */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-1/3 -left-28 w-[820px] h-[820px] blur-[170px] opacity-[0.16] bg-[radial-gradient(circle,rgba(228,226,74,0.34)_0%,transparent_72%)]" />
+        <div className="absolute top-1/3 -left-28 w-[820px] h-[820px] blur-[170px] opacity-[0.16] bg-[radial-gradient(circle,rgba(205,253,2,0.34)_0%,transparent_72%)]" />
         <div className="absolute bottom-1/4 -right-24 w-[760px] h-[760px] blur-[170px] opacity-[0.13] bg-[radial-gradient(circle,rgba(96,94,24,0.55)_0%,transparent_74%)]" />
+        {/* Ice counterpart: frost cards need cool variation to refract,
+            or the sheet goes flat. Light only. */}
+        <div className="absolute top-1/2 -right-40 w-[700px] h-[700px] blur-[170px] opacity-[0.10] bg-[radial-gradient(circle,rgba(148,210,255,0.30)_0%,transparent_72%)]" />
+        {/* Premium night beams over the stacking cards */}
+        <PremiumNightBackdrop side="right" mood="calm" />
       </div>
 
       <div className="mx-auto max-w-7xl px-5 sm:px-8 md:px-12 lg:px-16 relative z-20">
@@ -157,10 +163,10 @@ export function ProjectsSection() {
         <div className="flex flex-col gap-6 mb-14 sm:mb-16">
           <FadeIn y={20} delay={0.1} duration={0.8}>
             <div className="flex items-center gap-2.5 eyebrow">
-              <span className="h-[5px] w-[5px] rounded-full bg-[#E4E24A] animate-pulse" />
+              <span className="h-[5px] w-[5px] rounded-full bg-[#CDFD02] animate-pulse" />
               // Production systems and products
             </div>
-            <h2 className="stylish-header text-[2.1rem] sm:text-[2.6rem] lg:text-[3.1rem] text-[#EAE8E2] mt-3">
+            <h2 className="stylish-header text-[2.1rem] sm:text-[2.6rem] lg:text-[3.1rem] text-[#F5F2EB] mt-3">
               My Projects
             </h2>
             <p className="stylish-sub text-xs sm:text-[13.5px] text-[#8C8C86] max-w-2xl mt-4">
@@ -196,18 +202,18 @@ export function ProjectsSection() {
             className="fixed inset-0 z-50 bg-[rgba(6,6,8,0.94)] backdrop-blur-[3px] flex flex-col items-center justify-center p-4 sm:p-8 cursor-zoom-out"
           >
             <div
-              className="relative max-w-6xl w-full aspect-[16/9] overflow-hidden border border-[rgba(234,232,226,0.14)] bg-[#090909] rounded-[3px]"
+              className="relative max-w-6xl w-full aspect-[16/9] overflow-hidden border border-[rgba(245,242,235,0.14)] bg-[rgba(12,12,15,0.70)] backdrop-blur-[14px] rounded-[3px]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setModalImage(null)}
                 aria-label="Close full screen"
-                className="absolute top-3 right-3 z-50 w-9 h-9 flex items-center justify-center bg-[#090909] border border-[rgba(234,232,226,0.16)] text-[#C9C8C3] hover:text-[#0B0B0D] hover:bg-[#EDEC6B] hover:border-[#EDEC6B] transition-colors duration-300"
+                className="absolute top-3 right-3 z-50 w-9 h-9 flex items-center justify-center bg-[rgba(12,12,15,0.64)] backdrop-blur-[10px] border border-[rgba(245,242,235,0.16)] text-[#C9C8C3] hover:text-[#0A0A0B] hover:bg-[#DCFD3C] hover:border-[#DCFD3C] transition-colors duration-300"
               >
                 <X size={16} />
               </button>
 
-              <div className="absolute top-3 left-3 z-50 px-3 py-1.5 bg-[#090909] border border-[rgba(234,232,226,0.16)] text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.14em] uppercase text-[#8C8C86]">
+              <div className="absolute top-3 left-3 z-50 px-3 py-1.5 bg-[rgba(12,12,15,0.64)] backdrop-blur-[10px] border border-[rgba(245,242,235,0.16)] text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.14em] uppercase text-[#8C8C86]">
                 {modalImage.title}
               </div>
 
@@ -261,13 +267,17 @@ function ProjectCard({
         style={{
           scale: isLast ? 1 : scale,
           opacity: isLast ? 1 : opacity,
-          backgroundColor: "#101014",
-          // Brushed graphite: fine vertical grain, never a warm wash and never
-          // a shadow. The card is defined by its hairline, not by lift.
+          backgroundColor: "rgba(26, 26, 28, 0.55)",
+          backdropFilter: "blur(28px) saturate(1.5)",
+          WebkitBackdropFilter: "blur(28px) saturate(1.5)",
+          // Brushed grain over frost glass: fine vertical grain over a
+          // milky glass-black sheet. The card is defined by its hairline,
+          // its specular, and by the washes passing behind it — settled by
+          // float-soft, never lifted by a hard shadow.
           backgroundImage:
-            "repeating-linear-gradient(90deg, rgba(234,232,226,0.016) 0px, rgba(234,232,226,0.016) 1px, transparent 1px, transparent 4px), linear-gradient(168deg, rgba(34,34,41,0.86) 0%, rgba(16,16,20,0.96) 58%, rgba(12,12,15,0.98) 100%)",
+            "repeating-linear-gradient(90deg, rgba(245,242,235,0.016) 0px, rgba(245,242,235,0.016) 1px, transparent 1px, transparent 4px), linear-gradient(168deg, rgba(40,40,42,0.50) 0%, rgba(23,23,25,0.62) 58%, rgba(14,14,16,0.70) 100%)",
         }}
-        className="w-full rounded-[3px] border border-[rgba(234,232,226,0.12)] p-6 sm:p-9 md:p-11 relative overflow-hidden group edge-lit transition-colors duration-400 hover:border-[rgba(228,226,74,0.34)]"
+        className="w-full rounded-[20px] border border-[rgba(245,242,235,0.12)] p-6 sm:p-9 md:p-11 relative overflow-hidden group glass-frost float-soft transition-colors duration-400 hover:border-[rgba(205,253,2,0.34)]"
       >
         {/* Accent cap, a cut plate marker rather than a glow */}
         <span
@@ -278,7 +288,7 @@ function ProjectCard({
         {/* the milled recess the card sits in, one hairline in from the trim */}
         <span
           aria-hidden
-          className="absolute inset-[7px] border border-[rgba(234,232,226,0.055)] pointer-events-none"
+          className="absolute inset-[7px] rounded-[14px] border border-[rgba(245,242,235,0.055)] pointer-events-none"
         />
 
         {/* Wash from the project accent */}
@@ -305,9 +315,9 @@ function ProjectCard({
                 </span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl md:text-[1.85rem] text-[#EAE8E2] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.025em] flex flex-wrap items-center gap-3">
+              <h3 className="text-xl sm:text-2xl md:text-[1.85rem] text-[#F5F2EB] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.025em] flex flex-wrap items-center gap-3">
                 <span>{project.name}</span>
-                <span className="text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.18em] uppercase text-[#C9C8C3] px-2 py-1 border border-[rgba(234,232,226,0.13)]">
+                <span className="text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.18em] uppercase text-[#C9C8C3] px-2 py-1 border border-[rgba(245,242,235,0.13)]">
                   {project.version}
                 </span>
               </h3>
@@ -317,7 +327,7 @@ function ProjectCard({
             <div className="text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase" style={{ color: project.accent }}>
               End to end flow
             </div>
-            <div className="-mt-2 pb-4 border-b border-[rgba(234,232,226,0.09)] text-[12.5px] sm:text-[13.5px] text-[#EAE8E2] font-[family-name:var(--font-geist-mono)] leading-[1.6]">
+            <div className="-mt-2 pb-4 border-b border-[rgba(245,242,235,0.09)] text-[12.5px] sm:text-[13.5px] text-[#F5F2EB] font-[family-name:var(--font-geist-mono)] leading-[1.6]">
               {project.flow}
             </div>
 
@@ -325,7 +335,7 @@ function ProjectCard({
               {project.simpleMeaning}
             </p>
 
-            <div className="space-y-3 pt-4 border-t border-[rgba(234,232,226,0.09)]">
+            <div className="space-y-3 pt-4 border-t border-[rgba(245,242,235,0.09)]">
               <span className="eyebrow">What it implements</span>
               <ul className="space-y-2.5">
                 {project.whatItDoes.slice(0, 3).map((item, idx) => (
@@ -375,7 +385,7 @@ function ProjectCard({
               type="button"
               onClick={() => onOpenModal(project.bannerImg, project.name)}
               aria-label={`View full interface, ${project.name}`}
-              className="relative w-full max-w-[380px] sm:max-w-[420px] aspect-[3/4] overflow-hidden border border-[rgba(234,232,226,0.11)] hover:border-[rgba(234,232,226,0.28)] bg-[#090909] rounded-[3px] group/img cursor-zoom-in p-3 flex items-center justify-center transition-colors duration-400"
+              className="relative w-full max-w-[380px] sm:max-w-[420px] aspect-[3/4] overflow-hidden border border-[rgba(245,242,235,0.11)] hover:border-[rgba(245,242,235,0.28)] bg-[rgba(9,9,9,0.58)] backdrop-blur-[10px] rounded-[3px] group/img cursor-zoom-in p-3 flex items-center justify-center transition-colors duration-400"
             >
               <div className="relative w-full h-full">
                 <Image
@@ -389,7 +399,7 @@ function ProjectCard({
               </div>
 
               <div className="absolute inset-0 bg-[rgba(6,6,8,0.55)] opacity-0 group-hover/img:opacity-100 transition-opacity duration-400 flex items-center justify-center pointer-events-none">
-                <span className="px-3.5 py-2 bg-[#090909] border border-[rgba(234,232,226,0.2)] text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] uppercase text-[#EAE8E2] flex items-center gap-2">
+                <span className="px-3.5 py-2 bg-[rgba(12,12,15,0.70)] backdrop-blur-[10px] border border-[rgba(245,242,235,0.2)] text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] uppercase text-[#F5F2EB] flex items-center gap-2">
                   <Maximize2 size={13} />
                   View full interface
                 </span>

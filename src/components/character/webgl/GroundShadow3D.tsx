@@ -97,7 +97,7 @@ function createUltraSoftRadialTexture(innerAlpha: number, outerAlpha: number): T
     // Smooth cosine-weighted falloff for zero visible hard edges
     gradient.addColorStop(0, `rgba(10,9,8,${innerAlpha})`);
     gradient.addColorStop(0.25, `rgba(12,10,9,${innerAlpha * 0.78})`);
-    gradient.addColorStop(0.55, `rgba(13,13,16,${innerAlpha * 0.32})`);
+    gradient.addColorStop(0.55, `rgba(12,12,13,${innerAlpha * 0.32})`);
     gradient.addColorStop(0.82, `rgba(16,13,11,${innerAlpha * 0.08})`);
     gradient.addColorStop(1, `rgba(16,13,11,${outerAlpha})`);
 

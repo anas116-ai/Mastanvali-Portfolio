@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { FadeIn } from "./FadeIn";
+import { PremiumNightBackdrop } from "./PremiumNightBackdrop";
 import { experience } from "@/data/experience";
 import {
   Calendar,
@@ -17,28 +18,28 @@ import {
 } from "lucide-react";
 import { ResumeModal } from "@/components/resume/ResumeModal";
 
-/* Warm oxidised-metal accents only. Four hues, no neon, no lemon. */
+/* Lime-ramp stops only: one hue, four lightness steps. */
 const pipelineStages = [
   {
     stage: "Stage 01",
     title: "SAP ECC",
     sub: "IDoc and BAPI extraction",
     icon: Database,
-    color: "#D2D041",
+    color: "#CDFD02",
   },
   {
     stage: "Stage 02",
     title: "SAP BODS 4.3",
     sub: "Enterprise data flows",
     icon: Layers,
-    color: "#EDEC6B",
+    color: "#DCFD3C",
   },
   {
     stage: "Stage 03",
     title: "SQL Server",
     sub: "Validation and reconciliation",
     icon: Cpu,
-    color: "#B4B23A",
+    color: "#8A8918",
   },
   {
     stage: "Stage 04",
@@ -49,14 +50,16 @@ const pipelineStages = [
   },
 ];
 
-const pillarColors = ["#E4E24A", "#B4B23A", "#D2D041", "#C9C8C3"];
+const pillarColors = ["#CDFD02", "#8A8918", "#DCFD3C", "#C9C8C3"];
 
 /* Machined plate: sharp 3px corners with the top right corner cut away.
    Built from stacked gradients so no drop shadow is ever needed. */
 const cutCorner = {
   backgroundImage:
-    "linear-gradient(225deg, transparent 13px, rgba(21,21,26,0.96) 13px), linear-gradient(180deg, rgba(21,21,26,0.96) 0%, rgba(21,21,26,0.96) 100%)",
+    "linear-gradient(225deg, transparent 13px, rgba(16,16,18,0.72) 13px), linear-gradient(180deg, rgba(16,16,18,0.78) 0%, rgba(16,16,18,0.82) 100%)",
   backgroundColor: "transparent",
+  backdropFilter: "blur(14px) saturate(1.3)",
+  WebkitBackdropFilter: "blur(14px) saturate(1.3)",
 };
 
 export function ExperienceSection() {
@@ -75,14 +78,14 @@ export function ExperienceSection() {
         onClick={() => setViewMode(mode)}
         aria-pressed={active}
         className={`relative px-4 py-2 text-[11px] font-mono uppercase tracking-[0.18em] transition-colors duration-300 cursor-pointer flex items-center gap-2 ${
-          active ? "text-[#0B0B0D]" : "text-[#8C8C86] hover:text-[#EAE8E2]"
+          active ? "text-[#0A0A0B]" : "text-[#8C8C86] hover:text-[#F5F2EB]"
         }`}
       >
         <span
           className={`absolute inset-0 transition-opacity duration-300 ${
             active ? "opacity-100" : "opacity-0"
           }`}
-          style={{ backgroundColor: "#EDEC6B" }}
+          style={{ backgroundColor: "#DCFD3C" }}
         />
         <Icon size={12} className="relative z-10" />
         <span className="relative z-10 font-medium">{label}</span>
@@ -93,18 +96,20 @@ export function ExperienceSection() {
   return (
     <section
       id="experience"
-      className="relative w-full bg-transparent py-24 sm:py-28 md:py-32 text-[#EAE8E2] z-20 select-none border-t border-[rgba(234,232,226,0.07)]"
+      className="relative w-full bg-transparent py-24 sm:py-28 md:py-32 text-[#F5F2EB] z-20 select-none border-t border-[rgba(245,242,235,0.07)]"
     >
+      {/* Premium night beams over the spec sheet */}
+      <PremiumNightBackdrop side="right" mood="calm" />
       <div className="max-w-7xl mx-auto relative z-20 space-y-12 sm:space-y-14 px-5 sm:px-8 md:px-12 lg:px-16">
         {/* Section header with role metadata set directly beneath it */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-7 border-b border-[rgba(234,232,226,0.11)]">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-7 border-b border-[rgba(245,242,235,0.11)]">
           <div className="space-y-4 max-w-3xl">
             <FadeIn y={20} delay={0.1} duration={0.8}>
               <div className="eyebrow flex items-center gap-2.5">
-                <span className="h-[5px] w-[5px] rounded-full bg-[#E4E24A] animate-pulse" />
+                <span className="h-[5px] w-[5px] rounded-full bg-[#CDFD02] animate-pulse" />
                 // Curriculum vitae / printed sheet
               </div>
-              <h2 className="stylish-header text-[2.1rem] sm:text-[2.6rem] lg:text-[3.1rem] text-[#EAE8E2] mt-3">
+              <h2 className="stylish-header text-[2.1rem] sm:text-[2.6rem] lg:text-[3.1rem] text-[#F5F2EB] mt-3">
                 Experience
               </h2>
             </FadeIn>
@@ -112,10 +117,10 @@ export function ExperienceSection() {
             <FadeIn y={15} delay={0.2} duration={0.8}>
               <div className="pt-1 space-y-3">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="text-xl sm:text-2xl text-[#EAE8E2] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.02em]">
+                  <span className="text-xl sm:text-2xl text-[#F5F2EB] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.02em]">
                     {experience.title}
                   </span>
-                  <span className="rule-dot text-[13px] sm:text-sm text-[#D2D041] font-[family-name:var(--font-geist-mono)] tracking-[0.06em]">
+                  <span className="rule-dot text-[13px] sm:text-sm text-[#DCFD3C] font-[family-name:var(--font-geist-mono)] tracking-[0.06em]">
                     {experience.company}
                   </span>
                 </div>
@@ -149,7 +154,7 @@ export function ExperienceSection() {
               <div
                 role="group"
                 aria-label="Experience view"
-                className="relative inline-flex items-stretch p-px border border-[rgba(234,232,226,0.13)] bg-[rgba(234,232,226,0.045)]"
+                className="relative inline-flex items-stretch p-px border border-[rgba(245,242,235,0.13)] bg-[rgba(245,242,235,0.045)] backdrop-blur-[10px] saturate-[1.2]"
               >
                 {modeButton("3d", "The sheet", Rotate3d)}
                 {modeButton("specs", "Specification", FileText)}
@@ -158,9 +163,9 @@ export function ExperienceSection() {
               <button
                 type="button"
                 onClick={() => setIsResumeOpen(true)}
-                className="px-4 py-2.5 bg-transparent hover:bg-[rgba(234,232,226,0.05)] text-[11px] font-mono uppercase tracking-[0.18em] text-[#C9C8C3] border border-[rgba(234,232,226,0.13)] hover:border-[rgba(228,226,74,0.42)] transition-colors duration-300 flex items-center gap-2 cursor-pointer"
+                className="px-4 py-2.5 bg-transparent hover:bg-[rgba(245,242,235,0.05)] text-[11px] font-mono uppercase tracking-[0.18em] text-[#C9C8C3] border border-[rgba(245,242,235,0.13)] hover:border-[rgba(205,253,2,0.42)] transition-colors duration-300 flex items-center gap-2 cursor-pointer"
               >
-                <ShieldCheck size={13} className="text-[#E4E24A]" />
+                <ShieldCheck size={13} className="text-[#CDFD02]" />
                 <span className="font-medium">Verified resume</span>
               </button>
             </div>
@@ -173,7 +178,7 @@ export function ExperienceSection() {
             <div className="relative w-full flex flex-col items-center justify-center">
               {/* Warm gallery wash behind the paper. No rings, no orbit, no spin. */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
-                <div className="w-[720px] sm:w-[940px] h-[720px] sm:h-[940px] blur-3xl opacity-70 bg-[radial-gradient(ellipse_at_center,rgba(228,226,74,0.13)_0%,rgba(228,226,74,0.06)_40%,transparent_72%)]" />
+                <div className="w-[720px] sm:w-[940px] h-[720px] sm:h-[940px] blur-3xl opacity-70 bg-[radial-gradient(ellipse_at_center,rgba(205,253,2,0.13)_0%,rgba(205,253,2,0.06)_40%,transparent_72%)]" />
               </div>
 
               <div className="relative w-full h-[600px] sm:h-[980px] md:h-[1080px] z-10">
@@ -184,7 +189,7 @@ export function ExperienceSection() {
                   loading="eager"
                   style={{ background: "transparent", colorScheme: "dark" }}
                 />
-                <div className="absolute top-4 right-4 flex items-center gap-2 text-[#EDEC6B] font-[family-name:var(--font-geist-mono)] text-[11px] tracking-[0.16em] uppercase pointer-events-none select-none">
+                <div className="absolute top-4 right-4 flex items-center gap-2 text-[#DCFD3C] font-[family-name:var(--font-geist-mono)] text-[11px] tracking-[0.16em] uppercase pointer-events-none select-none">
                   <Rotate3d size={13} />
                   <span className="hidden sm:inline">Drag to rotate</span>
                 </div>
@@ -192,12 +197,12 @@ export function ExperienceSection() {
 
               {/* Plinth: a machined brass rule with survey ticks instead of a shadow */}
               <div className="w-full max-w-xl h-6 pointer-events-none relative -mt-4 z-0 flex items-end justify-center">
-                <div className="w-full h-px bg-[linear-gradient(90deg,transparent,rgba(237,236,107,0.28)_30%,rgba(237,236,107,0.28)_70%,transparent)]" />
+                <div className="w-full h-px bg-[linear-gradient(90deg,transparent,rgba(220,253,60,0.28)_30%,rgba(220,253,60,0.28)_70%,transparent)]" />
                 <div className="absolute bottom-0 flex w-full justify-center gap-6">
                   {[0, 1, 2, 3, 4].map((i) => (
                     <span
                       key={i}
-                      className={`block w-px bg-[rgba(237,236,107,0.26)] ${i === 2 ? "h-2.5" : "h-1.5"}`}
+                      className={`block w-px bg-[rgba(220,253,60,0.26)] ${i === 2 ? "h-2.5" : "h-1.5"}`}
                     />
                   ))}
                 </div>
@@ -211,10 +216,10 @@ export function ExperienceSection() {
         ) : (
           <FadeIn y={20} duration={0.8}>
             <div
-              className="relative border border-[rgba(234,232,226,0.13)] p-7 sm:p-10 md:p-12 space-y-9 overflow-hidden edge-lit"
+              className="relative border border-[rgba(245,242,235,0.13)] p-7 sm:p-10 md:p-12 space-y-9 overflow-hidden edge-lit"
               style={cutCorner}
             >
-              <div className="absolute inset-0 -z-10 bg-[linear-gradient(168deg,rgba(26,26,31,0.94)_0%,rgba(12,12,15,0.97)_58%,rgba(8,7,6,0.98)_100%)]" />
+              <div className="absolute inset-0 -z-10 bg-[linear-gradient(168deg,rgba(27,27,29,0.55)_0%,rgba(13,13,15,0.66)_58%,rgba(9,9,10,0.72)_100%)]" />
 
               {/* Pipeline stages */}
               <div className="space-y-4">
@@ -222,7 +227,7 @@ export function ExperienceSection() {
                   <span className="eyebrow">
                     Enterprise pipeline / Client {experience.client} / Project {experience.project}
                   </span>
-                  <span className="hidden sm:inline text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase text-[#B4B23A]">
+                  <span className="hidden sm:inline text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase text-[#8A8918]">
                     High reliability ETL
                   </span>
                 </div>
@@ -233,7 +238,7 @@ export function ExperienceSection() {
                     return (
                       <div
                         key={i}
-                        className="edge-lit relative overflow-hidden p-4 pt-5 border border-[rgba(234,232,226,0.09)] bg-[rgba(234,232,226,0.022)] transition-colors duration-300 hover:border-[rgba(234,232,226,0.2)]"
+                        className="edge-lit relative overflow-hidden p-4 pt-5 border border-[rgba(245,242,235,0.09)] bg-[rgba(245,242,235,0.05)] backdrop-blur-[12px] saturate-[1.15] transition-colors duration-300 hover:border-[rgba(245,242,235,0.2)]"
                       >
                         <span
                           className="absolute top-0 left-0 h-[2px] w-9"
@@ -250,7 +255,7 @@ export function ExperienceSection() {
                         </div>
 
                         <div className="mt-5">
-                          <div className="text-sm text-[#EAE8E2] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.01em]">
+                          <div className="text-sm text-[#F5F2EB] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.01em]">
                             {stg.title}
                           </div>
                           <div className="text-[11.5px] font-[family-name:var(--font-geist-mono)] text-[#8C8C86] mt-1 leading-relaxed">
@@ -266,11 +271,11 @@ export function ExperienceSection() {
               {/* Four responsibility pillars */}
               <div className="space-y-5">
                 <span className="eyebrow">Verified production responsibilities</span>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[rgba(234,232,226,0.09)] border border-[rgba(234,232,226,0.09)]">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[rgba(245,242,235,0.09)] border border-[rgba(245,242,235,0.09)]">
                   {experience.domains.map((dom, dIdx) => {
                     const accent = pillarColors[dIdx % pillarColors.length];
                     return (
-                      <div key={dIdx} className="p-5 bg-[#0D0D10] space-y-3.5">
+                      <div key={dIdx} className="p-5 bg-[rgba(12,12,13,0.68)] backdrop-blur-[12px] space-y-3.5">
                         <div
                           className="flex items-center gap-2.5 text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] uppercase font-medium"
                           style={{ color: accent }}
@@ -302,12 +307,12 @@ export function ExperienceSection() {
               </div>
 
               {/* Production stack, inline with slash rules rather than chips */}
-              <div className="pt-6 border-t border-[rgba(234,232,226,0.09)]">
+              <div className="pt-6 border-t border-[rgba(245,242,235,0.09)]">
                 <span className="eyebrow">Production stack</span>
                 <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[12px] font-[family-name:var(--font-geist-mono)] text-[#8C8C86]">
                   {experience.environment.map((env, i) => (
                     <span key={env} className="flex items-center gap-2">
-                      <span className="transition-colors duration-300 hover:text-[#EAE8E2]">{env}</span>
+                      <span className="transition-colors duration-300 hover:text-[#F5F2EB]">{env}</span>
                       {i < experience.environment.length - 1 && (
                         <span className="text-[#43433F]">/</span>
                       )}

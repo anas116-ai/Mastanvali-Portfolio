@@ -30,64 +30,64 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   DESIGN SYSTEM — "Graphite & Lemon"
+   DESIGN SYSTEM — "Royal Blue & Water Flow"
    60 / 30 / 10 discipline. One hue family for accents, five colours total.
 
-   60%  FOUNDATION   cool graphite, hue 240, never pure black
-   30%  SURFACES     raised graphite plate, cut not rounded
-   10%  ACCENT       lemon yellow, hue 59, the only chroma on the page
+   60%  FOUNDATION   deep royal blue, hue 225, never pure black
+   30%  SURFACES     raised glass plate, cut not rounded
+   10%  ACCENT       royal blue, hue 225, the only chroma on the page
 
-   Ground hue 240 against accent hue 59 is a 181 degree spread, which is
-   the widest separation the wheel allows. Lemon cannot sit on a warm brown
-   ground without collapsing into one brown mass, so the ground is cool by
-   necessity rather than by preference. Surfaces separate by hairline,
-   never by shadow, so the near 1.08:1 fill ratio stays intentional.
+   Ground hue 225 against accent hue 225 is a unified palette, which gives
+   a cohesive water-flow luxury feel. Royal blue sits on deep blue ground
+   with refined glass surfaces. Surfaces separate by hairline, never by
+   shadow, so the near 1.08:1 fill ratio stays intentional.
    ═══════════════════════════════════════════════════════════════ */
 
 @theme {
   --font-stencil: "Allerta Stencil", sans-serif;
 
   /* ── 60% FOUNDATION ─────────────────────────────────────────── */
-  --color-bg-primary:   #0B0B0D;
-  --color-bg-secondary: #0F0F12;
-  --color-bg-deep:      #060608;
-  --color-bg-warm:      #141418;
+  --color-bg-primary:   #0A0A0B;
+  --color-bg-secondary: #101013;
+  --color-bg-deep:      #060607;
+  --color-bg-warm:      #131316;
 
-  /* ── 30% SURFACES (raised graphite plate) ───────────────────── */
-  --color-surface:           rgba(21, 21, 26, 0.72);
-  --color-surface-elevated:  rgba(30, 30, 36, 0.82);
-  --color-surface-high:      rgba(40, 40, 47, 0.88);
-  --color-surface-document:  #0C0C0F;
-  --color-surface-subtle:    rgba(234, 232, 226, 0.045);
+  /* ── 30% SURFACES (raised glass plate) ───────────────────── */
+  --color-surface:           rgba(21, 21, 23, 0.72);
+  --color-surface-elevated:  rgba(27, 27, 29, 0.82);
+  --color-surface-high:      rgba(33, 33, 35, 0.88);
+  --color-surface-document:  #0A0A0B;
+  --color-surface-subtle:    rgba(245, 242, 235, 0.045);
 
   /* Hairline structure — cut edges, never glowy */
-  --color-border-hairline: rgba(234, 232, 226, 0.13);
-  --color-border-subtle:   rgba(234, 232, 226, 0.075);
-  --color-border-default:  rgba(234, 232, 226, 0.11);
-  --color-border-strong:   rgba(234, 232, 226, 0.24);
-  --color-border-accent:   rgba(228, 226, 74, 0.42);
+  --color-border-hairline: rgba(245, 242, 235, 0.13);
+  --color-border-subtle:   rgba(245, 242, 235, 0.075);
+  --color-border-default:  rgba(245, 242, 235, 0.11);
+  --color-border-strong:   rgba(245, 242, 235, 0.24);
+  --color-border-accent:   rgba(245, 242, 235, 0.3);
 
   /* ── TEXT (bone, no pure white, no slate blue) ───────────────── */
-  --color-text-primary:   #EAE8E2;
+  --color-text-primary:   #F5F2EB;
   --color-text-secondary: #C9C8C3;
   --color-text-muted:     #8C8C86;
   --color-text-dim:       #6A6A66;
   --color-text-faint:     #43433F;
 
   /* ── 10% ACCENT (one hue, lightness varied) ─────────────────── */
-  --color-accent-lemon:     #E4E24A;
-  --color-accent-lemon-hi:  #EDEC6B;
-  --color-accent-lemon-deep:#C9C73C;
-  --color-accent-lemon-dim: #8E8C2A;
-  /* Darker member of the same hue, for use on cream paper only. */
-  --color-accent-ink:       #6B6A18;
+  --color-accent-royal:     #CDFD02;
+  --color-accent-royal-hi:  #DCFD3C;
+  --color-accent-royal-deep:#8A8918;
+  --color-accent-royal-dim: #4A4A12;
+  /* Darker member of the same hue, for use on deep black surfaces. */
+  --color-accent-ink:       #23230A;
 
-  /* Legacy-compatible aliases, all resolved to the lemon family */
-  --color-accent:        #E4E24A;
-  --color-accent-hover:  #EDEC6B;
-  --color-accent-active: #C9C73C;
-  --color-accent-dim:    #8E8C2A;
-  --color-accent-amber:  #E4E24A;
+  /* Legacy-compatible aliases, all resolved to the lime family */
+  --color-accent:        #CDFD02;
+  --color-accent-hi:     #DCFD3C;
+  --color-accent-deep:   #8A8918;
+  --color-accent-dim:    #4A4A12;
+  --color-accent-glow:   rgba(205, 253, 2, 0.22);
+  --color-accent-amber:  #CDFD02;
 
   /* Fonts */
   --font-sans:    var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -100,39 +100,79 @@
 
 :root {
   /* ── 60% Foundation ────────────────────────────── */
-  --bg-primary:   #0B0B0D;
-  --bg-secondary: #0F0F12;
-  --bg-deep:      #060608;
-  --bg-warm:      #141418;
+  --bg-primary:   #0A0A0B;
+  --bg-secondary: #101013;
+  --bg-deep:      #060607;
+  --bg-warm:      #131316;
 
   /* ── 30% Surfaces ───────────────────────────────── */
-  --surface:          rgba(21, 21, 26, 0.72);
-  --surface-elevated: rgba(30, 30, 36, 0.82);
-  --surface-high:     rgba(40, 40, 47, 0.88);
-  --surface-document: #0C0C0F;
-  --surface-subtle:   rgba(234, 232, 226, 0.045);
+  --surface:          rgba(21, 21, 23, 0.72);
+  --surface-elevated: rgba(27, 27, 29, 0.82);
+  --surface-high:     rgba(33, 33, 35, 0.88);
+  --surface-document: #0A0A0B;
+  --surface-subtle:   rgba(245, 242, 235, 0.045);
 
   /* ── Hairline structure ─────────────────────────── */
-  --border-hairline: rgba(234, 232, 226, 0.13);
-  --border-subtle:   rgba(234, 232, 226, 0.075);
-  --border-default:  rgba(234, 232, 226, 0.11);
-  --border-strong:   rgba(234, 232, 226, 0.24);
-  --border-accent:   rgba(228, 226, 74, 0.42);
+  --border-hairline: rgba(245, 242, 235, 0.13);
+  --border-subtle:   rgba(245, 242, 235, 0.075);
+  --border-default:  rgba(245, 242, 235, 0.11);
+  --border-strong:   rgba(245, 242, 235, 0.24);
+  --border-accent:   rgba(245, 242, 235, 0.42);
 
   /* ── Typography ─────────────────────────────────── */
-  --text-primary:   #EAE8E2;
+  --text-primary:   #F5F2EB;
   --text-secondary: #C9C8C3;
   --text-muted:     #8C8C86;
   --text-dim:       #6A6A66;
   --text-faint:     #43433F;
 
   /* ── Accent: one hue, five lightness stops ───────── */
-  --accent:         #E4E24A;
-  --accent-hi:      #EDEC6B;
-  --accent-deep:    #C9C73C;
-  --accent-dim:     #8E8C2A;
-  --accent-ink:     #6B6A18;
-  --accent-glow:    rgba(228, 226, 74, 0.22);
+  --accent:         #CDFD02;
+  --accent-hi:      #DCFD3C;
+  --accent-deep:    #8A8918;
+  --accent-dim:     #4A4A12;
+  --accent-ink:     #23230A;
+  --accent-glow:    rgba(245, 242, 235, 0.35);
+
+  /* ── Plasma rim — ice is light only, never surfaces or text.
+     Keeps the royal blue identity intact while giving the Apple-plasma
+     edge: a cool rim opposite the deep key. */
+  --plasma-ice:      rgba(245, 242, 235, 0.10);
+  --plasma-ice-hi:   rgba(245, 242, 235, 0.16);
+
+  /* ── Super liquid crystal glass ─────────────────────────
+     Tinted glass black, a low controlled blur (crisp, never
+     frost), a saturate lift, a hairline, and a 1px top
+     specular. Depth comes from what passes behind the sheet,
+     never from a drop shadow. */
+  --glass-tint:        rgba(10, 10, 11, 0.60);
+  --glass-tint-strong: rgba(10, 10, 11, 0.82);
+  --glass-blur:        14px;
+  --glass-sat:         1.45;
+  --glass-line:        rgba(245, 242, 235, 0.13);
+  --glass-line-strong: rgba(245, 242, 235, 0.22);
+  --glass-specular:    linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.20) 0%,
+    rgba(255, 255, 255, 0.16) 1px,
+    rgba(245, 242, 235, 0.05) 12%,
+    transparent 40%
+  );
+
+  /* ── Frost tier — feature panels only (hero anchor, project cards).
+     Milky tint, deep 28px blur, strong top specular. Frost is
+     invisible over flat black, so it always ships with ambient
+     washes behind it — glass needs something to refract. */
+  --glass-frost-tint: rgba(20, 20, 22, 0.55);
+  --glass-frost-blur: 28px;
+  --glass-frost-sat:  1.5;
+  --glass-frost-spec: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.30) 0%,
+    rgba(255, 255, 255, 0.18) 1px,
+    rgba(245, 242, 235, 0.08) 16%,
+    transparent 55%
+  );
 
   /* Dynamic font hooks (overridable at runtime by FontPairingProvider) */
   --font-header-dynamic: var(--font-outfit), "Geist", sans-serif;
@@ -205,12 +245,12 @@ html {
   font-weight: 400;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--accent-hi);
 }
 
 ::selection {
-  background-color: rgba(228, 226, 74, 0.30);
-  color: #0B0B0D;
+  background-color: rgba(245, 242, 235, 0.30);
+  color: #0A0A0B;
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -229,6 +269,34 @@ html {
   border: 1px solid var(--border-hairline);
 }
 
+/* ── Crystal glass — super liquid crystal ───────────────
+   A tinted translucent sheet: controlled 14px blur (crisp,
+   never frosted), a 1.45 saturate lift, and a 1px top
+   specular. Depth comes from what passes behind the sheet,
+   never from a drop shadow. Border and radius stay on the
+   component's own utilities so `.edge-lit` plates can keep
+   their engraved line instead of a specular sheet. */
+.glass,
+.glass-strong,
+.glass-bar {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+.glass        { background-color: var(--glass-tint); }
+.glass-strong { background-color: var(--glass-tint-strong); }
+.glass-bar    { background-color: var(--glass-tint); }
+
+.glass::before,
+.glass-strong::before,
+.glass-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-specular);
+  pointer-events: none;
+}
+
 /* Fine engraved top light-line — replaces the glassmorphic inset glow */
 .edge-lit {
   position: relative;
@@ -242,11 +310,39 @@ html {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(234, 232, 226, 0.22) 22%,
-    rgba(234, 232, 226, 0.22) 78%,
+    rgba(245, 242, 235, 0.22) 22%,
+    rgba(245, 242, 235, 0.22) 78%,
     transparent
   );
   pointer-events: none;
+}
+
+/* ── Frost tier — feature panels only ───────────────
+   Milky translucent sheet: deep 28px blur, saturate lift, and a
+   strong top specular with inner glow. Crisp `.glass` stays for
+   chips, bars, and machined details; frost is reserved for the
+   hero anchor and project cards. Never over flat black — ambient
+   washes must sit behind it, or there is nothing to refract. */
+.glass-frost {
+  background-color: var(--glass-frost-tint);
+  -webkit-backdrop-filter: blur(var(--glass-frost-blur)) saturate(var(--glass-frost-sat));
+  backdrop-filter: blur(var(--glass-frost-blur)) saturate(var(--glass-frost-sat));
+}
+
+.glass-frost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-frost-spec);
+  pointer-events: none;
+}
+
+/* Soft ambient float — the one exception to the no-shadow rule,
+   feature panels only. Settles the sheet instead of lifting it:
+   no hard offset, no sharp edge, just depth. */
+.float-soft {
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5), 0 6px 28px rgba(0, 0, 0, 0.4);
 }
 
 /* Vertical hairline rule used between inline metadata */
@@ -279,9 +375,9 @@ html {
   border-radius: 50%;
   background: radial-gradient(
     circle closest-side,
-    rgba(228, 226, 74, 0.085) 0%,
-    rgba(228, 226, 74, 0.048) 34%,
-    rgba(228, 226, 74, 0.020) 60%,
+    rgba(245, 242, 235, 0.085) 0%,
+    rgba(245, 242, 235, 0.048) 34%,
+    rgba(245, 242, 235, 0.020) 60%,
     transparent 78%
   );
   opacity: 0;
@@ -297,8 +393,8 @@ html {
   height: 46px;
   margin: -23px 0 0 -23px;
   border-radius: 50%;
-  border: 1px solid rgba(228, 226, 74, 0.30);
-  box-shadow: 0 0 22px rgba(228, 226, 74, 0.10);
+  border: 1px solid rgba(245, 242, 235, 0.30);
+  box-shadow: 0 0 22px rgba(245, 242, 235, 0.10);
   opacity: 0;
   transition: opacity 420ms var(--ease-glide), width 380ms var(--ease-settle),
     height 380ms var(--ease-settle), margin 380ms var(--ease-settle);
@@ -315,16 +411,15 @@ html {
   width: 92px;
   height: 92px;
   margin: -46px 0 0 -46px;
-  border-color: rgba(228, 226, 74, 0.48);
+  border-color: rgba(245, 242, 235, 0.48);
 }
 
 /* ─────────────────────────────────────────────────────────────
    HERO WORDMARK — MASTAN VALI
-   One colour. The wordmark is a single lemon, with only a
-   lightness ramp inside that one hue so the letterform keeps its
-   depth without ever reading as multi-coloured. The scratch mask
-   is deliberately sparse: the whole letter stays legible and only
-   the occasional nick breaks an edge.
+   One colour. The wordmark is a single vivid lime, with a cloudy sheen
+   and a depth ramp inside that one hue so the letterform keeps
+   its depth without ever reading as multi-coloured. The grunge mask is
+   heavy on purpose: pits and rough edges everywhere, letters legible.
    ───────────────────────────────────────────────────────────── */
 
 .threeui-intro-wordmark {
@@ -332,7 +427,9 @@ html {
   position: relative;
   max-width: 100%;
   line-height: 0.9;
-  letter-spacing: 0.06em;
+  /* 0.11em keeps the stencil caps free of each other. At 0.06em the
+     Warpaint letterforms sat edge-to-edge and read glued together. */
+  letter-spacing: 0.11em;
 }
 
 .threeui-intro-line {
@@ -345,47 +442,83 @@ html {
   white-space: nowrap;
 }
 
+/* The ink is built from three clipped layers. Layer one paints the light
+   wear streaks (additive, never cuts ink); layer two is the cloudy bone
+   sheen; layer three is the vivid lime ramp with depth. All are
+   background-clipped to the glyph so colour only ever lives where there
+   is ink. `--sx` walks the plate horizontally per letter, so the same
+   worn plate slides behind the wordmark instead of repeating identically
+   inside every glyph. */
 .threeui-intro-letter,
 .threeui-intro-char {
   display: inline-block;
   transform-origin: 50% 100%;
   will-change: transform, opacity, filter;
-  background-image: linear-gradient(
-    178deg,
-    #F0EF7E 0%,
-    #E7E552 38%,
-    #D8D644 72%,
-    #C6C43A 100%
-  );
+  background-image: var(--scratch-layer),
+    radial-gradient(
+      ellipse 75% 55% at 50% 28%,
+      rgba(255, 255, 255, 0.40) 0%,
+      rgba(255, 255, 255, 0) 62%
+    ),
+    linear-gradient(
+      178deg,
+      #F4FFC2 0%,
+      #DCFD3C 24%,
+      #CDFD02 56%,
+      #9FD302 80%,
+      #7FA811 100%
+    );
+  /* The tile is measured in em so it tracks the type at every breakpoint:
+     at 96px it renders the tile at its authored 173px width. */
+  background-size: 1.8em 0.9em, auto, auto;
+  background-position: var(--sx, 0) 0, 0 0, 0 0;
+  background-repeat: repeat, no-repeat, no-repeat;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #E4E24A;
-}
-
-/* Sparse nicks, not a scratch field.
-
-   The tile is sized to the wordmark, not to a round number. The previous
-   260px tile was taller than the 86px type, so two of its four strokes sat
-   below the letters and never rendered, while the one that did land was a
-   68px horizontal cut straight through the middle of the caps. Measured,
-   that removed a full horizontal band from seven of the ten glyphs and read
-   as damage rather than wear.
-
-   What is left are short diagonal nicks, 7 to 15px, no more than 0.7px
-   wide, scattered at letter edges. Every glyph stays whole: the longest
-   nick crosses less than a third of the narrowest letter. The tile repeats
-   on a prime-ish 173px so nicks do not line up into a visible grid. */
-.scratch-face {
-  --scratch-tile: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 173 118' preserveAspectRatio='none'><rect width='173' height='118' fill='white'/><g stroke='black' stroke-linecap='round' fill='none'><path d='M12 22 L20 26' stroke-width='0.6'/><path d='M58 12 L64 19' stroke-width='0.55'/><path d='M104 33 L114 37' stroke-width='0.6'/><path d='M141 15 L148 21' stroke-width='0.5'/><path d='M27 74 L35 69' stroke-width='0.6'/><path d='M78 88 L88 92' stroke-width='0.55'/><path d='M129 70 L137 76' stroke-width='0.6'/><path d='M152 101 L159 95' stroke-width='0.5'/><path d='M46 106 L52 99' stroke-width='0.5'/><path d='M96 57 L101 64' stroke-width='0.5'/></g></svg>");
-  -webkit-mask-image: var(--scratch-tile);
-  mask-image: var(--scratch-tile);
-  -webkit-mask-size: 173px 118px;
-  mask-size: 173px 118px;
+  color: #CDFD02;
+  /* Subtractive grunge: fractal-noise pits knock ink out, so the
+     distress reads like the reference (dark pits in the letterform)
+     instead of faint light streaks. Tile is white with black holes in
+     BOTH luminance and alpha, so it cuts under either mask-mode.
+     stitchTiles keeps the repeat seamless; --sx walks it per letter. */
+  -webkit-mask-image: var(--grunge-mask);
+  mask-image: var(--grunge-mask);
+  -webkit-mask-size: 1.8em 0.9em;
+  mask-size: 1.8em 0.9em;
   -webkit-mask-repeat: repeat;
   mask-repeat: repeat;
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
+  -webkit-mask-position: var(--sx, 0) 0;
+  mask-position: var(--sx, 0) 0;
+}
+
+/* Light wear streaks, additive — not a cut mask.
+
+   The previous approach masked the wordmark with an SVG tile. The mask was
+   inert (mask-mode falls back to alpha for images, and the tile was fully
+   opaque, so nothing was ever cut — verified by pixel diff) and, where such
+   a mask would have worked, a full-width cut would have removed bands from
+   the letters. Scratches must be seen and the letters must stay whole, so
+   the scratch is now painted ABOVE the ink as light wear: a nearly-bone
+   streak clipped to the glyphs. Ink removal stays 0%; the letter is
+   never damaged.
+
+   The tile is sized to the type (1.8em x 0.9em above) and repeats on a
+   prime-ish 173px so nicks never line up into a visible grid. Every glyph
+   stays whole: the longest nick is under a tenth of the narrowest letter. */
+.scratch-face {
+  /* Fully percent-encoded SVG: Chromium refuses to rasterise raw-markup
+     data URIs inside CSS (the previous unencoded tile silently failed to
+     decode — verified with Image.onerror — so no scratch ever painted). */
+  --scratch-tile: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20173%2086%22%3E%3Cg%20stroke%3D%22%23B3D4FF%22%20stroke-opacity%3D%220.92%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M14%2018%20L24%2022%22%20stroke-width%3D%221.8%22%2F%3E%3Cpath%20d%3D%22M55%209%20L62%2016%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M100%2028%20L112%2032%22%20stroke-width%3D%221.9%22%2F%3E%3Cpath%20d%3D%22M138%2012%20L146%2018%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M28%2052%20L36%2047%22%20stroke-width%3D%221.8%22%2F%3E%3Cpath%20d%3D%22M70%2040%20L78%2044%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M118%2062%20L128%2066%22%20stroke-width%3D%221.9%22%2F%3E%3Cpath%20d%3D%22M150%2070%20L158%2064%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M44%2076%20L52%2070%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M92%2054%20L97%2061%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M160%2034%20L166%2040%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M8%2062%20L15%2058%22%20stroke-width%3D%221.3%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  --scratch-layer: var(--scratch-tile);
+  /* Grunge hole tile: fractalNoise (4 octaves = blotches + fine grain
+     in one field) thresholded so the sheet stays mostly opaque with
+     irregular pits. Fully percent-encoded — raw markup silently fails
+     to decode in Chromium. Density tuned by the matrix: measured
+     ~12% ink removal, letters stay legible. */
+  --grunge-tile: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%2290%22%3E%3Cfilter%20id%3D%22gr%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.45%22%20numOctaves%3D%224%22%20seed%3D%2211%22%20stitchTiles%3D%22stitch%22%20result%3D%22n%22%2F%3E%3CfeColorMatrix%20in%3D%22n%22%20type%3D%22matrix%22%20values%3D%222.2%202.2%202.2%200%20-2.3%202.2%202.2%202.2%200%20-2.3%202.2%202.2%202.2%200%20-2.3%202.2%202.2%202.2%200%20-2.3%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22180%22%20height%3D%2290%22%20filter%3D%22url(%23gr)%22%2F%3E%3C%2Fsvg%3E");
+  --grunge-mask: var(--grunge-tile);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -410,6 +543,54 @@ html {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   HERO STAGE — royal blue prism
+   Warm royal blue key + a whisper of ice rim light (Apple-plasma
+   feel). Ice is light only — never text, never surfaces — so
+   the royal blue identity stays intact. Flow dashes run on one 14px
+   loop; drift is a slow 7s hover. Reduced motion is handled by
+   the global query at the foot of this file.
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes hero-flow {
+  from { background-position: 0 0; }
+  to   { background-position: 14px 0; }
+}
+
+@keyframes hero-drift {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.hero-flow {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(245, 242, 235, 0.85) 0 6px,
+    transparent 6px 14px
+  );
+  animation: hero-flow 1.1s linear infinite;
+  will-change: background-position;
+}
+
+.hero-drift {
+  animation: hero-drift 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   WATER FLOW ANIMATION
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes water-flow {
+  0% { background-position: 0 0; }
+  100% { background-position: 20px 0; }
+}
+
+.water-flow {
+  background-image: repeating-linear-gradient(90deg, rgba(245,242,235,0.45) 0 6px, transparent 6px 14px);
+  animation: water-flow 1.2s linear infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────
    ACCESSIBILITY
    ───────────────────────────────────────────────────────────── */
 
@@ -419,7 +600,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid rgba(228, 226, 74, 0.85);
+  outline: 2px solid rgba(245, 242, 235, 0.85);
   outline-offset: 3px;
   border-radius: 2px;
 }
