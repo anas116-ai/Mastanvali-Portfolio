@@ -10,6 +10,7 @@ import { FinalSection } from "@/components/creator/FinalSection";
 import { AmbientBackgroundLayers } from "@/components/creator/AmbientBackgroundLayers";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 import { SpotlightCursor } from "@/components/ui/SpotlightCursor";
+import { SiteHeader } from "@/components/navigation/SiteHeader";
 
 export default function Home() {
   return (
@@ -34,37 +35,45 @@ export default function Home() {
       {/* Ambient background architecture */}
       <AmbientBackgroundLayers />
 
-      {/* Warm vignette framing the composition */}
+      {/* Corner vignette framing the composition.
+          The alpha was missing its comma, so this was resolving to a solid
+          opaque blue instead of a near-black wash: rgba(6,6,80.58) parses
+          as a fully opaque rgb(6,6,80). */}
       <div
         className="fixed inset-0 pointer-events-none z-[50]"
         style={{
           background:
-            "radial-gradient(150% 118% at 50% 38%, transparent 66%, rgba(6,6,80.58) 100%)",
+            "radial-gradient(150% 118% at 50% 38%, transparent 66%, rgba(6,6,8,0.58) 100%)",
         }}
       />
 
+      {/* 01. Masthead. A sibling of <main>, not a child of the hero: the
+          hero clips its overflow, so a fixed bar placed inside it would be
+          cut off, and in static form it scrolled away entirely. */}
+      <SiteHeader />
+
       {/* The single main landmark every reader navigates by */}
       <main id="main-content">
-        {/* 01. Hero Section */}
+        {/* 02. Hero Section */}
         <HeroSection />
 
-        {/* 02. Scroll-synchronised technology marquee */}
+        {/* 03. Scroll-synchronised technology marquee */}
         <MarqueeSection />
 
-        {/* 03. About: three live capability ponds */}
+        {/* 04. About: three live capability ponds */}
         <AboutSection />
 
-        {/* 04. Verified enterprise experience */}
+        {/* 05. Verified enterprise experience */}
         <ExperienceSection />
 
-        {/* 05. Core engineering disciplines */}
+        {/* 06. Core engineering disciplines */}
         <SkillsSection />
 
-        {/* 06. Selected engineering work */}
+        {/* 07. Selected engineering work */}
         <ProjectsSection />
       </main>
 
-      {/* 07. Contact and site footer */}
+      {/* 08. Contact and site footer */}
       <FinalSection />
     </div>
   );

@@ -4,12 +4,11 @@ import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FadeIn } from "./FadeIn";
 import { InteractiveCharacter } from "./InteractiveCharacter";
-import { ArrowDown, Github, Linkedin, FileText } from "lucide-react";
+import { ArrowDown, FileText } from "lucide-react";
 import { ResumeModal } from "@/components/resume/ResumeModal";
 
 import { HeroSnowParticles } from "./HeroSnowParticles";
 import { ShaderIgnitionButton } from "@/components/ui/ShaderIgnitionButton";
-import { ProximityCommandDock, MobileNav } from "./ProximityCommandDock";
 import { TextAnimationCollection } from "./TextAnimationCollection";
 import { ScrollCue } from "./ScrollCue";
 
@@ -36,7 +35,7 @@ export function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[92vh] sm:min-h-screen w-full flex flex-col justify-between overflow-hidden bg-transparent px-5 sm:px-8 md:px-12 lg:px-16 pt-5 pb-12 select-none"
+      className="relative min-h-[92vh] sm:min-h-screen w-full flex flex-col justify-between overflow-hidden bg-transparent px-5 sm:px-8 md:px-12 lg:px-16 pt-16 sm:pt-20 pb-12 select-none"
     >
       {/* ── 01. Stage lighting ─────────────────────────────────────── */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -54,48 +53,7 @@ export function HeroSection() {
         <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#E4E24A]/22 to-transparent" />
       </div>
 
-      {/* ── 02. Navigation ─────────────────────────────────────────── */}
-      <FadeIn y={-12} delay={0} duration={0.7} className="w-full relative z-50 pointer-events-auto">
-        <header className="w-full flex items-center justify-between max-w-7xl mx-auto pointer-events-auto">
-          <a
-            href="#top"
-            className="group py-2 inline-flex items-center cursor-pointer focus:outline-none"
-            aria-label="Mastan Vali, back to top"
-          >
-            <span className="font-[family-name:var(--font-geist-sans)] text-[13px] sm:text-sm font-medium tracking-[0.02em] text-[#C9C8C3] group-hover:text-[#EAE8E2] transition-colors duration-300 select-none">
-              Mastan Vali
-            </span>
-          </a>
-
-          <ProximityCommandDock />
-
-          <div className="flex items-center gap-2 sm:gap-2.5 relative z-50 pointer-events-auto">
-            <MobileNav />
-            <a
-              href="https://github.com/anas116-ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="h-9 w-9 flex items-center justify-center border border-[rgba(234,232,226,0.11)] text-[#8C8C86] hover:text-[#EDEC6B] hover:border-[rgba(237,236,107,0.42)] transition-colors duration-300 cursor-pointer"
-              title="GitHub (anas116-ai)"
-              aria-label="GitHub Profile"
-            >
-              <Github size={15} className="pointer-events-none" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="h-9 w-9 flex items-center justify-center border border-[rgba(234,232,226,0.11)] text-[#8C8C86] hover:text-[#EDEC6B] hover:border-[rgba(237,236,107,0.42)] transition-colors duration-300 cursor-pointer"
-              title="LinkedIn (Mastan Vali Shaik)"
-              aria-label="LinkedIn Profile"
-            >
-              <Linkedin size={15} className="pointer-events-none" />
-            </a>
-          </div>
-        </header>
-      </FadeIn>
-
-      {/* ── 03. Hero composition ───────────────────────────────────── */}
+      {/* ── 02. Hero composition ───────────────────────────────────── */}
       <motion.div
         style={{ opacity: heroOpacity }}
         className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center z-20 my-auto py-8 sm:py-12 will-change-[transform]"

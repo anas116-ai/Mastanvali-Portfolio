@@ -22,16 +22,62 @@ const SPRING = 0.19;
 const DAMPING = 0.7;
 const SHIFT = 3;
 
-export function ProximityCommandDock() {
+type RGB = readonly [number, number, number];
+
+function parseRGB(value: string): RGB {
+  const m = value.match(/-?[\d.]+/g);
+  if (!m || m.length < 3) return [140, 140, 134];
+  return [Number(m[0]), Number(m[1]), Number(m[2])];
+}
+
+/* The resting colour is whatever the stylesheet says, and the arriving
+   colour is the lemon. Reading the rest state instead of hardcoding it
+   means a palette change in globals.css carries the ramp with it. */
+function readRamp(el: HTMLElement) {
+  const rest = parseRGB(getComputedStyle(el).color);
+  return { from: rest, to: [228, 226, 74] as RGB };
+}
+
+function mix(a: RGB, b: RGB, t: number) {
+  const c = a.map((v, i) => Math.round(v + (b[i] - v) * t)) as unknown as RGB;
+  return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+}
+
+export function ProximityCommandDock({ activeId = "" }: { activeId?: string }) {
   const containerRef = useRef<HTMLElement>(null);
   const itemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
-  const [activeId, setActiveId] = useState("");
+  const [clickedId, setClickedId] = useState("");
+  const repaintRef = useRef<(() => void) | null>(null);
+
+  /* The masthead supplies the section actually on screen, which is correct
+     after any manual scroll. A click sets the same value immediately so the
+     bar responds to the touch instead of waiting a beat for the smooth
+     scroll to begin. The override retires as soon as the real tracker lands
+     on the same section, and on any wheel input: otherwise the clicked
+     value would outrank the tracked section indefinitely and the hairline
+     would follow the last click rather than the page. */
+  const currentId = clickedId || activeId;
+
+  useEffect(() => {
+    if (clickedId && clickedId === activeId) setClickedId("");
+  }, [clickedId, activeId]);
+
+  useEffect(() => {
+    const retire = () => setClickedId("");
+    window.addEventListener("wheel", retire, { passive: true });
+    window.addEventListener("touchstart", retire, { passive: true });
+    return () => {
+      window.removeEventListener("wheel", retire);
+      window.removeEventListener("touchstart", retire);
+    };
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const states = NAV_ITEMS.map(() => ({ target: 0, value: 0, velocity: 0 }));
+    const ramps: Array<{ from: RGB; to: RGB } | undefined> = NAV_ITEMS.map(() => undefined);
 
     let animationFrameId = 0;
     let isMoving = false;
@@ -71,19 +117,31 @@ export function ProximityCommandDock() {
         ).toFixed(2)}px, ${lift.toFixed(2)}px, 0)`;
 
         const textSpan = item.querySelector<HTMLElement>(".dock-text");
+        /* An active section keeps its hairline open and its label at lemon,
+           whatever the pointer is doing. Proximity can add emphasis but
+           never take it away. */
+        const held = item.dataset.active === "true";
+        const emph = Math.max(val, held ? 1 : 0);
+
         if (textSpan) {
           textSpan.style.letterSpacing = `${(0.055 + tracking).toFixed(4)}em`;
-          // Brass warms up as the pointer approaches. No neon glow.
-          const warmth = Math.round(val * 255);
-          textSpan.style.color = `rgb(${215 + Math.round(warmth * 0.05)}, ${208 + Math.round(
-            warmth * 0.02
-          )}, ${198 - Math.round(warmth * 0.4)})`;
+          /* One ramp, muted to lemon. The previous ramp was left over from
+             the brass palette and resolved to rgb(228, 213, 96) at full
+             proximity, a muddy olive that is neither the muted grey the
+             link rests at nor the lemon it is meant to become. The rest
+             state is now read from the live computed style so the ramp
+             cannot drift off the palette again. */
+          const ramp = ramps[index] ?? (ramps[index] = readRamp(textSpan));
+          textSpan.style.color = mix(ramp.from, ramp.to, emph);
         }
 
         const ruleSpan = item.querySelector<HTMLElement>(".dock-rule");
         if (ruleSpan) {
-          ruleSpan.style.opacity = String(clamp(val * 1.4, 0, 1));
-          ruleSpan.style.transform = `scaleX(${clamp(val * 1.1, 0.08, 1).toFixed(3)})`;
+          ruleSpan.style.opacity = String(Math.max(clamp(val * 1.4, 0, 1), held ? 1 : 0));
+          ruleSpan.style.transform = `scaleX(${Math.max(
+            clamp(val * 1.1, 0, 1),
+            held ? 1 : 0
+          ).toFixed(3)})`;
         }
       });
 
@@ -107,6 +165,20 @@ export function ProximityCommandDock() {
       });
       startPhysics();
     };
+
+    /* Section tracking repaints with no pointer involved, so a settle pass
+       has to run when the active section changes or the hairline for the
+       new section never opens. */
+    const repaint = () => {
+      states.forEach((state) => {
+        state.value = state.target;
+        state.velocity = 0;
+      });
+      updatePhysics();
+      isMoving = false;
+    };
+
+    itemsRef.current.length = 0;
 
     const handlePointerMove = (e: PointerEvent) => {
       const rect = container.getBoundingClientRect();
@@ -149,14 +221,20 @@ export function ProximityCommandDock() {
     container.addEventListener("pointermove", handlePointerMove);
     container.addEventListener("pointerleave", releaseAll);
     window.addEventListener("pointermove", handleWindowPointerMove, { passive: true });
+    repaintRef.current = repaint;
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       container.removeEventListener("pointermove", handlePointerMove);
       container.removeEventListener("pointerleave", releaseAll);
       window.removeEventListener("pointermove", handleWindowPointerMove);
+      repaintRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    repaintRef.current?.();
+  }, [currentId]);
 
   return (
     <nav
@@ -165,7 +243,7 @@ export function ProximityCommandDock() {
       aria-label="Portfolio Navigation"
     >
       {NAV_ITEMS.map((item, idx) => {
-        const isActive = activeId === item.id;
+        const isActive = currentId === item.id;
         return (
           <a
             key={item.id}
@@ -173,28 +251,27 @@ export function ProximityCommandDock() {
               itemsRef.current[idx] = el;
             }}
             href={item.href}
+            data-active={isActive ? "true" : "false"}
             onClick={(e) => {
               e.preventDefault();
-              setActiveId(item.id);
+              setClickedId(item.id);
               const target = document.querySelector(item.href);
               if (target) target.scrollIntoView({ behavior: "smooth" });
             }}
             className="relative inline-flex items-center justify-center py-1 cursor-pointer will-change-transform"
             style={{ transformOrigin: "left center" }}
           >
-            <span
-              className="dock-text text-[#8C8C86] hover:text-[#C9C8C3] transition-colors duration-300"
-              style={{ letterSpacing: "0.055em" }}
-            >
+            <span className="dock-text text-[#8C8C86] transition-colors duration-300">
               {item.label}
             </span>
 
-            {/* Hairline that surfaces under proximity and locks in when active */}
+            {/* Proximity surfaces the hairline; the active section holds it
+                open. The physics loop reads data-active rather than
+                setting an inline opacity, because an inline value written
+                once by React is overwritten by the loop on the next frame. */}
             <span
-              className={`dock-rule absolute -bottom-0.5 left-0 h-px w-full origin-left ${
-                isActive ? "bg-[#E4E24A] opacity-100" : "bg-[#E4E24A]"
-              }`}
-              style={{ opacity: isActive ? 1 : 0, transform: "scaleX(1)" }}
+              className="dock-rule absolute -bottom-0.5 left-0 h-px w-full origin-left bg-[#E4E24A]"
+              style={{ opacity: 0, transform: "scaleX(0)" }}
             />
           </a>
         );
@@ -224,7 +301,10 @@ export function MobileNav() {
         {open ? <X size={16} /> : <Menu size={16} />}
       </button>
       {open && (
-        <div className="fixed inset-x-4 top-[4.25rem] z-50 border border-[rgba(234,232,226,0.13)] bg-[#0F0F12]/97 backdrop-blur-2xl p-2">
+        <div /* Anchored to the masthead's measured height (57px) plus a 4px gap.
+             This was 4.25rem, tuned for the older taller bar, which left the
+             panel floating 11px below the header it belongs to. */
+        className="fixed inset-x-4 top-[61px] z-50 border border-[rgba(234,232,226,0.13)] bg-[#0F0F12]/97 backdrop-blur-2xl p-2">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.id}

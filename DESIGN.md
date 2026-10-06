@@ -71,10 +71,16 @@ Reusable classes in `globals.css`: `.stylish-header`, `.stylish-sub`, `.eyebrow`
 ## Structure — machined, not glassy
 
 - Corner radius: **`3px`** on plates, cards, and modals. `2px` on the smallest chips.
-  The only soft radii allowed are the `ShaderIgnitionButton` bezel and the diode dots,
-  which are shapes, not surfaces.
-- **Cut corner**: the top-right corner is clipped with a 225° gradient triangle. Every
-  plate carries it. It is the site's structural signature.
+  The diode dots are fully round — they are shapes, not surfaces.
+  The `ShaderIgnitionButton` bezel is **not** covered by that rule: it is machined
+  geometry, and its radius is derived rather than chosen. The outer element carries
+  a `1px` border and `1.5px` padding, so the chamber sits `2.5px` in; the inner
+  radius must equal `outer − 2.5` or the two corners stop sharing one arc. It is
+  `4px / 1.5px`. Do not set these independently — a `3px / 2px` pairing was shipped
+  once and turned the bezel into an uneven seam at all four corners.
+- **Cut corner**: the top-right corner is clipped with a 225° gradient triangle on
+  every plate. *Specified but not implemented* — there is no `cut-corner` utility in
+  `globals.css` today. Until one exists, do not describe plates as carrying it.
 - **Accent cap**: a `2px` rule along the top-left edge in the card's own accent. Replaces
   card left stripes and coloured borders.
 - **No drop shadows.** Depth comes from surface value steps, hairline borders, and

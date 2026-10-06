@@ -356,6 +356,17 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
     lg: "px-6 py-3 sm:px-6.5 sm:py-3 text-sm",
   }[size];
 
+  /* Bezel geometry.
+     The outer element carries a 1px border and 1.5px of padding, so the
+     chamber sits 2.5px in from the outer edge. For the two corners to
+     share one arc the inner radius must be exactly that inset below the
+     outer radius: 4 - 2.5 = 1.5. It was 2, which made the inner corner
+     rounder than the outer and turned the bezel into an uneven seam at
+     all four corners instead of a machined edge. */
+  const BEZEL_RADIUS = 4;
+  const BEZEL_INSET = 2.5;
+  const CHAMBER_RADIUS = BEZEL_RADIUS - BEZEL_INSET; // 1.5
+
   const content = (
     <div
       ref={containerRef}
@@ -363,10 +374,16 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
       onMouseLeave={() => setIsHovered(false)}
       onFocus={() => setIsHovered(true)}
       onBlur={() => setIsHovered(false)}
-      className={`group relative inline-flex p-[1.5px] rounded-[3px] bg-gradient-to-b ${config.bezelGrad} border ${config.borderIdle} ${config.borderHover} transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.985] cursor-pointer select-none ${className}`}
+      className={`group relative inline-flex p-[1.5px] rounded-[4px] bg-gradient-to-b ${config.bezelGrad} border ${config.borderIdle} ${config.borderHover} transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.985] cursor-pointer select-none ${className}`}
     >
-      {/* Inner Chamber Housing the Exact ThreeUI Warp Shader */}
-      <div className={`relative flex items-center justify-center gap-2 rounded-[2px] overflow-hidden bg-[#090909] border border-[rgba(234,232,226,0.07)] ${sizeStyles}`}>
+      {/* Inner chamber housing the shader. The radius is applied inline
+          because Tailwind only sees class names that appear literally in
+          the source: `rounded-[${CHAMBER_RADIUS}px]` was never emitted, so
+          the chamber silently rendered with a square corner. */}
+      <div
+        className={`relative flex items-center justify-center gap-2 overflow-hidden bg-[#090909] border border-[rgba(234,232,226,0.07)] ${sizeStyles}`}
+        style={{ borderRadius: CHAMBER_RADIUS }}
+      >
         {/* Full-bleed WebGL Canvas */}
         <canvas
           ref={canvasRef}

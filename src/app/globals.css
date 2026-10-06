@@ -361,15 +361,24 @@ html {
 }
 
 /* Sparse nicks, not a scratch field.
-   Four hairline cuts are repeated across a 260px tile, so roughly one
-   twentieth of the letter surface is ever interrupted. The whole letter
-   stays readable at every viewport; only the odd edge gets marked. */
+
+   The tile is sized to the wordmark, not to a round number. The previous
+   260px tile was taller than the 86px type, so two of its four strokes sat
+   below the letters and never rendered, while the one that did land was a
+   68px horizontal cut straight through the middle of the caps. Measured,
+   that removed a full horizontal band from seven of the ten glyphs and read
+   as damage rather than wear.
+
+   What is left are short diagonal nicks, 7 to 15px, no more than 0.7px
+   wide, scattered at letter edges. Every glyph stays whole: the longest
+   nick crosses less than a third of the narrowest letter. The tile repeats
+   on a prime-ish 173px so nicks do not line up into a visible grid. */
 .scratch-face {
-  --scratch-tile: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 260' preserveAspectRatio='none'><rect width='260' height='260' fill='white'/><g stroke='black' stroke-width='1.1' stroke-linecap='round' fill='none'><path d='M28 62 L96 61'/><path d='M150 178 L214 177'/></g><g stroke='black' stroke-width='0.7' stroke-linecap='round' fill='none'><path d='M64 148 L118 147'/><path d='M186 34 L232 33'/></g></svg>");
+  --scratch-tile: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 173 118' preserveAspectRatio='none'><rect width='173' height='118' fill='white'/><g stroke='black' stroke-linecap='round' fill='none'><path d='M12 22 L20 26' stroke-width='0.6'/><path d='M58 12 L64 19' stroke-width='0.55'/><path d='M104 33 L114 37' stroke-width='0.6'/><path d='M141 15 L148 21' stroke-width='0.5'/><path d='M27 74 L35 69' stroke-width='0.6'/><path d='M78 88 L88 92' stroke-width='0.55'/><path d='M129 70 L137 76' stroke-width='0.6'/><path d='M152 101 L159 95' stroke-width='0.5'/><path d='M46 106 L52 99' stroke-width='0.5'/><path d='M96 57 L101 64' stroke-width='0.5'/></g></svg>");
   -webkit-mask-image: var(--scratch-tile);
   mask-image: var(--scratch-tile);
-  -webkit-mask-size: 260px 260px;
-  mask-size: 260px 260px;
+  -webkit-mask-size: 173px 118px;
+  mask-size: 173px 118px;
   -webkit-mask-repeat: repeat;
   mask-repeat: repeat;
   -webkit-mask-position: 0 0;
