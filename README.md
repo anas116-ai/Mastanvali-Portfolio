@@ -45,7 +45,7 @@ A world-class personal developer portfolio engineered with obsidian aesthetics, 
 ## 🏗️ Repository Architecture & Directory Tree
 
 ```text
-📁 Mastanvali-Portfolio/
+📁 Portfolio1/
 ├── 📁 public/
 │   ├── 📁 images/                # Real portfolio preview captures & project mockups
 │   │   ├── 📄 portfolio_preview.png
@@ -87,8 +87,8 @@ A world-class personal developer portfolio engineered with obsidian aesthetics, 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/anas116-ai/Mastanvali-Portfolio.git
-cd Mastanvali-Portfolio
+git clone https://github.com/anas116-ai/Portfolio1.git
+cd Portfolio1
 ```
 
 ### 2. Install dependencies
