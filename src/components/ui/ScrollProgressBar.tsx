@@ -12,9 +12,9 @@ export function ScrollProgressBar() {
   });
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[999] h-px bg-[rgba(245,242,235,0.07)] pointer-events-none">
+    <div className="fixed top-0 left-0 right-0 z-[999] h-px bg-[rgba(244,245,239,0.07)] pointer-events-none">
       <motion.div
-        className="h-full origin-left bg-[linear-gradient(90deg,rgba(205,253,2,0.85)_0%,#DCFD3C_55%,rgba(205,253,2,0.85)_100%)]"
+        className="h-full origin-left bg-[linear-gradient(90deg,rgba(217,255,0,0.85)_0%,#E8FF45_55%,rgba(217,255,0,0.85)_100%)]"
         style={{ scaleX }}
       />
     </div>

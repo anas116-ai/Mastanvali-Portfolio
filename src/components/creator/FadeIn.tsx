@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import type { ReactNode } from "react";
 
@@ -33,16 +33,17 @@ export function FadeIn({
   className,
 }: FadeInProps) {
   const ref = useRef(null);
+  const reduceMotion = useReducedMotion();
   return (
     <motion.div
       ref={ref}
       className={className}
-      initial={{ opacity: 0, y, x }}
+      initial={reduceMotion ? false : { opacity: 0, y, x }}
       whileInView={{ opacity: 1, y: 0, x: 0 }}
       /* Fires slightly before the subject reaches the fold so the element is
          already settled by the time it is read, never mid arrival. */
       viewport={{ once: true, margin: "-12% 0px -12% 0px" }}
-      transition={{
+      transition={reduceMotion ? { duration: 0 } : {
         type: "tween",
         duration,
         ease: EASE,

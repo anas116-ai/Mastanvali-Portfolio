@@ -38,13 +38,19 @@ interface TextAnimationCollectionProps {
   className?: string;
   /** When true the drop re-strikes every REPLAY_MS while the hero is in view. */
   loop?: boolean;
+  /** Full repeat cadence in milliseconds. The hold after settling is derived
+   *  from it so the run + hold lands exactly on this period (re-strike every
+   *  cycleMs). Omit to fall back to the default hold. */
+  cycleMs?: number;
 }
 
 const clamp = (v: number, a: number, b: number) => (v < a ? a : v > b ? b : v);
 const seg = (t: number, a: number, b: number) => clamp((t - a) / (b - a || 1e-6), 0, 1);
 
-/** Silk descent: slow approach, weightless stop, no impact snap. */
-const eDrop = (t: number) => 1 - Math.pow(1 - t, 3);
+/** Silk descent: slow luxury approach, weightless stop, no impact snap.
+    Quartic ease covers most of the distance early and settles long, which
+    is what reads as expensive rather than mechanical. */
+const eDrop = (t: number) => 1 - Math.pow(1 - t, 4);
 
 /** Soft settle curve for the luxury release. Peaks gently at 32% of the window. */
 const settle = (t: number) => Math.sin(clamp(t, 0, 1) * Math.PI) * (1 - clamp(t, 0, 1) * 0.15);
@@ -55,10 +61,16 @@ const settle = (t: number) => Math.sin(clamp(t, 0, 1) * Math.PI) * (1 - clamp(t,
  * arrival. 240ms per letter gives every glyph a visible drop, impact, and settle
  * before the next one is released, so M lands, then N, then E, then X.
  */
-const LETTER_DELAY = 0.16; // seconds between letters — quicker cascade, silk overlap
-const FALL_TIME = 0.55; // seconds of slow luxury descent
-const SETTLE_TIME = 0.65; // seconds of soft fluid settle
-const DROP_HEIGHT = 0.38; // fraction of glyph height — shorter, calmer rise
+const LETTER_DELAY = 0.14; // seconds between letters — silk overlap cascade
+const FALL_TIME = 0.9; // seconds of slow luxury descent
+const SETTLE_TIME = 1.0; // seconds of soft fluid settle
+const DROP_HEIGHT = 0.34; // fraction of glyph height — shorter, calmer rise
+/* Glyphs are widened 16% and their height eased down 3% so each cap reads
+   broad and settled instead of pulled tall and narrow. Applied inside every
+   transform write because the tick owns the inline transform and a
+   stylesheet scale would be overwritten. */
+const GLYPH_WIDE = 1.16;
+const GLYPH_TALL = 0.97;
 
 /** Hold this long after the full word has settled, then re-strike. */
 const REPLAY_MS = 10000;
@@ -72,6 +84,7 @@ export function TextAnimationCollection({
   text = "MASTAN VALI",
   className = "",
   loop = true,
+  cycleMs,
 }: TextAnimationCollectionProps) {
   const rootRef = useRef<HTMLSpanElement>(null);
   const charsRef = useRef<HTMLSpanElement[]>([]);
@@ -95,7 +108,7 @@ export function TextAnimationCollection({
     const settleAll = () => {
       for (const n of nodes) {
         if (!n) continue;
-        n.style.transform = "translateY(0em)";
+        n.style.transform = `scale(${GLYPH_WIDE}, ${GLYPH_TALL})`;
         n.style.opacity = "1";
         n.style.filter = "none";
       }
@@ -134,7 +147,7 @@ export function TextAnimationCollection({
 
           if (elapsed <= start) {
             // Waiting its turn: parked above the baseline, out of sight.
-            n.style.transform = `translateY(${-DROP_HEIGHT}em)`;
+            n.style.transform = `translateY(${-DROP_HEIGHT}em) scale(${GLYPH_WIDE}, ${GLYPH_TALL})`;
             n.style.opacity = "0";
             n.style.filter = "none";
             continue;
@@ -143,7 +156,7 @@ export function TextAnimationCollection({
           if (elapsed < land) {
             // Free fall from above. Accelerating, straight down.
             const fall = eDrop(seg(elapsed, start, land));
-            n.style.transform = `translateY(${(-DROP_HEIGHT * (1 - fall)).toFixed(4)}em)`;
+            n.style.transform = `translateY(${(-DROP_HEIGHT * (1 - fall)).toFixed(4)}em) scale(${GLYPH_WIDE}, ${GLYPH_TALL})`;
             n.style.opacity = "1";
             n.style.filter = "none";
             continue;
@@ -152,13 +165,13 @@ export function TextAnimationCollection({
           if (elapsed < land + SETTLE_TIME) {
             // Silk settle: gentle breathe, then exact final slot.
             const s = settle(seg(elapsed, land, land + SETTLE_TIME));
-            n.style.transform = `translateY(${(s * 0.028).toFixed(4)}em) scaleY(${(1 - s * 0.035).toFixed(4)})`;
+            n.style.transform = `translateY(${(s * 0.028).toFixed(4)}em) scale(${GLYPH_WIDE}, ${(GLYPH_TALL * (1 - s * 0.035)).toFixed(4)})`;
             n.style.opacity = "1";
             n.style.filter = "none";
             continue;
           }
 
-          n.style.transform = "translateY(0em)";
+          n.style.transform = `scale(${GLYPH_WIDE}, ${GLYPH_TALL})`;
           n.style.opacity = "1";
           n.style.filter = "none";
         }
@@ -169,7 +182,15 @@ export function TextAnimationCollection({
           settleAll();
           playingRef.current = false;
           clearReplay();
-          if (loop) replayRef.current = window.setTimeout(play, REPLAY_MS);
+          if (loop) {
+            /* The hold is whatever is left of the requested cadence once the
+               run itself has played, so cycleMs reads as "re-strike every N". */
+            const hold =
+              cycleMs !== undefined
+                ? Math.max(cycleMs - (total + 0.15) * 1000, 400)
+                : REPLAY_MS;
+            replayRef.current = window.setTimeout(play, hold);
+          }
         }
       };
 
@@ -195,7 +216,7 @@ export function TextAnimationCollection({
       clearReplay();
       io.disconnect();
     };
-  }, [variant, reduced, total, text, loop]);
+  }, [variant, reduced, total, text, loop, cycleMs]);
 
   let charIndex = -1;
 

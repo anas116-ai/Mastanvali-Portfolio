@@ -31,7 +31,7 @@ const disciplines: Discipline[] = [
     title: "SAP BODS and enterprise data systems",
     caption:
       "High throughput ETL on SAP BODS 4.3, S/4HANA and ECC migration, SQL reconciliation, and SLA governance for data that cannot be wrong.",
-    accent: "#CDFD02",
+    accent: "#D9FF00",
     scope:
       "Batch and real time extraction, transformation and loading across an ECC estate, a BW process chain, and an S/4HANA target, reconciled row for row after every run.",
     work: [
@@ -41,7 +41,7 @@ const disciplines: Discipline[] = [
       "SAP BW process chain monitoring, deadlock prevention, and ServiceNow incident triage.",
     ],
     stack: ["SAP BODS 4.3", "SAP ECC", "SAP BW", "S/4HANA", "SQL Server", "ServiceNow", "SCD 1 and 2"],
-    record: "99.98 percent enterprise production uptime",
+    record: "Enterprise production uptime",
     thesis:
       "Mission critical data flows demand zero loss reconciliation, deterministic audit trails, and an on call rotation that never sleeps. Built to carry a legacy ECC estate into S/4HANA without a single unaccounted row.",
   },
@@ -51,7 +51,7 @@ const disciplines: Discipline[] = [
     title: "Autonomous multi agent architecture",
     caption:
       "Directed acyclic graph agent frameworks, local open source LLM inference, and persistent semantic memory that survives a process restart.",
-    accent: "#DCFD3C",
+    accent: "#D9FF00",
     scope:
       "Task routing decided by the shape of the graph rather than by a single prompt chain, with memory that is written to disk and read back without re priming the model.",
     work: [
@@ -71,7 +71,7 @@ const disciplines: Discipline[] = [
     title: "Modern full stack and desktop systems",
     caption:
       "Next.js 15 production web platforms, offline capable Electron desktop software on SQLite WAL, and automated delivery pipelines.",
-    accent: "#C9C8C3",
+    accent: "#D9FF00",
     scope:
       "Typed interfaces over storage that keeps working when the network does not, with delivery automated end to end so a release is a tag rather than a checklist.",
     work: [
@@ -133,9 +133,17 @@ export function SkillsSection() {
   return (
     <section
       id="skills"
-      className="relative w-full bg-transparent py-20 sm:py-24 md:py-28 text-[#F5F2EB] z-20 select-none border-t border-[rgba(245,242,235,0.07)]"
+      className="relative w-full bg-transparent py-20 sm:py-24 md:py-28 text-[#F4F5EF] z-20 select-none"
     >
-      {/* Calm neutral wash behind the glass rectangles */}
+      {/* Calm wash behind the glass rectangles. The book volumes are frosted
+          glass: without light behind them there is nothing to refract and the
+          whole section reads as flat plates. */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute top-[38%] -left-32 w-[720px] h-[560px] blur-[130px] bg-[radial-gradient(circle,rgba(217,255,0,0.085)_0%,transparent_72%)]" />
+        <div className="absolute top-[58%] -right-36 w-[680px] h-[540px] blur-[130px] bg-[radial-gradient(circle,rgba(244,245,239,0.07)_0%,transparent_74%)]" />
+        <div className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 w-[900px] h-[380px] blur-[120px] bg-[radial-gradient(ellipse_at_center,rgba(232,255,69,0.055)_0%,transparent_74%)]" />
+      </div>
+
       <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 lg:px-16 space-y-14 relative z-20">
         {/* Section header. The eyebrow sits on the left, the title is set small
             so the section opens quietly, and the supporting line holds the left
@@ -143,49 +151,42 @@ export function SkillsSection() {
         <div className="flex flex-col gap-6">
           <FadeIn y={15} delay={0.1} duration={0.7}>
             <div className="flex items-center gap-2.5 eyebrow">
-              <span className="h-[5px] w-[5px] rounded-full bg-[#CDFD02] animate-pulse" />
-              // Technical capabilities
+              <span className="h-[5px] w-[5px] rounded-full bg-[#D9FF00] animate-pulse" />
+              // Core disciplines
             </div>
-            <h2 className="stylish-header text-[2rem] sm:text-[2.6rem] lg:text-[3rem] text-[#F5F2EB] mt-3.5">
-              Core Disciplines
+            <h2 className="stylish-header text-[2.4rem] sm:text-[3rem] lg:text-[3.6rem] text-[#FFFFFF] mt-3.5">
+              Technical capabilities
             </h2>
-            <p className="stylish-sub text-xs sm:text-[13.5px] text-[#8C8C86] max-w-2xl mt-4">
-              Three bound volumes, each one shipped to production and each one documented down to the
-              environment it runs in. Open any volume for the full two page spread.
+            <p className="stylish-sub text-[13px] sm:text-[14.5px] text-[#F4F5EF] max-w-2xl mt-4">
+              Each discipline below has run in production and is written down to the exact
+              environment it ships in. Open a volume to read the full record.
             </p>
           </FadeIn>
         </div>
 
-        {/* Sleek rectangular glass cards — wide, balanced, modern */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+        {/* Three bound volumes, held to a narrower measure so each book reads
+            slim rather than stretched. Hover is a quiet lift and a lemon
+            hairline — no drop shadow, no scaling. */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto">
           {disciplines.map((d, idx) => (
             <motion.button
               type="button"
               key={d.no}
               onClick={() => setOpenIdx(idx)}
-              whileHover={{ y: -6 }}
-              transition={{ type: "spring", stiffness: 320, damping: 26 }}
               aria-label={`Open ${d.title}, opens the full spread`}
-              className="group relative cursor-pointer text-left w-full min-h-[300px] sm:min-h-[320px] flex flex-col overflow-hidden rounded-[18px] glass border border-[rgba(245,242,235,0.12)] hover:border-[rgba(245,242,235,0.28)] transition-all duration-700 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
+              className="group relative cursor-pointer text-left w-full min-h-[300px] sm:min-h-[320px] flex flex-col overflow-hidden rounded-[18px] glass border border-[rgba(244,245,239,0.12)] hover:border-[rgba(217,255,0,0.22)] transition-all duration-700 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-1"
             >
-              {/* A sleek rectangular glass panel: soft 18px corners, hairline
-                  border, and balanced proportions rather than a tall square. */}
+              {/* Volume surface: soft 18px plate, hairline border, and a leaf
+                  block that reads as a book rather than a card. */}
 
-              {/* Cloth grain across the cover, extremely low contrast */}
-              <span
-                aria-hidden
-                className="absolute inset-0 z-0"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(0deg, rgba(245,242,235,0.018) 0px, rgba(245,242,235,0.018) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(245,242,235,0.012) 0px, rgba(245,242,235,0.012) 1px, transparent 1px, transparent 3px)",
-                }}
-              />
+              {/* The cover stays a clean liquid sheet: no cloth grain lines,
+                  no woven textures. The glass itself carries the material. */}
 
               {/* Board: a hairline inset from the trim so the cover reads as a
                   wrapped board sitting proud of the page block beneath it. */}
               <span
                 aria-hidden
-                className="absolute inset-[6px] left-[14px] right-[16px] border border-[rgba(245,242,235,0.09)]"
+                className="absolute inset-[6px] left-[14px] right-[16px] border border-[rgba(244,245,239,0.09)]"
                 style={{ backgroundColor: d.accent, opacity: 0.035 }}
               />
 
@@ -205,14 +206,14 @@ export function SkillsSection() {
                 style={{ backgroundColor: d.accent, opacity: 0.5 }}
               />
 
-              {/* Fore edge: individual leaves, each catching a little light */}
+              {/* Fore edge: a smooth glass light edge, no leaf stripes. */}
               <span
                 aria-hidden
                 className="absolute right-0 top-[6px] bottom-[6px] w-[14px] z-10"
                 style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(90deg, rgba(245,242,235,0.20) 0px, rgba(245,242,235,0.20) 1px, rgba(0,0,0,0.55) 1px, rgba(0,0,0,0.55) 3px)",
-                  opacity: 0.55,
+                  background:
+                    "linear-gradient(90deg, rgba(244,245,239,0.015) 0%, rgba(244,245,239,0.16) 58%, rgba(0,0,0,0.42) 100%)",
+                  opacity: 0.6,
                 }}
               />
               {/* the shaded hollow the leaves sit in, at the head and tail */}
@@ -239,7 +240,7 @@ export function SkillsSection() {
                       fontSize: `clamp(0.95rem, 2.4vw, 1.35rem)`,
                       color: d.accent,
                       opacity: 0.16,
-                      borderBottom: `1px solid rgba(205,253,2,0.34)`,
+                      borderBottom: `1px solid rgba(217,255,0,0.34)`,
                       paddingBottom: 2,
                     }}
                   >
@@ -259,22 +260,22 @@ export function SkillsSection() {
 
               <span className="relative z-20 pl-[26px] pr-[30px] pt-[104px] pb-6 flex flex-col gap-4 flex-1">
                 {/* Cover head */}
-                <span className="flex items-center justify-between gap-3 pb-3.5 border-b border-[rgba(245,242,235,0.09)]">
-                  <span className="text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase text-[#8C8C86]">
+                <span className="flex items-center justify-between gap-3 pb-3.5 border-b border-[rgba(244,245,239,0.09)]">
+                  <span className="text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase text-[#7D8178]">
                     {d.code}
                   </span>
                   <span className="h-[5px] w-[5px] rounded-full" style={{ backgroundColor: d.accent }} />
                 </span>
 
                 <span className="flex flex-col gap-2.5 flex-1">
-                  <span className="block text-[1.15rem] sm:text-[1.28rem] text-[#F5F2EB] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.02em] leading-[1.16]">
+                  <span className="block text-[1.15rem] sm:text-[1.28rem] text-[#F4F5EF] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.02em] leading-[1.16]">
                     {d.title}
                   </span>
-                  <span className="block text-[12px] leading-[1.68] text-[#8C8C86]">{d.caption}</span>
+                  <span className="block text-[12px] leading-[1.68] text-[#B6B9B0]">{d.caption}</span>
                 </span>
 
                 {/* Tail: the stack rule and the open affordance */}
-                <span className="block pt-3.5 border-t border-[rgba(245,242,235,0.09)]">
+                <span className="block pt-3.5 border-t border-[rgba(244,245,239,0.09)]">
                   <span className="block text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.14em] uppercase text-[#6A6A66]">
                     {d.stack.slice(0, 3).join(" / ")}
                     {d.stack.length > 3 ? ` / +${d.stack.length - 3}` : ""}
@@ -315,7 +316,7 @@ export function SkillsSection() {
               aria-modal="true"
               aria-label={active.title}
               style={{ transformOrigin: "50% 12%", perspective: 1600 }}
-              className="relative w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden rounded-[3px] glass-strong border border-[rgba(245,242,235,0.14)] z-10"
+              className="relative w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden rounded-[3px] glass-strong border border-[rgba(244,245,239,0.14)] z-10"
             >
               {/* The two covers falling open. They widen the full distance and
                   stay behind the spread, so the book is seen opening rather
@@ -327,10 +328,10 @@ export function SkillsSection() {
                 exit={{ opacity: 0.85, scaleX: 1, rotateY: 0 }}
                 transition={{ type: "spring", damping: 26, stiffness: 150, mass: 1.3 }}
                 style={{ transformOrigin: "0% 50%", perspective: 1400 }}
-                className="absolute inset-0 z-0 bg-[linear-gradient(100deg,#141418_0%,#1E1E24_48%,rgba(12,12,15,0.9)_100%)] border-r border-[rgba(245,242,235,0.10)]"
+                className="absolute inset-0 z-0 bg-[linear-gradient(100deg,#141418_0%,#1E1E24_48%,rgba(12,12,15,0.9)_100%)] border-r border-[rgba(244,245,239,0.10)]"
               />
               {/* Page head rail */}
-              <div className="relative z-10 flex items-center justify-between gap-4 px-5 sm:px-8 py-4 border-b border-[rgba(245,242,235,0.09)] glass shrink-0">
+              <div className="relative z-10 flex items-center justify-between gap-4 px-5 sm:px-8 py-4 border-b border-[rgba(244,245,239,0.09)] glass shrink-0">
                 <div className="flex items-baseline gap-3 min-w-0">
                   <span
                     className="text-[13px] font-[family-name:var(--font-geist-mono)] tracking-[0.18em] shrink-0"
@@ -351,7 +352,7 @@ export function SkillsSection() {
                     type="button"
                     onClick={(e) => { e.stopPropagation(); go(-1); }}
                     aria-label="Previous volume"
-                    className="w-8 h-8 flex items-center justify-center rounded-[3px] border border-[rgba(245,242,235,0.11)] text-[#8C8C86] hover:text-[#F5F2EB] hover:border-[rgba(220,253,60,0.42)] transition-colors duration-300 cursor-pointer"
+                    className="w-8 h-8 flex items-center justify-center rounded-[3px] border border-[rgba(244,245,239,0.11)] text-[#7D8178] hover:text-[#F4F5EF] hover:border-[rgba(232,255,69,0.42)] transition-colors duration-300 cursor-pointer"
                   >
                     <Chevron dir="left" />
                   </button>
@@ -359,7 +360,7 @@ export function SkillsSection() {
                     type="button"
                     onClick={(e) => { e.stopPropagation(); go(1); }}
                     aria-label="Next volume"
-                    className="w-8 h-8 flex items-center justify-center rounded-[3px] border border-[rgba(245,242,235,0.11)] text-[#8C8C86] hover:text-[#F5F2EB] hover:border-[rgba(220,253,60,0.42)] transition-colors duration-300 cursor-pointer"
+                    className="w-8 h-8 flex items-center justify-center rounded-[3px] border border-[rgba(244,245,239,0.11)] text-[#7D8178] hover:text-[#F4F5EF] hover:border-[rgba(232,255,69,0.42)] transition-colors duration-300 cursor-pointer"
                   >
                     <Chevron dir="right" />
                   </button>
@@ -367,7 +368,7 @@ export function SkillsSection() {
                     type="button"
                     onClick={() => setOpenIdx(null)}
                     aria-label="Close"
-                    className="ml-1 w-8 h-8 flex items-center justify-center rounded-[3px] border border-[rgba(245,242,235,0.11)] text-[#8C8C86] hover:text-[#F5F2EB] hover:border-[rgba(245,242,235,0.3)] transition-colors duration-300 cursor-pointer"
+                    className="ml-1 w-8 h-8 flex items-center justify-center rounded-[3px] border border-[rgba(244,245,239,0.11)] text-[#7D8178] hover:text-[#F4F5EF] hover:border-[rgba(244,245,239,0.3)] transition-colors duration-300 cursor-pointer"
                   >
                     <Cross />
                   </button>
@@ -380,11 +381,11 @@ export function SkillsSection() {
                   meeting paper rather than two columns on a panel. */}
               <div className="relative z-10 w-full flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 bg-[rgba(16,16,20,0.70)] backdrop-blur-[12px]">
                 {/* Left page */}
-                <div className="relative py-7 pl-7 pr-6 sm:pl-12 sm:py-9 sm:pr-8 md:pl-16 md:py-11 md:pr-10 flex flex-col justify-between gap-8 border-b md:border-b-0 border-[rgba(245,242,235,0.09)] bg-[rgba(19,19,23,0.76)]">
+                <div className="relative py-7 pl-7 pr-6 sm:pl-12 sm:py-9 sm:pr-8 md:pl-16 md:py-11 md:pr-10 flex flex-col justify-between gap-8 border-b md:border-b-0 border-[rgba(244,245,239,0.09)] bg-[rgba(19,19,23,0.76)]">
                   {/* the ruled margin of a bound page */}
                   <span
                     aria-hidden
-                    className="absolute inset-y-0 left-[18px] sm:left-[38px] md:left-[52px] w-px bg-[rgba(205,253,2,0.16)]"
+                    className="absolute inset-y-0 left-[18px] sm:left-[38px] md:left-[52px] w-px bg-[rgba(217,255,0,0.16)]"
                   />
                   {/* The gutter: paper curves away into the binding, so the two
                       sheets meet in shadow the way an open book does. */}
@@ -409,25 +410,25 @@ export function SkillsSection() {
                       >
                         Volume {active.no}
                       </span>
-                      <h3 className="text-[1.35rem] sm:text-[1.65rem] leading-[1.16] text-[#F5F2EB] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.025em]">
+                      <h3 className="text-[1.35rem] sm:text-[1.65rem] leading-[1.16] text-[#F4F5EF] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.025em]">
                         {active.title}
                       </h3>
                     </div>
 
                     <div>
                       <span className="eyebrow">Scope</span>
-                      <p className="stylish-sub mt-2.5 text-[13px] text-[#C9C8C3] leading-[1.75]">{active.scope}</p>
+                      <p className="stylish-sub mt-2.5 text-[13px] text-[#B6B9B0] leading-[1.75]">{active.scope}</p>
                     </div>
 
-                    <div className="pt-6 border-t border-[rgba(245,242,235,0.09)]">
+                    <div className="pt-6 border-t border-[rgba(244,245,239,0.09)]">
                       <span className="eyebrow">Approach</span>
-                      <p className="stylish-sub mt-3 text-[13.5px] text-[#C9C8C3] leading-[1.78]">{active.thesis}</p>
+                      <p className="stylish-sub mt-3 text-[13.5px] text-[#B6B9B0] leading-[1.78]">{active.thesis}</p>
                     </div>
                   </div>
 
-                  <div className="relative flex items-center gap-3 pt-6 border-t border-[rgba(245,242,235,0.09)]">
+                  <div className="relative flex items-center gap-3 pt-6 border-t border-[rgba(244,245,239,0.09)]">
                     <span className="h-px w-6" style={{ backgroundColor: active.accent }} />
-                    <span className="text-[11.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.14em] uppercase text-[#C9C8C3]">
+                    <span className="text-[11.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.14em] uppercase text-[#B6B9B0]">
                       {active.record}
                     </span>
                   </div>
@@ -450,7 +451,7 @@ export function SkillsSection() {
                       {active.work.map((w, i) => (
                         <li
                           key={i}
-                          className="flex items-start gap-4 py-3.5 border-t border-[rgba(245,242,235,0.07)] last:border-b"
+                          className="flex items-start gap-4 py-3.5 border-t border-[rgba(244,245,239,0.07)] last:border-b"
                         >
                           <span
                             className="shrink-0 mt-[7px] text-[10px] font-[family-name:var(--font-geist-mono)] tabular-nums"
@@ -458,25 +459,25 @@ export function SkillsSection() {
                           >
                             {String(i + 1).padStart(2, "0")}
                           </span>
-                          <span className="text-[12.5px] leading-[1.72] text-[#C9C8C3]">{w}</span>
+                          <span className="text-[12.5px] leading-[1.72] text-[#B6B9B0]">{w}</span>
                         </li>
                       ))}
                     </ol>
                   </div>
 
-                  <div className="pt-6 border-t border-[rgba(245,242,235,0.09)]">
+                  <div className="pt-6 border-t border-[rgba(244,245,239,0.09)]">
                     <span className="eyebrow">Production environment</span>
-                    <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[12px] font-[family-name:var(--font-geist-mono)] text-[#8C8C86]">
+                    <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[12px] font-[family-name:var(--font-geist-mono)] text-[#7D8178]">
                       {active.stack.map((s, i) => (
                         <span key={s} className="flex items-center gap-2">
-                          <span className="hover:text-[#F5F2EB] transition-colors duration-300">{s}</span>
+                          <span className="hover:text-[#F4F5EF] transition-colors duration-300">{s}</span>
                           {i < active.stack.length - 1 && <span className="text-[#43433F]">/</span>}
                         </span>
                       ))}
                     </div>
                   </div>
 
-                  <div className="mt-auto pt-6 border-t border-[rgba(245,242,235,0.09)] flex items-center justify-between gap-4">
+                  <div className="mt-auto pt-6 border-t border-[rgba(244,245,239,0.09)] flex items-center justify-between gap-4">
                     <span className="text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.18em] uppercase text-[#6A6A66]">
                       Arrow keys to turn / Esc to close
                     </span>

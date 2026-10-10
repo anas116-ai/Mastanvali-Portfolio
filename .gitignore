@@ -43,3 +43,13 @@ vibe-portfolio/
 scripts/
 setup_kage.js
 skills-lock.json
+
+# local QA / visual-check artifacts (not part of the app)
+/qa/
+/.hero-glass-qa*.png
+/qa-*.png
+/qa-*.cjs
+/qa-*.js
+/qa-*.html
+/qa.cjs
+/dev-server.log

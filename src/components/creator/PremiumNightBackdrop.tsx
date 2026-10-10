@@ -20,7 +20,7 @@ export function PremiumNightBackdrop({
       <div
         className="absolute left-1/2 top-[-160px] h-[320px] w-[640px] -translate-x-1/2 blur-[90px]"
         style={{
-          backgroundImage: `radial-gradient(ellipse_at_center, rgba(245,242,235,${spot}) 0%, transparent 70%)`,
+          backgroundImage: `radial-gradient(ellipse_at_center, rgba(244,245,239,${spot}) 0%, transparent 70%)`,
         }}
       />
     </div>

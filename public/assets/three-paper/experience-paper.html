@@ -83,6 +83,15 @@ function wrapL(ctx,text,x,y,maxW,lh){
   return yy+lh;
 }
 
+/* Count wrapped lines WITHOUT drawing, so a section can be measured before
+   it is laid out and one gap can be derived to fill the leaf exactly. */
+function measureLines(ctx,text,maxW){
+  const words=text.split(' '); let line='', n=0;
+  for(const w of words){ const t=line?line+' '+w:w;
+    if(ctx.measureText(t).width>maxW && line){ n++; line=w; } else line=t; }
+  return n+1;
+}
+
 function spaced(ctx,words,x,y,total){
   let sum=0; const w=words.map(s=>{const m=ctx.measureText(s).width; sum+=m; return m;});
   const gap = words.length>1 ? (total-sum)/(words.length-1) : 0;
@@ -147,7 +156,7 @@ function sectionHead(ctx,label,y){
    starts from where the last one ended. Hand-placed positions drift the
    moment a single string changes length, which is how blocks end up
    printed on top of each other. */
-function drawResume(ctx){
+function drawSheet(ctx){
   // 1. Laid paper sheet, warm and slightly uneven in tone
   const g = ctx.createLinearGradient(0, 0, TW, TH);
   g.addColorStop(0, '#F0E9DA');
@@ -179,16 +188,18 @@ function drawResume(ctx){
   [[55,55,1,1],[TW-55,55,-1,1],[TW-55,TH-55,-1,-1],[55,TH-55,1,-1]].forEach(([x,y,sx,sy])=>{
     ctx.beginPath(); ctx.moveTo(x+28*sx, y); ctx.lineTo(x, y); ctx.lineTo(x, y+28*sy); ctx.stroke();
   });
+}
 
-  /* ---- Masthead ---------------------------------------------------- */
-  ctx.fillStyle = ACCENT_LEMON; ctx.font = '600 24px ' + MONO;
-  ctx.beginPath(); ctx.arc(95, 112, 4.5, 0, Math.PI*2); ctx.fill();
-  track(ctx, 'RESUME', 114, 118, 2.6, false);
-
+/* Page furniture shared by both leaves: the availability mark sits top
+   right, the name runs large beneath it. No document-type label: the
+   sheet is the resume, it does not need to announce it. */
+function drawMasthead(ctx, pageNo){
   ctx.strokeStyle = BORDER_HAIRLINE; ctx.lineWidth = 1.4;
   ctx.strokeRect(TW - 108, 103, 10, 10);
   ctx.fillStyle = TEXT_MUTED; ctx.font = '500 18px ' + MONO;
   track(ctx, 'OPEN TO WORK', TW - 250, 118, 1.6, false);
+
+  /* No page number on the sheet: the leaf is a document, not a deck. */
 
   ctx.fillStyle = TEXT_PRIMARY; ctx.font = '700 84px ' + SANS;
   ctx.fillText('MASTAN VALI', 90, 216);
@@ -207,6 +218,12 @@ function drawResume(ctx){
   track(ctx, 'HYDERABAD, INDIA   /   +91 83748 82630   /   OPEN TO RELOCATION', 90, 332, 0.6, false);
   track(ctx, 'sk.mastanvali0116@gmail.com   /   github.com/anas116-ai   /   in/mastan-vali-shaik-86952725a',
     90, 358, 0.6, false);
+}
+
+/* Page 1: profile and experience. Ends with a continuation line so the
+   reader knows the sheet turns. */
+function drawPage1(ctx){
+  drawMasthead(ctx, 1);
 
   let y = 400;
 
@@ -249,22 +266,59 @@ function drawResume(ctx){
     ['PRODUCTION SUPPORT', 'Monitored Data Services Management Console and SAP BW Process Chains against a 99.98 percent SLA, triaged ServiceNow incidents, and wrote RCA, STTM, and UAT documents.'],
   ];
 
-  let dY = y + 38;
-  duties.forEach(([tag, body])=>{
-    ctx.fillStyle = ACCENT_LEMON; ctx.font = '600 18px ' + MONO;
-    track(ctx, tag, 90, dY, 1.4, false);
-    ctx.fillStyle = TEXT_SECONDARY; ctx.font = '400 20px ' + SANS;
-    const endY = wrapL(ctx, body, 90, dY + 28, TW - 232, 29);
-    /* Hairline tick in the gutter, the resume equivalent of a rule mark.
-       It is inset to 1196 so it stays inside the 1210 margin. Previously
-       it was placed at 1204 and ran to 1218, over the cut line. */
-    ctx.fillStyle = ACCENT_LEMON_SOFT;
-    ctx.fillRect(1196, dY + 6, 14, 1.6);
-    dY = endY + 15;
-  });
+  /* ---- Highlights ---------------------------------------------------
+     Six duty blocks alone left the lower third of the leaf blank. This
+     block carries the measurable wins from the same record, so the page
+     reads as a full document. The measurement pass counts every wrapped
+     line first, then derives one gap so the flow closes just above the
+     footer rule; content can never be pushed across the cut line. */
+  const highlights = [
+    ['PRODUCTION UPTIME', 'Held 99.98 percent enterprise production uptime across SAP BODS 4.3 batch and real time workloads.'],
+    ['END TO END SCOPE', 'Carried production data flows from SAP ECC extraction through SQL Server reconciliation into AWS S3 and S/4HANA.'],
+    ['AUTONOMOUS ENGINE', 'Shipped a multi agent engine with 787 passing tests, persistent ChromaDB memory, and local Ollama inference.'],
+  ];
+
+  const flow = duties.concat(highlights);
+  const bodyW = TW - 232, LINE = 29, OFF = 28;
+
+  ctx.font = '400 20px ' + SANS;
+  const blockH = flow.map(([, body]) => OFF + measureLines(ctx, body, bodyW) * LINE);
+  const startY = y + 38;
+  const TARGET_END = 1734;               /* footer rule sits at 1836 */
+  const gapCount = flow.length - 1;
+  const fixedH = blockH.reduce((a, b) => a + b, 0) + 52;   /* + highlights head */
+  const gap = clamp((TARGET_END - startY - fixedH) / gapCount, 12, 40);
+
+  let dY = startY;
+  const drawFlowBlocks = (arr, start) => {
+    let cy = start;
+    arr.forEach(([tag, body], i) => {
+      ctx.fillStyle = ACCENT_LEMON; ctx.font = '600 18px ' + MONO;
+      track(ctx, tag, 90, cy, 1.4, false);
+      ctx.fillStyle = TEXT_SECONDARY; ctx.font = '400 20px ' + SANS;
+      const endY = wrapL(ctx, body, 90, cy + OFF, bodyW, LINE);
+      /* Hairline tick in the gutter, the resume equivalent of a rule mark.
+         Inset to 1196 so it stays inside the 1210 margin. */
+      ctx.fillStyle = ACCENT_LEMON_SOFT;
+      ctx.fillRect(1196, cy + 6, 14, 1.6);
+      cy = endY + (i === arr.length - 1 && arr === highlights ? 0 : gap);
+    });
+    return cy;
+  };
+
+  dY = drawFlowBlocks(duties, dY);
+  dY = sectionHead(ctx, '// HIGHLIGHTS', dY + 16) + 34;
+  drawFlowBlocks(highlights, dY);
+}
+
+/* Page 2: selected systems, technical environment, education, footer.
+   Same sheet, same hands, second leaf. */
+function drawPage2(ctx){
+  drawMasthead(ctx, 2);
 
   /* ---- Selected systems --------------------------------------------- */
-  y = sectionHead(ctx, '// SELECTED SYSTEMS', dY + 44) + 44;
+  let y = 400;
+  y = sectionHead(ctx, '// SELECTED SYSTEMS', y) + 44;
 
   const systems = [
     ['AnsiQ', 'Multi agent task orchestration with persistent memory, carried on a directed acyclic graph with 787 passing unit tests and local inference through Ollama.'],
@@ -281,7 +335,7 @@ function drawResume(ctx){
     ctx.fillText('github.com/anas116-ai', TW - 90 - ctx.measureText('github.com/anas116-ai').width, sY);
     ctx.fillStyle = TEXT_SECONDARY; ctx.font = '400 20px ' + SANS;
     const endY = wrapL(ctx, body, 90, sY + 26, TW - 180, 28);
-    sY = endY + 16;
+    sY = endY + 30;
   });
 
   /* ---- Technical environment ---------------------------------------- */
@@ -302,10 +356,31 @@ function drawResume(ctx){
     ctx.fillText(token, eX, eY);
     eX += tw + 14;
   });
-  y = eY + 78;
+  y = eY + 72;
+
+  /* ---- Key strengths ------------------------------------------------
+     Fill the lower half so the second leaf never closes on blank paper. */
+  y = sectionHead(ctx, '// KEY STRENGTHS', y) + 40;
+
+  const strengths = [
+    ['DATA ENGINEERING', 'High volume SAP ETL, slowly changing dimensions, and row for row reconciliation.'],
+    ['CLOUD AND STORAGE', 'AWS S3 staging, S/4HANA load routines, and delta conversion mapping.'],
+    ['AUTONOMOUS SYSTEMS', 'Directed acyclic graph orchestration, vector memory, and local model inference.'],
+    ['PRODUCT ENGINEERING', 'Next.js 15, Electron, SQLite WAL, and strict TypeScript interfaces.'],
+  ];
+
+  strengths.forEach(([tag, body]) => {
+    ctx.fillStyle = ACCENT_LEMON; ctx.font = '600 18px ' + MONO;
+    track(ctx, tag, 90, y, 1.4, false);
+    ctx.fillStyle = TEXT_SECONDARY; ctx.font = '400 20px ' + SANS;
+    const endY = wrapL(ctx, body, 90, y + 26, TW - 180, 28);
+    ctx.fillStyle = ACCENT_LEMON_SOFT;
+    ctx.fillRect(1196, y + 6, 14, 1.6);
+    y = endY + 30;
+  });
 
   /* ---- Education ---------------------------------------------------- */
-  y = sectionHead(ctx, '// EDUCATION', y) + 44;
+  y = sectionHead(ctx, '// EDUCATION', y + 4) + 44;
 
   ctx.fillStyle = TEXT_PRIMARY; ctx.font = '600 26px ' + SANS;
   ctx.fillText('B.Tech, Electronics and Communication Engineering', 90, y);
@@ -322,10 +397,14 @@ function drawResume(ctx){
 
   ctx.fillStyle = TEXT_MUTED; ctx.font = '500 18px ' + MONO;
   ctx.fillText('REFERENCES ON REQUEST', 90, footY + 34);
+}
 
-  const footR = 'FULL RESUME PDF: /shaik-mastan-vali-resume.pdf';
-  ctx.fillStyle = ACCENT_LEMON;
-  ctx.fillText(footR, TW - 90 - ctx.measureText(footR).width, footY + 34);
+/* The embedding page selects the leaf: ?page=2 prints the second leaf,
+   anything else prints the first. */
+function sheetPage(){
+  try {
+    return new URLSearchParams(window.location.search).get('page') === '2' ? 2 : 1;
+  } catch (e) { return 1; }
 }
 
 function makeResumeTexture(){
@@ -338,7 +417,8 @@ function makeResumeTexture(){
   ctx.save();
   ctx.scale(CW/TW, CH/TH);          // author on the 1300x1950 grid, render 4K crisp
   rr(ctx,0,0,TW,TH,10); ctx.clip();
-  drawResume(ctx);
+  drawSheet(ctx);
+  if (sheetPage() === 2) drawPage2(ctx); else drawPage1(ctx);
   ctx.restore();
   const t = new T.CanvasTexture(c);
   t.encoding = T.sRGBEncoding; t.anisotropy = 16;

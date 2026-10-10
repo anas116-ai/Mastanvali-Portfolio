@@ -27,7 +27,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "ENTERPRISE ETL",
     side: "left",
     icon: Database,
-    accent: "#DCFD3C",
+    accent: "#E8FF45",
     arcX: [-72, -142, -212, -246, -250],
     arcY: [236, 194, 132, 66, 34],
   },
@@ -36,7 +36,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "DATA ARCHITECTURE",
     side: "right",
     icon: Database,
-    accent: "#8A8918",
+    accent: "#A8C900",
     arcX: [-18, 140, 210, 244, 248],
     arcY: [236, 194, 132, 68, 36],
   },
@@ -45,7 +45,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "PLATFORM GOVERNANCE",
     side: "left",
     icon: Layers,
-    accent: "#C9C8C3",
+    accent: "#B6B9B0",
     arcX: [-74, -144, -214, -248, -252],
     arcY: [238, 196, 134, 68, 36],
   },
@@ -54,7 +54,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "GROUNDED MEMORY",
     side: "right",
     icon: Binary,
-    accent: "#CDFD02",
+    accent: "#D9FF00",
     arcX: [-16, 142, 212, 246, 250],
     arcY: [236, 194, 132, 68, 36],
   },
@@ -63,7 +63,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "AUTONOMOUS AGENTS",
     side: "left",
     icon: Cpu,
-    accent: "#CDFD02",
+    accent: "#D9FF00",
     arcX: [-72, -142, -212, -246, -250],
     arcY: [234, 192, 130, 64, 34],
   },
@@ -72,7 +72,7 @@ const SKILL_ITEMS: SkillStreamBadge[] = [
     category: "DISTRIBUTED GRAPH",
     side: "right",
     icon: Terminal,
-    accent: "#8A8918",
+    accent: "#A8C900",
     arcX: [-18, 140, 210, 244, 248],
     arcY: [234, 192, 130, 64, 34],
   },
@@ -183,7 +183,7 @@ export function LaptopSkillStream() {
                   >
                     {badge.category}
                   </span>
-                  <span className="mt-1 text-[12.5px] font-[family-name:var(--font-geist-sans)] font-medium tracking-[0.005em] text-[#F5F2EB] whitespace-nowrap">
+                  <span className="mt-1 text-[12.5px] font-[family-name:var(--font-geist-sans)] font-medium tracking-[0.005em] text-[#F4F5EF] whitespace-nowrap">
                     {badge.text}
                   </span>
                 </span>

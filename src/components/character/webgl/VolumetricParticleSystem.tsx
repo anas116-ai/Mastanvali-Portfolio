@@ -22,11 +22,11 @@ export function VolumetricParticleSystem({
     const spd = new Float32Array(count * 3);
 
     const palette = [
-      new THREE.Color("#DCFD3C"), // brass dust
-      new THREE.Color("#8A8918"), // lime-deep mote
-      new THREE.Color("#DCFD3C"), // lime-hi mote
-      new THREE.Color("#CDFD02"), // burnished gold
-      new THREE.Color("#C9C8C3"), // bone
+      new THREE.Color("#E8FF45"), // brass dust
+      new THREE.Color("#A8C900"), // lemon-deep mote
+      new THREE.Color("#E8FF45"), // lemon-hi mote
+      new THREE.Color("#D9FF00"), // burnished gold
+      new THREE.Color("#B6B9B0"), // bone
     ];
 
     for (let i = 0; i < count; i++) {

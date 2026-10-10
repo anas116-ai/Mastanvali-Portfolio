@@ -25,27 +25,27 @@ export function ScrollCue({ targetId = "about" }: { targetId?: string }) {
       className="group pointer-events-auto inline-flex select-none flex-col items-center gap-3 focus:outline-none"
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
-      <span className="eyebrow text-[10px] tracking-[0.42em] text-[#6A6A66] transition-colors duration-500 group-hover:text-[#8C8C86] group-focus-visible:text-[#8C8C86]">
+      <span className="eyebrow text-[10px] tracking-[0.42em] text-[#6A6A66] transition-colors duration-500 group-hover:text-[#7D8178] group-focus-visible:text-[#7D8178]">
         Scroll
       </span>
 
       {/* The rule: a 64px hairline. Fills downward on a 3.4s cycle. */}
       <span
         aria-hidden
-        className="relative block h-16 w-px overflow-hidden bg-[rgba(245,242,235,0.11)]"
+        className="relative block h-16 w-px overflow-hidden bg-[rgba(244,245,239,0.11)]"
       >
         {!reduced && (
           <>
             {/* the fill, wiping from top to bottom */}
             <span
-              className="absolute inset-x-0 top-0 h-full origin-top bg-[#CDFD02]"
+              className="absolute inset-x-0 top-0 h-full origin-top bg-[#D9FF00]"
               style={{
                 animation: "cue-fill 3.4s cubic-bezier(0.165,0.84,0.44,1) infinite",
               }}
             />
             {/* one light body travelling the rule, slower than the fill */}
             <span
-              className="absolute inset-x-0 h-6 bg-[linear-gradient(to_bottom,transparent,rgba(205,253,2,0.9),transparent)]"
+              className="absolute inset-x-0 h-6 bg-[linear-gradient(to_bottom,transparent,rgba(217,255,0,0.9),transparent)]"
               style={{
                 animation: "cue-travel 3.4s cubic-bezier(0.44,0,0.56,1) infinite",
               }}

@@ -1,16 +1,30 @@
 import type { Metadata } from "next";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
 /* ─────────────────────────────────────────────────────────────
    TYPE SYSTEM — "Precision Instrument"
-   Display  → Outfit (light/regular, tight negative tracking)
+   Display  → Cabinet Grotesk (section headers: simple luxury grotesk)
+   Support  → Outfit (numbers, sub-titles, large technical display)
    UI/Body  → Geist  (self-hosted, SF-Pro-grade neo-grotesque)
    Mono     → Geist Mono (technical metadata, eyebrows, tags)
    Hero     → Warpaint (display wordmark, custom face)
    ───────────────────────────────────────────────────────────── */
+
+/* Cabinet Grotesk — the premium grotesk reserved for headers. Medium carries
+   the section headings, Bold only where a header needs the extra weight. */
+const cabinetGrotesk = localFont({
+  src: [
+    { path: "./fonts/CabinetGrotesk-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/CabinetGrotesk-Medium.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/CabinetGrotesk-Bold.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-cabinet",
+  display: "swap",
+});
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -52,7 +66,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark scroll-smooth ${GeistSans.variable} ${GeistMono.variable} ${outfit.variable} ${plusJakarta.variable}`}
+      className={`dark scroll-smooth ${GeistSans.variable} ${GeistMono.variable} ${outfit.variable} ${plusJakarta.variable} ${cabinetGrotesk.variable}`}
     >
       <head>
         <link

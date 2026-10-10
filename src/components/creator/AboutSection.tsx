@@ -5,9 +5,8 @@ import { Database, Bot, MonitorSmartphone } from "lucide-react";
 import { ZenKoiPondCard, type CapabilityArea } from "./ZenKoiPondCard";
 
 /**
- * Three capability ponds. Each card carries its own natural material accent
- * (champagne, bronze, copper) so the row reads as three distinct objects
- * rather than one repeated component.
+ * Three capability ponds. All three cards share the same lemon accent so the
+ * row reads as one coherent system rather than three unrelated materials.
  */
 const capabilityAreas: CapabilityArea[] = [
   {
@@ -36,7 +35,7 @@ const capabilityAreas: CapabilityArea[] = [
       "Local inference through Ollama (Llama 3, Mistral) alongside cloud APIs",
       "Persistent memory via SQLite FTS5 indexing and ChromaDB vector search",
     ],
-    accent: "#8A8918",
+    accent: "#CDFD02",
     borderColor: "rgba(205,253,2,0.34)",
     icon: Bot,
     systemTag: "MULTI-AGENT // DAG NODES",
@@ -52,7 +51,7 @@ const capabilityAreas: CapabilityArea[] = [
       "Anasify: AI resume optimiser with strict truth verification",
       "Next.js 15, React 19, TypeScript, Prisma and Tailwind CSS architectures",
     ],
-    accent: "#DCFD3C",
+    accent: "#CDFD02",
     borderColor: "rgba(205,253,2,0.34)",
     icon: MonitorSmartphone,
     systemTag: "ZERO-LATENCY // WAL ERP",
@@ -79,7 +78,7 @@ export function AboutSection() {
             <FadeIn y={18} delay={0.1} duration={0.8}>
               <div className="eyebrow">// ABOUT ME · ARCHITECTURAL FOUNDATION</div>
               <h2 className="stylish-header text-[2rem] sm:text-[2.6rem] md:text-[3.15rem] lg:text-[3.6rem] text-[#F5F2EB] mt-3">
-                Engineering and vision
+                Engineering & vision
               </h2>
             </FadeIn>
 

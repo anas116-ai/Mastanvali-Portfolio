@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { FadeIn } from "./FadeIn";
 import { PremiumNightBackdrop } from "./PremiumNightBackdrop";
-import { Mail, Linkedin, Github, FileText } from "lucide-react";
+import { Mail, FileText } from "lucide-react";
+import { GithubMark, LinkedinMark } from "@/components/ui/BrandIcons";
 import { ResumeModal } from "@/components/resume/ResumeModal";
 import { ShaderIgnitionButton } from "@/components/ui/ShaderIgnitionButton";
 
@@ -15,35 +16,37 @@ export function FinalSection() {
   return (
     <footer
       id="contact"
-      className="relative w-full overflow-hidden bg-transparent text-[#F5F2EB] pt-24 sm:pt-28 md:pt-32 pb-16 px-5 sm:px-8 md:px-12 lg:px-16 select-none border-t border-[rgba(245,242,235,0.07)]"
+      className="relative w-full overflow-hidden bg-transparent text-[#F4F5EF] pt-24 sm:pt-28 md:pt-32 pb-16 px-5 sm:px-8 md:px-12 lg:px-16 select-none"
     >
       {/* Floor wash. Lemon pooled low and held at a low alpha, so the page
           appears to end in light rather than in a glow. */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute bottom-[-140px] left-1/2 -translate-x-1/2 w-[900px] h-[420px] bg-[radial-gradient(ellipse_at_center,rgba(205,253,2,0.075)_0%,transparent_72%)] blur-[110px]" />
+        <div className="absolute bottom-[-140px] left-1/2 -translate-x-1/2 w-[900px] h-[420px] bg-[radial-gradient(ellipse_at_center,rgba(217,255,0,0.075)_0%,transparent_72%)] blur-[110px]" />
         {/* Premium night beams over the closing floor */}
         <PremiumNightBackdrop side="left" mood="calm" />
       </div>
 
-      <div className="mx-auto max-w-4xl flex flex-col items-center text-center relative z-10 space-y-11">
+      {/* The closing chapter stands open on the black field: no box, no slab,
+          just centred type over the lemon floor wash. Modal stays outside:
+          backdrop-filter would trap its fixed overlay. */}
+      <div className="mx-auto max-w-5xl flex flex-col items-center text-center relative z-10 space-y-11 px-5 sm:px-10 md:px-14 py-12 sm:py-14">
         <FadeIn y={20} duration={0.8}>
           <div className="flex items-center gap-2.5 eyebrow justify-center">
-            <span className="h-[5px] w-[5px] rounded-full bg-[#CDFD02] animate-pulse" />
+            <span className="h-[5px] w-[5px] rounded-full bg-[#D9FF00] animate-pulse" />
             // Start a conversation
           </div>
 
-          {/* The heading is balanced so its two lines carry equal weight, and the
-              caption is set to its own measure on the same optical centre. Neither
-              is allowed to run long: the caption holds a 62 character line, which
-              is where this face still reads as a sentence rather than a block. */}
-          <h2 className="stylish-header text-[clamp(1.95rem,5.6vw,3.4rem)] text-[#F5F2EB] mt-4 max-w-[16ch] text-balance">
-            Let&apos;s Build Something Extraordinary
+          {/* Balanced to a short line so the closing reads as one confident
+              statement rather than a slogan: "what's next" also echoes the
+              Engineer/Vision note at the top of the page. */}
+          <h2 className="stylish-header text-[clamp(1.95rem,5.6vw,3.4rem)] text-[#FFFFFF] mt-4 max-w-[16ch] text-balance">
+            Let&apos;s build what&apos;s next
           </h2>
 
-          <p className="stylish-sub mt-6 text-[13.5px] sm:text-[15px] leading-[1.7] text-[#8C8C86] max-w-[46ch] text-pretty">
-            Open to engineering roles across enterprise data platforms, autonomous agent
-            systems, and full-stack product work. Send a note and I will reply with
-            something useful.
+          <p className="stylish-sub mt-6 text-[14px] sm:text-[15.5px] leading-[1.7] text-[#F4F5EF] max-w-[46ch] text-pretty">
+            I am looking for my next engineering role across enterprise data platforms,
+            autonomous agent systems, and full-stack product work. Write to me about
+            yours and I will reply with something useful.
           </p>
         </FadeIn>
 
@@ -72,21 +75,19 @@ export function FinalSection() {
           </ShaderIgnitionButton>
         </FadeIn>
 
-        <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
-
         {/* Contact details, inline with slash rules. Phone stays masked. */}
         <FadeIn y={15} delay={0.3} duration={0.7} className="w-full max-w-2xl pt-4">
-          <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 text-[12.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.02em] text-[#8C8C86]">
+          <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 text-[12.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.02em] text-[#7D8178]">
             <a
               href={`mailto:${EMAIL}`}
-              className="text-[#C9C8C3] hover:text-[#DCFD3C] transition-colors duration-300"
+              className="text-[#B6B9B0] hover:text-[#E8FF45] transition-colors duration-300"
             >
               {EMAIL}
             </a>
             <span className="text-[#43433F] select-none">/</span>
             <span className="flex items-center gap-1.5">
               <span className="text-[#6A6A66]">Tel</span>
-              <span className="text-[#C9C8C3] tabular-nums">+91 837488</span>
+              <span className="text-[#B6B9B0] tabular-nums">+91 837488</span>
               {/* Redacted. The withheld digits never enter the document. */}
               <span
                 aria-hidden
@@ -96,8 +97,6 @@ export function FinalSection() {
               </span>
               <span className="sr-only">last four digits withheld, shared on request</span>
             </span>
-            <span className="text-[#43433F] select-none">/</span>
-            <span className="text-[#C9C8C3]">Hyderabad, India</span>
           </div>
         </FadeIn>
 
@@ -107,31 +106,33 @@ export function FinalSection() {
             href="https://github.com/anas116-ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 flex items-center justify-center border border-[rgba(245,242,235,0.11)] text-[#8C8C86] hover:text-[#DCFD3C] hover:border-[rgba(220,253,60,0.42)] transition-colors duration-300"
+            className="w-11 h-11 flex items-center justify-center transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D9FF00]"
             title="GitHub"
             aria-label="GitHub Profile"
           >
-            <Github size={16} />
+            <GithubMark size={24} />
           </a>
 
           <a
             href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 flex items-center justify-center border border-[rgba(245,242,235,0.11)] text-[#8C8C86] hover:text-[#DCFD3C] hover:border-[rgba(220,253,60,0.42)] transition-colors duration-300"
+            className="w-11 h-11 flex items-center justify-center transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D9FF00]"
             title="LinkedIn"
             aria-label="LinkedIn Profile"
           >
-            <Linkedin size={16} />
+            <LinkedinMark size={24} />
           </a>
         </FadeIn>
 
-        <div className="pt-8 border-t border-[rgba(245,242,235,0.07)] w-full text-center text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] uppercase text-[#43433F]">
+        <div className="pt-8 border-t border-[rgba(244,245,239,0.07)] w-full text-center text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] uppercase text-[#43433F]">
           &copy; {new Date().getFullYear()} Shaik Mastan Vali
           <span className="mx-2 text-[#2A2A2E]">/</span>
           Enterprise data engineering, autonomous agents, full-stack systems
         </div>
       </div>
+
+      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </footer>
   );
 }

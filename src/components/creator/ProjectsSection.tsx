@@ -68,7 +68,7 @@ const projectList: ProjectItem[] = [
     tags: ["Next.js 15", "React 19", "TypeScript", "Prisma", "PostgreSQL", "ATS score engine", "Tailwind CSS"],
     bannerImg: "/images/projects/anasify_v2.jpg",
     telemetry: "ATS match engine",
-    stat1: "98% target score",
+    stat1: "ATS target score",
     stat2: "No invented claims",
     accent: "#CDFD02",
   },

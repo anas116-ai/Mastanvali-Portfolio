@@ -16,7 +16,6 @@ interface ColorConfig {
   borderIdle: string;
   borderHover: string;
   textGlow: string;
-  bezelGrad: string;
 }
 
 const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
@@ -27,10 +26,9 @@ const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
     starHigh: [0.89, 0.89, 0.29],
     glowRgb: [0.89, 0.89, 0.29],
     flashRgb: [1.0, 1.0, 0.94],
-    borderIdle: "border-[#CDFD02]/40",
-    borderHover: "group-hover:border-[#DCFD3C]/90",
-    textGlow: "rgba(220,253,60,0.65)",
-    bezelGrad: "from-[#CDFD02]/35 via-white/10 to-white/15",
+    borderIdle: "border-[#D9FF00]/60",
+    borderHover: "group-hover:border-[#E8FF45]",
+    textGlow: "rgba(232,255,69,0.65)",
   },
   // 02. Lemon hi, held back
   lemonHi: {
@@ -39,22 +37,22 @@ const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
     starHigh: [0.79, 0.79, 0.24],
     glowRgb: [0.79, 0.79, 0.24],
     flashRgb: [1.0, 1.0, 0.95],
-    borderIdle: "border-[#DCFD3C]/35",
-    borderHover: "group-hover:border-[#DCFD3C]/85",
-    textGlow: "rgba(220,253,60,0.60)",
-    bezelGrad: "from-[#DCFD3C]/30 via-white/5 to-white/10",
+    borderIdle: "border-[#E8FF45]/55",
+    borderHover: "group-hover:border-[#E8FF45]",
+    textGlow: "rgba(232,255,69,0.60)",
   },
-  // 03. Bone (neutral, not blue-tinted white)
+  // 03. Bone (neutral, not blue-tinted white). The idle border carries a
+  // lemon tint like every other variant so the full button set reads as
+  // one family with one highlight, top of the page to bottom.
   bone: {
     dustRgb: [0.06, 0.06, 0.058],
     starLow: [0.96, 0.96, 0.94],
     starHigh: [0.82, 0.82, 0.79],
     glowRgb: [0.92, 0.92, 0.89],
     flashRgb: [1.0, 1.0, 0.98],
-    borderIdle: "border-[#C9C8C3]/25",
-    borderHover: "group-hover:border-[#F5F2EB]/70",
-    textGlow: "rgba(245,242,235,0.55)",
-    bezelGrad: "from-[#C9C8C3]/25 via-white/5 to-white/10",
+    borderIdle: "border-[#D9FF00]/45",
+    borderHover: "group-hover:border-[#E8FF45]",
+    textGlow: "rgba(244,245,239,0.55)",
   },
   // 04. Lemon deep, the darkest lemon stop
   lemonDeep: {
@@ -63,10 +61,9 @@ const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
     starHigh: [0.79, 0.79, 0.22],
     glowRgb: [0.78, 0.78, 0.24],
     flashRgb: [1.0, 1.0, 0.93],
-    borderIdle: "border-[#CDFD02]/35",
-    borderHover: "group-hover:border-[#CDFD02]/85",
-    textGlow: "rgba(205,253,2,0.55)",
-    bezelGrad: "from-[#CDFD02]/30 via-white/10 to-white/15",
+    borderIdle: "border-[#D9FF00]/50",
+    borderHover: "group-hover:border-[#D9FF00]",
+    textGlow: "rgba(217,255,0,0.55)",
   },
 };
 
@@ -142,8 +139,9 @@ void main(){
     col += sCol * star * tw * fade * (0.85 + 0.55 * u_warp);
   }
 
-  // 4. Central Reactor Sun Core (Softened moderate glow)
-  col += u_glow * u_warp * 0.22 * exp(-r * 4.0);
+  // 4. No central core glow: the chamber stays an even glass panel, so the
+  //    button never reads as an oval light sitting behind a rectangle. Light
+  //    comes only from the star field and the glass edge.
 
   // 5. Clean Edge Vignette
   vec2 e = sc * (1.0 - sc);
@@ -356,16 +354,15 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
     lg: "px-5 py-2 sm:px-6 sm:py-2.5 text-xs sm:text-[13px]",
   }[size];
 
-  /* Bezel geometry.
-     The outer element carries a 1px border and 1.5px of padding, so the
-     chamber sits 2.5px in from the outer edge. For the two corners to
-     share one arc the inner radius must be exactly that inset below the
-     outer radius: 4 - 2.5 = 1.5. It was 2, which made the inner corner
-     rounder than the outer and turned the bezel into an uneven seam at
-     all four corners instead of a machined edge. */
-  const BEZEL_RADIUS = 4;
-  const BEZEL_INSET = 2.5;
-  const CHAMBER_RADIUS = BEZEL_RADIUS - BEZEL_INSET; // 1.5
+  /* One shape, no stacked backgrounds.
+     The control used to read as two objects on top of each other: an outer
+     bezel gradient with its own border, and a rectangular glass chamber
+     sitting inside it, which read as an oval behind a box. There is now a
+     single machined glass panel, one lemon border, and one arc, so every
+     button on the page (hero, experience, projects, footer) is the same
+     object. The ignition shader, its star field, and the click flash are
+     unchanged. */
+  const BUTTON_RADIUS = 6;
 
   const content = (
     <div
@@ -374,52 +371,44 @@ export const ShaderIgnitionButton = memo(function ShaderIgnitionButton({
       onMouseLeave={() => setIsHovered(false)}
       onFocus={() => setIsHovered(true)}
       onBlur={() => setIsHovered(false)}
-      className={`group relative inline-flex p-[1.5px] rounded-full bg-gradient-to-b ${config.bezelGrad} border ${config.borderIdle} ${config.borderHover} transition-all duration-500 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.985] cursor-pointer select-none ${className}`}
+      style={{ borderRadius: BUTTON_RADIUS }}
+      className={`group relative inline-flex items-center justify-center gap-2 overflow-hidden glass border ${config.borderIdle} ${config.borderHover} transition-all duration-500 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(217,255,0,0.24)] active:translate-y-0 active:scale-[0.985] cursor-pointer select-none ${sizeStyles} ${className}`}
     >
-      {/* Inner chamber housing the shader. The radius is applied inline
-          because Tailwind only sees class names that appear literally in
-          the source: `rounded-[${CHAMBER_RADIUS}px]` was never emitted, so
-          the chamber silently rendered with a square corner. */}
-      <div
-        className={`relative flex items-center justify-center gap-2 overflow-hidden glass border border-[rgba(245,242,235,0.07)] ${sizeStyles}`}
-        style={{ borderRadius: CHAMBER_RADIUS }}
-      >
-        {/* Full-bleed WebGL Canvas */}
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full hidden md:block pointer-events-none opacity-85 group-hover:opacity-100 transition-opacity duration-300"
-          aria-hidden="true"
-        />
+      {/* Full-bleed WebGL Canvas */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full hidden md:block pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+        aria-hidden="true"
+      />
 
-        {/* Top Micro-Edge Specular Glass Highlight */}
-        <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+      {/* Top Micro-Edge Specular Glass Highlight */}
+      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
 
-        {/* Icon (Left) */}
-        {icon && iconPosition === "left" && (
-          <span className="relative z-10 flex items-center text-white/90 group-hover:text-white transition-colors duration-200">
-            {icon}
-          </span>
-        )}
-
-        {/* Crisp button typography */}
-        <span
-          className="relative z-10 font-[family-name:var(--font-geist-sans)] font-medium text-[0.95em] tracking-[0.005em] text-[#F5F2EB] group-hover:text-white transition-colors duration-200"
-          style={{
-            textShadow: isHovered
-              ? `0 0 12px ${config.textGlow}, 0 1px 3px rgba(0,0,0,0.9)`
-              : "0 1px 3px rgba(0,0,0,0.8)",
-          }}
-        >
-          {children}
+      {/* Icon (Left) */}
+      {icon && iconPosition === "left" && (
+        <span className="relative z-10 flex items-center text-white/90 group-hover:text-white transition-colors duration-200">
+          {icon}
         </span>
+      )}
 
-        {/* Icon (Right) */}
-        {icon && iconPosition === "right" && (
-          <span className="relative z-10 flex items-center text-white/90 group-hover:text-white transition-transform duration-200 group-hover:translate-x-0.5">
-            {icon}
-          </span>
-        )}
-      </div>
+      {/* Crisp button typography */}
+      <span
+        className="relative z-10 font-[family-name:var(--font-geist-sans)] font-medium text-[0.95em] tracking-[0.005em] text-[#F4F5EF] group-hover:text-white transition-colors duration-200"
+        style={{
+          textShadow: isHovered
+            ? `0 0 12px ${config.textGlow}, 0 1px 3px rgba(0,0,0,0.9)`
+            : "0 1px 3px rgba(0,0,0,0.8)",
+        }}
+      >
+        {children}
+      </span>
+
+      {/* Icon (Right) */}
+      {icon && iconPosition === "right" && (
+        <span className="relative z-10 flex items-center text-white/90 group-hover:text-white transition-transform duration-200 group-hover:translate-x-0.5">
+          {icon}
+        </span>
+      )}
     </div>
   );
 

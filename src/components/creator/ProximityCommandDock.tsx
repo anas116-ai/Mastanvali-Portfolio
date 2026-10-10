@@ -32,10 +32,11 @@ function parseRGB(value: string): RGB {
 
 /* The resting colour is whatever the stylesheet says, and the arriving
    colour is the lemon. Reading the rest state instead of hardcoding it
-   means a palette change in globals.css carries the ramp with it. */
+   means a palette change in globals.css carries the ramp with it. Rest
+   is crisp bone white, arrival is lemon yellow. */
 function readRamp(el: HTMLElement) {
   const rest = parseRGB(getComputedStyle(el).color);
-  return { from: rest, to: [205, 253, 2] as RGB };
+  return { from: rest, to: [217, 255, 0] as RGB };
 }
 
 function mix(a: RGB, b: RGB, t: number) {
@@ -109,7 +110,7 @@ export function ProximityCommandDock({ activeId = "" }: { activeId?: string }) {
         const val = clamp(state.value, 0, 1.12);
 
         // Letter spacing opens slightly and the word lifts, no scaling gimmick.
-        const tracking = val * 0.035;
+        const tracking = val * 0.01;
         const lift = val * -1.5;
 
         item.style.transform = `translate3d(${(
@@ -124,7 +125,7 @@ export function ProximityCommandDock({ activeId = "" }: { activeId?: string }) {
         const emph = Math.max(val, held ? 1 : 0);
 
         if (textSpan) {
-          textSpan.style.letterSpacing = `${(0.055 + tracking).toFixed(4)}em`;
+          textSpan.style.letterSpacing = `${(0.015 + tracking).toFixed(4)}em`;
           /* One ramp, muted to lemon. The previous ramp was left over from
              the brass palette and resolved to rgb(228, 213, 96) at full
              proximity, a muddy olive that is neither the muted grey the
@@ -135,14 +136,6 @@ export function ProximityCommandDock({ activeId = "" }: { activeId?: string }) {
           textSpan.style.color = mix(ramp.from, ramp.to, emph);
         }
 
-        const ruleSpan = item.querySelector<HTMLElement>(".dock-rule");
-        if (ruleSpan) {
-          ruleSpan.style.opacity = String(Math.max(clamp(val * 1.4, 0, 1), held ? 1 : 0));
-          ruleSpan.style.transform = `scaleX(${Math.max(
-            clamp(val * 1.1, 0, 1),
-            held ? 1 : 0
-          ).toFixed(3)})`;
-        }
       });
 
       if (stillMoving) {
@@ -177,8 +170,6 @@ export function ProximityCommandDock({ activeId = "" }: { activeId?: string }) {
       updatePhysics();
       isMoving = false;
     };
-
-    itemsRef.current.length = 0;
 
     const handlePointerMove = (e: PointerEvent) => {
       const rect = container.getBoundingClientRect();
@@ -239,7 +230,7 @@ export function ProximityCommandDock({ activeId = "" }: { activeId?: string }) {
   return (
     <nav
       ref={containerRef}
-      className="hidden md:flex items-center gap-4 lg:gap-7 py-2 font-[family-name:var(--font-geist-sans)] font-normal text-[13px] select-none relative"
+      className="hidden md:flex items-center gap-3.5 lg:gap-6 py-2 font-header-dynamic font-medium text-[15px] lg:text-[16px] tracking-[0.01em] select-none relative"
       aria-label="Portfolio Navigation"
     >
       {NAV_ITEMS.map((item, idx) => {
@@ -258,21 +249,15 @@ export function ProximityCommandDock({ activeId = "" }: { activeId?: string }) {
               const target = document.querySelector(item.href);
               if (target) target.scrollIntoView({ behavior: "smooth" });
             }}
-            className="relative inline-flex items-center justify-center py-1 cursor-pointer will-change-transform"
+            className="dock-link relative inline-flex items-center justify-center py-1 cursor-pointer will-change-transform focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D9FF00]"
             style={{ transformOrigin: "left center" }}
           >
-            <span className="dock-text text-[#8C8C86] transition-colors duration-300">
+            {/* Rest state is crisp bone white, fully lit. Proximity ramps
+                it to lemon and opens the hairline; the bounce lands it. */}
+            <span className="dock-text text-[#FFFFFF] transition-colors duration-300">
               {item.label}
             </span>
 
-            {/* Proximity surfaces the hairline; the active section holds it
-                open. The physics loop reads data-active rather than
-                setting an inline opacity, because an inline value written
-                once by React is overwritten by the loop on the next frame. */}
-            <span
-              className="dock-rule absolute -bottom-0.5 left-0 h-px w-full origin-left bg-[#CDFD02]"
-              style={{ opacity: 0, transform: "scaleX(0)" }}
-            />
           </a>
         );
       })}
@@ -296,15 +281,15 @@ export function MobileNav() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={open ? "Close navigation menu" : "Open navigation menu"}
-        className="h-9 w-9 flex items-center justify-center border border-[rgba(245,242,235,0.11)] bg-transparent text-[#C9C8C3] hover:border-[rgba(220,253,60,0.42)] hover:text-[#DCFD3C] transition-colors duration-300 cursor-pointer"
+        className="h-11 w-11 flex items-center justify-center border-0 bg-transparent text-[#B6B9B0] hover:text-[#E8FF45] transition-colors duration-300 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D9FF00]"
       >
-        {open ? <X size={16} /> : <Menu size={16} />}
+        {open ? <X size={20} /> : <Menu size={20} />}
       </button>
       {open && (
         <div /* Anchored to the masthead's measured height (57px) plus a 4px gap.
              This was 4.25rem, tuned for the older taller bar, which left the
              panel floating 11px below the header it belongs to. */
-        className="fixed inset-x-4 top-[61px] z-50 rounded-[3px] border border-[rgba(245,242,235,0.13)] glass-strong p-2">
+        className="fixed inset-x-4 top-[61px] z-50 rounded-[3px] border border-[rgba(244,245,239,0.13)] glass-strong p-2">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.id}
@@ -313,7 +298,7 @@ export function MobileNav() {
                 e.preventDefault();
                 go(item);
               }}
-              className="block px-4 py-3 text-sm font-normal tracking-[0.01em] text-[#8C8C86] hover:text-[#DCFD3C] hover:bg-[rgba(245,242,235,0.03)] transition-colors duration-200 font-[family-name:var(--font-geist-sans)]"
+              className="block px-4 py-3 text-[15px] font-medium tracking-[0.01em] text-[#B6B9B0] hover:text-[#E8FF45] transition-colors duration-200 font-header-dynamic"
             >
               {item.label}
             </a>

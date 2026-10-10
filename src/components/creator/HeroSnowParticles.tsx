@@ -91,7 +91,7 @@ export function HeroSnowParticles() {
           ctx.beginPath();
           ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
           ctx.fillStyle = i % 2 === 0
-            ? `rgba(220,253,60, ${flake.opacity * 0.42})`
+            ? `rgba(232,255,69, ${flake.opacity * 0.42})`
             : `rgba(201,200,195${flake.opacity * 0.30})`;
           ctx.fill();
         }

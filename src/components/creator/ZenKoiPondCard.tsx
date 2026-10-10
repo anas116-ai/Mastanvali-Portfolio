@@ -54,32 +54,6 @@ interface Ripple {
   aspect: number;
 }
 
-interface Mote {
-  x: number;
-  y: number;
-  r: number;
-  vy: number;
-  phase: number;
-  speed: number;
-  alpha: number;
-}
-
-/** Darken a #rrggbb accent and return hex, so alpha digits can be appended. */
-const dim = (hex: string, amount: number) => {
-  const n = parseInt(hex.slice(1), 16);
-  const ch = (shift: number) =>
-    Math.max(0, Math.round(((n >> shift) & 255) * (1 - amount)))
-      .toString(16)
-      .padStart(2, "0");
-  return `#${ch(16)}${ch(8)}${ch(0)}`;
-};
-
-/** 0..255 alpha as a two digit hex pair. */
-const a = (v: number) =>
-  Math.max(0, Math.min(255, Math.round(v * 255)))
-    .toString(16)
-    .padStart(2, "0");
-
 export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -192,29 +166,18 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
       },
     ];
 
-    const motes: Mote[] = Array.from({ length: 26 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: 0.5 + Math.random() * 1.3,
-      vy: 0.06 + Math.random() * 0.2,
-      phase: Math.random() * Math.PI * 2,
-      speed: 0.012 + Math.random() * 0.02,
-      alpha: 0.1 + Math.random() * 0.22,
-    }));
-
-    /* Bubble field: scattered static dots plus a few thin rings, seeded
-       once per mount. Fractions, so they survive resize. */
-    const bubbles = Array.from({ length: 16 }, (_, i) => ({
+    /* Small bubble field: fine rising specks, seeded once per mount. Kept tiny
+       (under 2px) so the water still reads as clear glass — same small style,
+       drifting slowly upward with a soft twinkle. */
+    const bubbles = Array.from({ length: 22 }, () => ({
       fx: Math.random(),
       fy: Math.random(),
-      r: i % 5 === 0 ? 5 + Math.random() * 4 : 0.8 + Math.random() * 1.6,
-      ring: i % 5 === 0,
+      r: 0.5 + Math.random() * 1.3,
       tw: Math.random() * Math.PI * 2,
-      base: 0.08 + Math.random() * 0.06,
+      base: 0.1 + Math.random() * 0.09,
+      rise: 0.0006 + Math.random() * 0.0011,
+      drift: Math.random() * Math.PI * 2,
     }));
-
-    const accentMid = dim(area.accent, 0.5);
-    const accentDeep = dim(area.accent, 0.76);
 
     let t = 0;
     let lastPointerRipple = 0;
@@ -230,107 +193,48 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
     io.observe(canvas);
 
     /**
-     * Light on the pond floor. Built from soft elliptical pools rather than
-     * stroked paths, so the water reads as depth and light instead of as
-     * wave lines drawn across the card.
+     * Light on the pond floor. Built from soft elliptical pools in neutral
+     * bone light — no yellow cast — so the water reads as depth and light
+     * instead of as wave lines or a tinted wash drawn across the card.
      */
-    const drawCaustics = (energy: number) => {
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      const pools = 11;
-      for (let p = 0; p < pools; p++) {
-        /* Deterministic per pool, so the pattern drifts without reshuffling. */
-        const seed = p * 2.399963;
-        const drift = t * (0.055 + (p % 3) * 0.016);
-        const cx =
-          width * (0.5 + Math.sin(seed * 3.7 + drift) * 0.46) +
-          Math.sin(t * 0.21 + seed) * width * 0.045;
-        const depth = 0.28 + ((p * 0.37) % 1) * 0.6;
-        const cy = height * depth;
-        const rx = width * (0.13 + ((p * 0.53) % 1) * 0.17);
-        const ry = rx * (0.24 + ((p * 0.29) % 1) * 0.16);
-        /* Each pool breathes on its own slow cycle. */
-        const pulse = 0.55 + 0.45 * Math.sin(t * 0.42 + seed * 2.1);
-        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, rx);
-        const strength = (0.1 + depth * 0.09) * pulse * energy;
-        grad.addColorStop(0, `${accentMid}${a(strength)}`);
-        grad.addColorStop(0.45, `${accentDeep}${a(strength * 0.42)}`);
-        grad.addColorStop(1, `${accentDeep}00`);
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.scale(1, ry / rx);
-        ctx.translate(-cx, -cy);
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(cx, cy, rx, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-      ctx.restore();
-    };
+    /* Light layers removed on purpose: no caustic pools, no raking shafts —
+       the card reads as clean dark water with only the fish, ripples and
+       bubbles moving inside it. */
 
-    /** Raking shafts: the reason the water looks deep rather than painted. */
-    const drawShafts = () => {
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      for (let s = 0; s < 3; s++) {
-        const x = width * (0.2 + s * 0.29) + Math.sin(t * 0.16 + s * 2.1) * 34;
-        const w = width * (0.09 + s * 0.02);
-        const grad = ctx.createLinearGradient(x, 0, x + w * 0.7, height * 0.82);
-        grad.addColorStop(0, `${accentMid}${a(0.13)}`);
-        grad.addColorStop(0.5, `${accentDeep}${a(0.05)}`);
-        grad.addColorStop(1, `${accentDeep}00`);
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.moveTo(x, -10);
-        ctx.lineTo(x + w, -10);
-        ctx.lineTo(x + w * 2.1, height);
-        ctx.lineTo(x + w * 0.55, height);
-        ctx.closePath();
-        ctx.fill();
-      }
-      ctx.restore();
-    };
-
-    /* Faint long wave curves drifting across mid-water, reference-style. */
-    const drawWaves = () => {
-      ctx.save();
-      for (let wv = 0; wv < 3; wv++) {
-        const yBase = height * (0.3 + wv * 0.22);
-        const amp = 6 + wv * 3;
-        const k = (Math.PI * 2) / (width * (0.9 - wv * 0.18));
-        const drift = t * (0.12 + wv * 0.04);
-        ctx.beginPath();
-        for (let x = -10; x <= width + 10; x += 10) {
-          const y = yBase + Math.sin(x * k + drift + wv * 2.1) * amp;
-          if (x === -10) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = `rgba(245,242,235,${0.05 - wv * 0.008})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-      ctx.restore();
-    };
-
-    /* Bubble field and thin static rings. */
-    const drawBubbles = () => {
+    /* Fine bubble field: small rising specks in bone light — the same tiny
+       style, slowly floating upward with a soft twinkle, slightly brighter
+       near the fish. */
+    const drawBubbles = (koi: Koi[]) => {
       ctx.save();
       for (const b of bubbles) {
-        const x = b.fx * width;
+        b.fy -= b.rise / Math.max(1, height);
+        b.tw += 0.02;
+        if (b.fy < -0.02) {
+          b.fy = 1.02;
+          b.fx = Math.random();
+        }
+        const x = b.fx * width + Math.sin(t * 0.7 + b.drift) * 4;
         const y = b.fy * height;
-        const tw = 0.75 + 0.25 * Math.sin(t * 0.8 + b.tw);
-        if (b.ring) {
+        let lift = 1;
+        for (const f of koi) {
+          const d = Math.hypot(f.x - x, f.y - y);
+          if (d < 70) {
+            lift = 1.5;
+            break;
+          }
+        }
+        const tw = (0.72 + 0.28 * Math.sin(b.tw)) * lift;
+        ctx.beginPath();
+        ctx.arc(x, y, b.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(244,245,239,${(b.base * tw).toFixed(3)})`;
+        ctx.fill();
+        /* Tiny ring on the larger specks so they read as glass bubbles. */
+        if (b.r > 1.3) {
           ctx.beginPath();
           ctx.arc(x, y, b.r, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(245,242,235,${0.1 * tw})`;
-          ctx.lineWidth = 0.8;
+          ctx.strokeStyle = `rgba(244,245,239,${(b.base * tw * 0.8).toFixed(3)})`;
+          ctx.lineWidth = 0.6;
           ctx.stroke();
-        } else {
-          ctx.beginPath();
-          ctx.arc(x, y, b.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(245,242,235,${b.base * tw})`;
-          ctx.fill();
         }
       }
       ctx.restore();
@@ -368,17 +272,10 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
       ctx.fillStyle = body;
       ctx.fillRect(0, 0, width, height);
 
-      /* 2. Caustics, drifting. */
-      ctx.save();
-      ctx.translate(0, -Math.sin(t * 0.5) * 4);
-      drawCaustics(energy);
-      ctx.restore();
+      /* 2-3. Caustics and shafts removed — no lines, no shaded patches. */
 
-      /* 3. Light shafts. */
-      drawShafts();
-
-      /* 3b. Faint wave curves. */
-      drawWaves();
+      /* Wave curves removed: the water reads through
+         ripples, and the surface meniscus, not through drawn lines. */
 
       /* 4. Ripples: dark trough beneath a bright crest. */
       for (let i = ripples.length - 1; i >= 0; i--) {
@@ -401,14 +298,14 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
 
         ctx.beginPath();
         ctx.ellipse(rp.x, rp.y, rx, ry, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(245,242,235, ${rp.alpha * 0.7})`;
+        ctx.strokeStyle = `rgba(244,245,239, ${rp.alpha * 0.7})`;
         ctx.lineWidth = 1.1;
         ctx.stroke();
 
         if (rx > 26) {
           ctx.beginPath();
           ctx.ellipse(rp.x, rp.y, rx - 18, ry - 12, 0, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(245,242,235, ${rp.alpha * 0.26})`;
+          ctx.strokeStyle = `rgba(244,245,239, ${rp.alpha * 0.26})`;
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
@@ -429,23 +326,8 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
         });
       }
 
-      /* 6. Silt hanging in the light. */
-      for (const m of motes) {
-        m.y -= m.vy;
-        m.phase += m.speed;
-        if (m.y < -4) {
-          m.y = height + 4;
-          m.x = Math.random() * width;
-        }
-        const x = m.x + Math.sin(m.phase) * 6;
-        ctx.beginPath();
-        ctx.arc(x, m.y, m.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(245,242,235, ${m.alpha})`;
-        ctx.fill();
-      }
-
-      /* 6b. Bubble field and static rings. */
-      drawBubbles();
+      /* Fine bubble specks, seeded once, sitting under the fish. */
+      drawBubbles(koi);
 
       /* 7. Koi. */
       koi.forEach((f, fi) => {
@@ -503,7 +385,13 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
         f.y += Math.sin(f.angle) * f.speed;
 
         f.tailPhase += f.tailSpeed;
-        f.sway = Math.sin(f.tailPhase) * 0.065;
+        f.sway = Math.sin(f.tailPhase) * 0.055;
+
+        /* Depth cue: fish nearer the top sit slightly deeper — a touch dimmer
+           and softer, so the pond reads as real water, not a flat sticker. */
+        const depthT = Math.max(0, Math.min(1, f.y / Math.max(1, height)));
+        const depthDim = 1 - depthT * 0.14;
+        const depthBlur = depthT * 0.7;
 
         f.rippleCooldown += 1;
         if (surge > 0.82 && f.rippleCooldown > 56 && ripples.length < 7) {
@@ -520,15 +408,16 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
           });
         }
 
-        // Cast shadow, sitting on the pond floor behind the fish
+        /* Soft floor shadow — larger and more diffuse so the koi reads as
+           floating in water rather than stuck on the card. */
         ctx.save();
-        ctx.translate(f.x + 9, f.y + 13);
+        ctx.translate(f.x + 11, f.y + 15);
         ctx.rotate(f.angle + f.sway);
-        ctx.scale(f.scaleX * 0.95, f.scaleY * 0.8);
+        ctx.scale(f.scaleX * 1.02, f.scaleY * 0.9);
         ctx.beginPath();
-        ctx.ellipse(0, 0, 98, 24, 0, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(3,4,7,0.34)";
-        ctx.filter = "blur(6px)";
+        ctx.ellipse(0, 0, 104, 27, 0, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(3,4,7,0.26)";
+        ctx.filter = "blur(11px)";
         ctx.fill();
         ctx.restore();
 
@@ -540,14 +429,21 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
         if (torsoReady && tailReady && torso.complete && tail.complete) {
           const w = 322;
           const h = 169;
+
+          /* Depth dimming for fish sitting lower in the frame. */
+          ctx.globalAlpha = depthDim;
+
           ctx.drawImage(torso, -161, -h * 0.5, w, h);
 
-          const flex = Math.sin(f.tailPhase - 0.4) * 0.16;
+          /* Slower, deeper tail beat — real koi sweep rather than flick. */
+          const flex = Math.sin(f.tailPhase - 0.55) * 0.13;
           ctx.save();
           ctx.translate(-16, 0);
           ctx.rotate(flex);
           ctx.drawImage(tail, -145, -h * 0.5, w, h);
           ctx.restore();
+
+          ctx.globalAlpha = 1;
         } else {
           ctx.beginPath();
           ctx.ellipse(0, 0, 50, 14, 0, 0, Math.PI * 2);
@@ -555,27 +451,27 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
           ctx.fill();
         }
 
+        /* Specular band bent along the back: instead of one flat white bar,
+           two soft arcs that follow the body curve, like light raking wet
+           scales from above. */
+        ctx.save();
+        ctx.filter = depthBlur > 0.05 ? `blur(${depthBlur.toFixed(2)}px)` : "none";
         ctx.beginPath();
-        ctx.ellipse(18, -3, 40, 6, -0.09, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(245,242,235,0.18)";
+        ctx.ellipse(20, -16, 46, 7, -0.14, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(244,245,239,${(0.14 * depthDim).toFixed(3)})`;
         ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(-6, -9, 26, 5, -0.1, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(244,245,239,${(0.09 * depthDim).toFixed(3)})`;
+        ctx.fill();
+        ctx.restore();
 
         ctx.restore();
       });
 
-      /* 8. Meniscus: the surface itself has to be visible. */
-      const top = ctx.createLinearGradient(0, 0, 0, 26);
-      top.addColorStop(0, "rgba(245,242,235,0.14)");
-      top.addColorStop(1, "rgba(245,242,235,0)");
-      ctx.fillStyle = top;
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      for (let x = 0; x <= width; x += 8) {
-        ctx.lineTo(x, Math.sin(x * 0.035 + t * 0.9) * 2.2 + Math.sin(x * 0.011 - t * 0.5) * 3.4);
-      }
-      ctx.lineTo(width, 0);
-      ctx.closePath();
-      ctx.fill();
+      /* 8. No meniscus wave line drawn across the surface: the water reads
+         through caustics, shafts and the ripples alone, so no line ever sits
+         over the pond. */
 
       /* 9. Edge falloff. */
       drawVignette();
@@ -602,12 +498,12 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
         setIsHovered(false);
         pointer.current.active = false;
       }}
-      className="group relative rounded-[18px] overflow-hidden flex flex-col justify-between h-full min-h-[500px] sm:min-h-[540px] select-none transition-all duration-700 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-1.5"
+      className="group relative rounded-[18px] overflow-hidden flex flex-col justify-between h-full min-h-[500px] sm:min-h-[540px] select-none transition-all duration-1000 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-1"
       style={{
-        border: `1px solid ${isHovered ? "rgba(245,242,235,0.28)" : "rgba(245,242,235,0.12)"}`,
-        background: "linear-gradient(180deg, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.028) 34%, rgba(10,12,16,0.55) 100%)",
-        backdropFilter: "blur(22px) saturate(1.25)",
-        WebkitBackdropFilter: "blur(22px) saturate(1.25)",
+        border: `1px solid ${isHovered ? "rgba(244,245,239,0.24)" : "rgba(244,245,239,0.11)"}`,
+        background: "rgba(10, 12, 10, 0.36)",
+        backdropFilter: "blur(44px) saturate(1.7)",
+        WebkitBackdropFilter: "blur(44px) saturate(1.7)",
         boxShadow: isHovered
           ? "0 24px 70px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.14)"
           : "0 12px 40px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.09)",
@@ -621,25 +517,9 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
         aria-hidden="true"
       />
 
-      {/* Light falls from above onto the plate */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `linear-gradient(184deg, ${dim(area.accent, 0.72)}1F 0%, transparent 34%, transparent 72%, rgba(0,0,0,0.4) 100%)`,
-        }}
-      />
-
-      {/* Cut corner, top right: a machined plate, not a soft card */}
-      <div
-        className="absolute top-0 right-0 w-9 h-9 pointer-events-none"
-        style={{
-          background: `linear-gradient(225deg, ${dim(area.accent, 0.3)}24 0%, ${dim(
-            area.accent,
-            0.3
-          )}24 49.5%, transparent 50%)`,
-        }}
-      />
-
+      {/* The pond opens straight into dark water. No tinted wash, no cut
+          corner, no flow boxes across the top: the light lives inside the
+          water itself, in the caustics and the shafts. */}
       <div className="relative z-20 p-6 sm:p-7 flex-1 flex flex-col justify-between gap-6">
         <div className="space-y-4">
           <div className="flex items-start justify-between gap-4">
@@ -650,7 +530,7 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
               >
                 {area.num}
               </span>
-              <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#8C8C86]">
+              <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#B6B9B0]">
                 {area.systemTag}
               </span>
             </div>
@@ -661,8 +541,8 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
             />
           </div>
 
-          <div className="space-y-2 pt-1">
-            <h3 className="stylish-header text-[19px] sm:text-[22px] text-[#F5F2EB] leading-[1.12]">
+          <div className="space-y-2.5 pt-2">
+            <h3 className="stylish-header text-[19px] sm:text-[22px] text-[#F4F5EF] leading-[1.12]">
               {area.title}
             </h3>
             <div
@@ -671,17 +551,17 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
             >
               {area.subtitle}
             </div>
-            <p className="font-[family-name:var(--font-geist-sans)] text-[13px] text-[#8C8C86] leading-[1.68] pt-1.5">
+            <p className="font-[family-name:var(--font-geist-sans)] text-[13px] text-[#B6B9B0] leading-[1.72] pt-2">
               {area.desc}
             </p>
           </div>
         </div>
 
-        <ul className="pt-5 border-t border-[rgba(245,242,235,0.09)] space-y-2.5 mt-auto">
+        <ul className="pt-5 border-t border-[rgba(244,245,239,0.09)] space-y-2.5 mt-auto">
           {area.points.map((point, i) => (
             <li
               key={i}
-              className="flex items-start gap-3 font-[family-name:var(--font-geist-sans)] text-[12.5px] text-[#C9C8C3] leading-[1.6]"
+              className="flex items-start gap-3 font-[family-name:var(--font-geist-sans)] text-[12.5px] text-[#B6B9B0] leading-[1.6]"
             >
               <span
                 className="mt-[7px] h-px w-3 shrink-0"

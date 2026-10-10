@@ -14,7 +14,7 @@ import { SiteHeader } from "@/components/navigation/SiteHeader";
 export default function Home() {
   return (
     <div
-      className="relative bg-[#0A0A0B] min-h-screen text-[#F5F2EB] antialiased selection:bg-white/20 selection:text-[#F5F2EB]"
+      className="relative bg-[#070807] min-h-screen text-[#F4F5EF] antialiased selection:bg-white/20 selection:text-[#F4F5EF]"
       id="top"
     >
       {/* Top Scroll Progress Indicator */}
@@ -24,7 +24,7 @@ export default function Home() {
       {/* Skip to content for keyboard users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#F5F2EB] focus:text-[#0A0A0B] focus:text-xs focus:font-medium focus:tracking-[0.16em] focus:uppercase focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#F4F5EF] focus:text-[#070807] focus:text-xs focus:font-medium focus:tracking-[0.16em] focus:uppercase focus:outline-none"
       >
         Skip to content
       </a>
@@ -33,7 +33,7 @@ export default function Home() {
       <AmbientBackgroundLayers />
 
       {/* Corner vignette framing the composition.
-          Updated to royal blue tint for the new theme. */}
+          Updated to lemon tint for the new theme. */}
       <div
         className="fixed inset-0 pointer-events-none z-[50]"
         style={{
