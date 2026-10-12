@@ -16,7 +16,6 @@ import {
   Rotate3d,
   type LucideIcon,
 } from "lucide-react";
-import { ResumeModal } from "@/components/resume/ResumeModal";
 
 /* Lemon-ramp stops only: one hue, four lightness steps. */
 const pipelineStages = [
@@ -68,7 +67,6 @@ const cutCorner = {
 
 export function ExperienceSection() {
   const [viewMode, setViewMode] = useState<"3d" | "specs">("3d");
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
   /* Printed sheet pagination. Page 1 carries profile and experience, page 2
      carries systems, environment, and education. The fold wrapper turns
      while the sheet swaps underneath it. */
@@ -176,14 +174,7 @@ export function ExperienceSection() {
                 {modeButton("specs", "Specification", FileText)}
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsResumeOpen(true)}
-                className="px-4 py-2.5 bg-transparent hover:bg-[rgba(244,245,239,0.05)] text-[11px] font-mono uppercase tracking-[0.18em] text-[#B6B9B0] border border-[rgba(244,245,239,0.13)] hover:border-[rgba(217,255,0,0.42)] transition-colors duration-300 flex items-center gap-2 cursor-pointer"
-              >
-                <ShieldCheck size={13} className="text-[#D9FF00]" />
-                <span className="font-medium">Verified resume</span>
-              </button>
+
             </div>
           </FadeIn>
         </div>
@@ -366,7 +357,6 @@ export function ExperienceSection() {
         )}
       </div>
 
-      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </section>
   );
 }

@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mastan Vali — Data & Technology Professional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Warpaint";src:url("/fonts/Warpaint.ttf") format("truetype");font-display:swap}
+:root{
+  --obsidian:#070807; --obsidian-2:#0B0D0A; --warm:#10130F;
+  --bone:#F4F5EF; --bone-2:#B6B9B0; --muted:#7D8178; --faint:#3A3D38;
+  --lemon:#D9FF00;
+  --jade:#1E8A63;       /* NEW highlight */
+  --jade-hi:#5FE3B0;    /* bright spark   */
+  --jade-deep:#0C3B2C;
+  --hair:rgba(244,245,239,.12);
+  --hair-strong:rgba(244,245,239,.24);
+  --maxw:1440px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--obsidian);color:var(--bone);
+  font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;}
+.mono{font-family:"Geist Mono",monospace}
+.disp{font-family:"Outfit",sans-serif}
+.sig{font-family:"Warpaint",sans-serif}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ---------- atmosphere ---------- */
+.atmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.atmos .vig{position:absolute;inset:0;
+  background:
+    radial-gradient(120% 90% at 88% 78%, rgba(30,138,99,.16) 0%, transparent 55%),
+    radial-gradient(90% 70% at 12% 8%, rgba(244,245,239,.05) 0%, transparent 50%),
+    radial-gradient(140% 120% at 50% 120%, #000 0%, transparent 60%);
+}
+.atmos .sheen{position:absolute;inset:-30%;opacity:.5;
+  background:conic-gradient(from 210deg at 70% 40%, transparent 0deg, rgba(95,227,176,.06) 60deg, transparent 130deg);
+  animation:spin 60s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/></svg>");
+}
+.scan{position:fixed;left:0;right:0;top:0;height:1px;z-index:61;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(95,227,176,.5),transparent);opacity:.4}
+
+/* ---------- cursor ---------- */
+.cur{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid var(--hair-strong);
+  border-radius:99px;z-index:70;pointer-events:none;mix-blend-mode:difference;
+  transition:width .25s,height .25s,background .25s} 
+.cur.grow{width:74px;height:74px;background:rgba(255,255,255,.14)}
+.cur-dot{position:fixed;width:4px;height:4px;background:var(--jade-hi);border-radius:99px;z-index:71;pointer-events:none}
+
+/* ---------- preloader ---------- */
+.pre{position:fixed;inset:0;z-index:80;background:var(--obsidian);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:22px}
+.pre .sig{font-size:14px;letter-spacing:.4em;color:var(--bone-2)}
+.pre .bar{width:180px;height:1px;background:var(--hair);position:relative;overflow:hidden}
+.pre .bar i{position:absolute;inset:0;background:var(--jade-hi);transform:scaleX(0);transform-origin:left}
+body.loaded .pre{transform:translateY(-101%);transition:transform 1s cubic-bezier(.76,0,.24,1)}
+.pre{transition:none}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+  padding:26px clamp(20px,4vw,56px);mix-blend-mode:difference}
+.nav .brand{font-family:"Geist Mono",monospace;font-size:12px;letter-spacing:.34em}
+.nav .links{display:flex;gap:30px;font-size:13px;color:var(--bone-2)}
+.nav .links a{position:relative;padding-bottom:3px}
+.nav .links a:after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--bone);transition:right .4s}
+.nav .links a:hover:after{right:0}
+.nav .idx{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.2em;color:var(--muted)}
+
+/* ---------- layout ---------- */
+.wrap{position:relative;z-index:5}
+section{position:relative}
+.pad{padding-inline:clamp(20px,4vw,56px)}
+.rule{height:1px;background:var(--hair);width:100%}
+
+/* ---------- hero ---------- */
+.hero{min-height:100svh;display:flex;align-items:center;padding-top:120px;padding-bottom:80px}
+.hero .grid{width:100%;max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:end}
+.eyebrow{display:flex;align-items:center;gap:12px;font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.34em;color:var(--bone-2);text-transform:uppercase;margin-bottom:26px}
+.eyebrow .dot{width:6px;height:6px;border-radius:99px;background:var(--jade-hi);box-shadow:0 0 18px var(--jade-hi)}
+h1.name{font-family:"Outfit",sans-serif;font-weight:600;letter-spacing:-.045em;line-height:.9;
+  font-size:clamp(58px,10.5vw,168px);margin-bottom:24px}
+h1.name .ln{display:block;overflow:hidden}
+h1.name .ln span{display:block;transform:translateY(105%)}
+h1.name em{font-style:normal;color:var(--jade-hi)}
+.role{font-family:"Outfit",sans-serif;font-weight:300;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.01em;color:var(--bone);
+  display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.role:before{content:"";width:54px;height:1px;background:var(--jade)}
+.lead{max-width:46ch;color:var(--bone-2);font-size:15.5px;line-height:1.72;margin-bottom:38px}
+.lead b{color:var(--bone);font-weight:500}
+.cta{display:flex;align-items:center;gap:26px;margin-bottom:40px}
+.btn{position:relative;display:inline-flex;align-items:center;gap:12px;padding:16px 26px;border:1px solid var(--hair-strong);
+  border-radius:999px;font-size:13px;letter-spacing:.02em;overflow:hidden;transition:color .45s,border-color .45s}
+.btn span{position:relative;z-index:2}
+.btn:before{content:"";position:absolute;inset:0;background:var(--jade);transform:translateY(101%);transition:transform .5s cubic-bezier(.76,0,.24,1)}
+.btn:hover{color:var(--obsidian);border-color:var(--jade)}
+.btn:hover:before{transform:translateY(0)}
+.tlink{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--bone-2);transition:color .3s}
+.tlink:hover{color:var(--bone)}
+.tlink svg{transition:transform .35s}
+.tlink:hover svg{transform:translate(3px,-3px)}
+.avail{display:flex;align-items:center;gap:12px;font-family:"Geist Mono",monospace;font-size:11.5px;letter-spacing:.16em;color:var(--bone-2);text-transform:uppercase}
+.avail .p{width:7px;height:7px;border-radius:99px;background:var(--jade-hi);position:relative}
+.avail .p:after{content:"";position:absolute;inset:-4px;border-radius:99px;border:1px solid var(--jade-hi);animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+
+/* character */
+.figure{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:min(74svh,700px)}
+.figure .glow{position:absolute;left:50%;top:52%;width:78%;aspect-ratio:1;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(30,138,99,.34),transparent 62%);filter:blur(20px);z-index:0}
+.figure .rim{position:absolute;left:50%;top:50%;width:64%;aspect-ratio:1;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(95,227,176,.22),transparent 60%);z-index:0}
+.figure .stage{position:relative;z-index:2;width:min(100%,430px);will-change:transform}
+.figure .stage img{width:100%;height:auto;filter:saturate(.92) contrast(1.06) brightness(1.02) drop-shadow(0 0 40px rgba(30,138,99,.35))}
+.figure .duo{position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(180deg,transparent 55%,rgba(95,227,176,.10) 100%);mix-blend-mode:screen}
+.figure .refl{position:absolute;left:50%;bottom:-2px;width:min(100%,430px);transform:translateX(-50%);
+  z-index:1;-webkit-mask-image:linear-gradient(180deg,#000,transparent 72%);mask-image:linear-gradient(180deg,#000,transparent 72%);opacity:.22}
+.figure .refl img{transform:scaleY(-1);filter:blur(1px) saturate(.7)}
+.figure .tag{position:absolute;left:0;bottom:6%;z-index:4;font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.26em;color:var(--muted);text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg)}
+.figure .tag i{color:var(--jade-hi);font-style:normal}
+
+.scrollcue{display:flex;align-items:center;gap:14px;margin-top:8px;font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+.scrollcue .l{width:1px;height:44px;background:linear-gradient(var(--jade-hi),transparent)}
+
+/* ---------- marquee ---------- */
+.marq{border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);overflow:hidden;background:var(--obsidian-2)}
+.marq .track{display:flex;gap:0;white-space:nowrap;animation:slide 34s linear infinite}
+.marq .track:hover{animation-play-state:paused}
+.marq span{font-family:"Geist Mono",monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--bone-2);padding:22px 0}
+.marq b{color:var(--jade-hi);margin:0 34px;font-weight:400}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ---------- work ---------- */
+.work{padding:120px 0 90px}
+.whead{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:64px}
+.whead .k{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.32em;color:var(--muted);text-transform:uppercase;margin-bottom:18px}
+.whead h2{font-family:"Outfit",sans-serif;font-weight:500;letter-spacing:-.03em;font-size:clamp(34px,5vw,68px);line-height:1}
+.whead h2 em{font-style:normal;color:var(--jade-hi)}
+.whead .n{font-family:"Geist Mono",monospace;font-size:12px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{position:relative;border:1px solid var(--hair);border-radius:18px;padding:26px;min-height:330px;
+  display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;background:linear-gradient(180deg,rgba(244,245,239,.03),transparent);transition:border-color .5s,transform .6s}
+.card:before{content:"";position:absolute;inset:0;background:radial-gradient(90% 70% at 80% 0%,rgba(30,138,99,.22),transparent 60%);opacity:0;transition:opacity .6s}
+.card:hover{border-color:var(--hair-strong);transform:translateY(-6px)}
+.card:hover:before{opacity:1}
+.card .top{display:flex;justify-content:space-between;font-family:"Geist Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:.14em}
+.card h3{font-family:"Outfit",sans-serif;font-weight:500;font-size:26px;letter-spacing:-.02em;margin-bottom:10px;position:relative}
+.card p{color:var(--bone-2);font-size:14px;line-height:1.65;max-width:34ch;position:relative}
+.card .go{position:relative;display:inline-flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-family:"Geist Mono",monospace;color:var(--jade-hi)}
+.card .tags{display:flex;gap:8px;flex-wrap:wrap;position:relative}
+.card .tags i{font-style:normal;font-size:11px;font-family:"Geist Mono",monospace;letter-spacing:.06em;color:var(--bone-2);border:1px solid var(--hair);padding:5px 10px;border-radius:99px}
+
+/* ---------- statement ---------- */
+.stmt{padding:150px 0;border-top:1px solid var(--hair);display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.stmt .txt{font-family:"Outfit",sans-serif;font-weight:300;letter-spacing:-.02em;font-size:clamp(28px,3.4vw,48px);line-height:1.18}
+.stmt .txt b{font-weight:600}
+.stmt .txt em{font-style:normal;color:var(--jade-hi)}
+.stmt .meta{font-family:"Geist Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-top:34px;display:flex;gap:34px;flex-wrap:wrap}
+.stmt .meta b{color:var(--bone)}
+.stmt .vis{position:relative;aspect-ratio:1/1;border:1px solid var(--hair);border-radius:20px;overflow:hidden;
+  background:radial-gradient(80% 80% at 50% 30%,rgba(30,138,99,.20),transparent 60%),var(--obsidian-2)}
+.stmt .vis .sig{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-size:clamp(60px,9vw,120px);color:var(--bone);opacity:.92;letter-spacing:.02em}
+.stmt .vis .cap{position:absolute;left:22px;bottom:20px;font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.24em;color:var(--muted);text-transform:uppercase}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--hair);padding:70px 0 46px}
+footer .grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:60px}
+footer h4{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;margin-bottom:20px;font-weight:400}
+footer a{display:block;color:var(--bone-2);font-size:14px;padding:6px 0;transition:color .3s,padding-left .3s}
+footer a:hover{color:var(--jade-hi);padding-left:6px}
+footer .big{font-family:"Outfit",sans-serif;font-weight:500;font-size:clamp(26px,3.4vw,44px);letter-spacing:-.03em;line-height:1.05}
+footer .big em{font-style:normal;color:var(--jade-hi)}
+footer .fine{display:flex;justify-content:space-between;border-top:1px solid var(--hair);padding-top:22px;font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1s cubic-bezier(.22,1,.36,1)}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:940px){
+  .hero .grid{grid-template-columns:1fr;gap:10px}
+  .figure{min-height:52svh;order:-1}
+  .nav .links{display:none}
+  .cards{grid-template-columns:1fr}
+  .stmt{grid-template-columns:1fr}
+  footer .grid{grid-template-columns:1fr}
+  .cur,.cur-dot{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="atmos"><div class="vig"></div><div class="sheen"></div></div>
+<div class="scan"></div>
+<div class="grain"></div>
+<div class="cur"></div><div class="cur-dot"></div>
+
+<div class="pre">
+  <div class="sig">MASTAN&nbsp;VALI</div>
+  <div class="bar"><i></i></div>
+</div>
+
+<nav class="nav">
+  <div class="brand">MASTAN VALI</div>
+  <div class="links">
+    <a href="#work">Work</a><a href="#about">Studio</a><a href="#contact">Contact</a>
+  </div>
+  <div class="idx">EST. 2026 / HYDERABAD</div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero pad" id="top">
+    <div class="grid">
+      <div class="col">
+        <div class="eyebrow"><span class="dot"></span> Data &amp; Technology Professional</div>
+        <h1 class="name disp">
+          <span class="ln"><span>MASTAN</span></span>
+          <span class="ln"><span>VAL<em>I</em></span></span>
+        </h1>
+        <div class="role rv">Software Engineer · <span style="color:var(--bone-2)">SAP&nbsp;BODS &nbsp;/&nbsp; ETL &nbsp;/&nbsp; Cloud</span></div>
+        <p class="lead rv">I build quiet, dependable systems — <b>data pipelines, SAP integrations and cloud flows</b> — the invisible engineering that keeps enterprises moving.</p>
+        <div class="cta rv">
+          <a class="btn" href="#work"><span>View selected work</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="tlink" href="#contact">Resume
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+        </div>
+        <div class="avail rv"><span class="p"></span> Available for hire &nbsp;·&nbsp; Immediate joiner &nbsp;·&nbsp; Open to relocation</div>
+        <div class="scrollcue"><span class="l"></span> Scroll to explore</div>
+      </div>
+
+      <div class="figure">
+        <div class="glow"></div><div class="rim"></div>
+        <div class="tag">FIG. <i>01</i> — Portrait / Datum</div>
+        <div class="stage" id="stage">
+          <img src="/images/avatar/style_01_4k_transparent.png" alt="Mastan Vali" />
+          <div class="duo"></div>
+        </div>
+        <div class="refl"><img src="/images/avatar/style_01_4k_transparent.png" alt="" aria-hidden="true"/></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marq">
+    <div class="track" id="track">
+      <span>SAP BODS 4.3 <b>◆</b> ETL Pipelines <b>◆</b> SAP ECC · IDoc / BAPI <b>◆</b> SQL Server <b>◆</b> AWS S3 <b>◆</b> S/4HANA <b>◆</b> SAP BW <b>◆</b> ServiceNow <b>◆</b> </span>
+      <span>SAP BODS 4.3 <b>◆</b> ETL Pipelines <b>◆</b> SAP ECC · IDoc / BAPI <b>◆</b> SQL Server <b>◆</b> AWS S3 <b>◆</b> S/4HANA <b>◆</b> SAP BW <b>◆</b> ServiceNow <b>◆</b> </span>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section class="work pad" id="work">
+    <div class="whead rv">
+      <div><div class="k">Selected Work</div><h2>Things I <em>engineered.</em></h2></div>
+      <div class="n">03 / PROJECTS</div>
+    </div>
+    <div class="cards">
+      <article class="card rv">
+        <div class="top"><span>01</span><span>DATA</span></div>
+        <div style="position:relative"><h3>AnPharmacy</h3><p>Pharmacy platform with inventory, billing and role-based flows — engineered end to end.</p></div>
+        <div class="tags"><i>Next.js</i><i>Postgres</i><i>Auth</i></div>
+      </article>
+      <article class="card rv">
+        <div class="top"><span>02</span><span>TOOLING</span></div>
+        <div style="position:relative"><h3>Anasify</h3><p>A utility suite that turns messy operational work into single-click, repeatable tasks.</p></div>
+        <div class="tags"><i>TypeScript</i><i>APIs</i><i>Automation</i></div>
+      </article>
+      <article class="card rv">
+        <div class="top"><span>03</span><span>QUALITY</span></div>
+        <div style="position:relative"><h3>AnsiQ</h3><p>Test-harnessed core with 787 automated tests — proof over promises.</p></div>
+        <div class="tags"><i>Testing</i><i>CI</i><i>787 tests</i></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="stmt pad" id="about">
+    <div>
+      <div class="txt rv">Good systems are <b>felt, not seen</b> — the report that lands on time, the integration that <em>never breaks</em>, the flow nobody has to think about.</div>
+      <div class="meta rv"><span><b>VHS Consulting</b> · Engineer</span><span>Client <b>TCS</b> / <b>Grainger</b></span><span>Hyderabad, IN</span></div>
+    </div>
+    <div class="vis rv">
+      <div class="sig">MV</div>
+      <div class="cap">Signature — Mastan Vali</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="pad" id="contact">
+    <div class="grid">
+      <div class="big">Let's build something <em>worth keeping.</em></div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">Email</a>
+      </div>
+      <div>
+        <h4>Index</h4>
+        <a href="#work">Work</a><a href="#about">Studio</a><a href="#top">Top</a>
+      </div>
+    </div>
+    <div class="fine"><span>© 2026 Mastan Vali</span><span>Designed with restraint</span><span>Jade · Obsidian · Bone</span></div>
+  </footer>
+
+</div>
+
+<script>
+// preloader
+window.addEventListener("load",()=>{
+  const bar=document.querySelector(".pre .bar i");
+  bar.style.transition="transform 1.05s cubic-bezier(.76,0,.24,1)";
+  bar.style.transform="scaleX(1)";
+  setTimeout(()=>{
+    document.body.classList.add("loaded");
+    setTimeout(()=>{document.querySelector(".pre").style.display="none";boot();},900);
+  },1150);
+});
+
+function boot(){
+  // hero masked type
+  document.querySelectorAll("h1.name .ln span").forEach((el,i)=>{
+    el.style.transition="transform 1.1s cubic-bezier(.76,0,.24,1)";
+    setTimeout(()=>el.style.transform="translateY(0)", 120+i*130);
+  });
+  document.querySelectorAll(".hero .rv").forEach((el,i)=>{
+    setTimeout(()=>el.classList.add("in"), 420+i*110);
+  });
+  // first figure rise
+  const st=document.getElementById("stage");
+  st.animate([{opacity:0,transform:"translateY(40px) scale(.97)"},{opacity:1,transform:"none"}],
+    {duration:1400,easing:"cubic-bezier(.22,1,.36,1)",fill:"forwards"});
+}
+
+// scroll reveals
+const io=new IntersectionObserver((es)=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});
+},{threshold:.18});
+document.querySelectorAll(".rv").forEach(el=>{ if(!el.closest(".hero")) io.observe(el); });
+
+// cursor
+const cur=document.querySelector(".cur"),dot=document.querySelector(".cur-dot");
+let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my;
+addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;dot.style.transform=`translate(${mx-2}px,${my-2}px)`;});
+(function loop(){cx+=(mx-cx)*.16;cy+=(my-cy)*.16;cur.style.transform=`translate(${cx-15}px,${cy-15}px)`;requestAnimationFrame(loop);})();
+document.querySelectorAll("a,.card,.btn").forEach(el=>{
+  el.addEventListener("mouseenter",()=>cur.classList.add("grow"));
+  el.addEventListener("mouseleave",()=>cur.classList.remove("grow"));
+});
+
+// character parallax
+const wrap=document.querySelector(".hero .grid"),stage=document.getElementById("stage");
+let tx=0,ty=0,px=0,py=0;
+wrap&&wrap.addEventListener("mousemove",e=>{
+  const r=wrap.getBoundingClientRect();
+  tx=((e.clientX-r.left)/r.width-.5)*2; ty=((e.clientY-r.top)/r.height-.5)*2;
+});
+(function pl(){px+=(tx-px)*.06;py+=(ty-py)*.06;
+  if(stage) stage.style.transform=`translate(${px*14}px, ${py*10}px) rotateY(${px*5}deg) rotateX(${-py*4}deg)`;
+  requestAnimationFrame(pl);})();
+
+// idle float
+const st=document.getElementById("stage");
+if(st){let t=0;setInterval(()=>{t+=.016;if(!st.matches(":hover")){} },16);}
+</script>
+</body>
+</html>

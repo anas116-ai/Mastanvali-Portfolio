@@ -1,11 +1,9 @@
 "use client";
 
-/* Original brand marks, opaque and in their own colours.
-   GitHub: the official black mark badge with the white Octocat, lifted off
-   the page by a hairline so a black badge is still visible on obsidian.
-   LinkedIn: the official #0A66C2 brand blue with the white "in".
-   The masthead and the closing section share these, so the two marks read
-   identically from the top of the page to the bottom. */
+/* Original brand marks in sleek obsidian monochrome aesthetic.
+   GitHub: the official black mark badge with white Octocat.
+   LinkedIn: matching dark obsidian badge with white "in".
+   Consistent luxury obsidian aesthetic throughout header and footer. */
 
 export function GithubMark({ size = 16 }: { size?: number }) {
   return (
@@ -16,7 +14,6 @@ export function GithubMark({ size = 16 }: { size?: number }) {
       aria-hidden="true"
       className="pointer-events-none"
     >
-      {/* Official GitHub mark colour */}
       <rect
         width="24"
         height="24"
@@ -44,13 +41,12 @@ export function LinkedinMark({ size = 16 }: { size?: number }) {
       aria-hidden="true"
       className="pointer-events-none"
     >
-      {/* Official LinkedIn brand blue */}
       <rect
         width="24"
         height="24"
         rx="5"
-        fill="#0A66C2"
-        stroke="rgba(244,245,239,0.22)"
+        fill="#181717"
+        stroke="rgba(244,245,239,0.28)"
         strokeWidth="1"
       />
       <text

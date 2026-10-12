@@ -2,68 +2,92 @@
 
 import React, { useEffect, useRef } from "react";
 
+// Microscopic Analog Film Grain SVG (Tactile organic texture, no plastic feel)
+const GRAIN_SVG = "data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E";
+
 export function AmbientBackgroundLayers() {
-  const heroGlowRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mouseLightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let animationFrameId: number;
-    let lastTime = 0;
+    let animId: number;
+    let currentX = window.innerWidth / 2;
+    let currentY = window.innerHeight * 0.35;
+    let targetX = currentX;
+    let targetY = currentY;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const now = performance.now();
-      if (now - lastTime < 32) return; // 30fps throttle is plenty for subtle ambient background
-      lastTime = now;
+      targetX = e.clientX;
+      targetY = e.clientY;
+    };
 
-      cancelAnimationFrame(animationFrameId);
-      animationFrameId = requestAnimationFrame(() => {
-        if (!heroGlowRef.current) return;
-        const x = Math.round((e.clientX / window.innerWidth) * 100);
-        const y = Math.round((e.clientY / window.innerHeight) * 100);
-        heroGlowRef.current.style.background = `radial-gradient(ellipse 90% 60% at ${x}% ${Math.max(15, y * 0.4)}%, rgba(217,255,0,0.05) 0%, rgba(217,255,0,0.018) 45%, transparent 80%)`;
-      });
+    const updatePhysics = () => {
+      // 0.065 damping creates heavy, luxury-car inertia
+      currentX += (targetX - currentX) * 0.065;
+      currentY += (targetY - currentY) * 0.065;
+
+      const normX = Math.round((currentX / window.innerWidth) * 100);
+      const normY = Math.round((currentY / window.innerHeight) * 100);
+
+      // Dual-Spectrum Fluid Key Light: Electric Lemon (#E8FF45) + Emerald Teal (#10B981)
+      if (mouseLightRef.current) {
+        mouseLightRef.current.style.background = `
+          radial-gradient(circle 560px at ${normX}% ${normY}%, rgba(232, 255, 69, 0.055) 0%, rgba(16, 185, 129, 0.025) 45%, transparent 75%)
+        `;
+      }
+
+      animId = requestAnimationFrame(updatePhysics);
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    animId = requestAnimationFrame(updatePhysics);
+
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animId);
     };
   }, []);
 
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden z-0 select-none bg-[#070807]">
-      {/* ── 1. Gallery lighting. Five soft sources, no grid, no dot pattern.
-             Lemon is the key, bone is the fill, nothing exceeds 0.12 alpha,
-             so no source is ever legible as a glow. ── */}
-
-      {/* Directional key light, drifting with the pointer */}
+    <div
+      ref={containerRef}
+      className="pointer-events-none fixed inset-0 overflow-hidden z-0 select-none bg-[#070807]"
+    >
+      {/* 1. Tactile Analog Film Grain (Eliminates flat digital plastic feel) */}
       <div
-        ref={heroGlowRef}
-        className="absolute top-0 inset-x-0 h-[1500px] will-change-[background]"
+        className="absolute inset-0 pointer-events-none z-[1] opacity-35"
         style={{
-          background:
-            "radial-gradient(ellipse 80% 55% at 50% 24%, rgba(217,255,0,0.075) 0%, rgba(217,255,0,0.032) 42%, transparent 76%)",
+          backgroundImage: `url("${GRAIN_SVG}")`,
+          backgroundSize: "180px 180px",
+          backgroundRepeat: "repeat",
         }}
       />
 
-      {/* Fill 1: bone light, upper left. Keeps the field from going monochrome. */}
-      <div className="absolute -top-32 -left-32 w-[680px] h-[680px] blur-[140px] opacity-70 bg-[radial-gradient(circle,rgba(244,245,239,0.075)_0%,transparent_70%)]" />
+      {/* 2. Inertia-Damped Dynamic Light Field (Follows pointer with momentum) */}
+      <div
+        ref={mouseLightRef}
+        className="absolute inset-0 z-[2] will-change-[background]"
+        style={{
+          background:
+            "radial-gradient(circle 560px at 50% 35%, rgba(232, 255, 69, 0.05) 0%, rgba(16, 185, 129, 0.02) 45%, transparent 75%)",
+        }}
+      />
 
-      {/* Fill 2: lemon rim, upper right */}
-      <div className="absolute top-[8%] -right-36 w-[640px] h-[640px] blur-[130px] opacity-80 bg-[radial-gradient(circle,rgba(232,255,69,0.11)_0%,transparent_72%)]" />
+      {/* 3. Luxury Color Spectrum Architecture - Pure Seamless Organic Washes (NO GRIDS) */}
+      {/* Key Accent: Electric Lemon (#E8FF45) locked over the character focal quadrant */}
+      <div className="absolute top-[6%] -right-28 w-[720px] h-[720px] blur-[150px] opacity-75 bg-[radial-gradient(circle,rgba(232,255,69,0.09)_0%,transparent_72%)]" />
 
-      {/* Fill 3: deep lemon, over the koi water */}
-      <div className="absolute top-[34%] -left-36 w-[720px] h-[720px] blur-[140px] opacity-80 bg-[radial-gradient(circle,rgba(217,255,0,0.09)_0%,rgba(96,94,24,0.05)_44%,transparent_74%)]" />
+      {/* Complement Accent: Deep Emerald Teal (#10B981) balancing the left editorial field */}
+      <div className="absolute -top-24 -left-28 w-[680px] h-[680px] blur-[160px] opacity-65 bg-[radial-gradient(circle,rgba(16,185,129,0.07)_0%,rgba(6,78,59,0.03)_50%,transparent_75%)]" />
 
-      {/* Fill 4: bone, over the resume sheet */}
-      <div className="absolute top-[56%] -right-32 w-[700px] h-[700px] blur-[140px] opacity-80 bg-[radial-gradient(circle,rgba(244,245,239,0.075)_0%,transparent_72%)]" />
+      {/* Harmonic Fill: Warm Champagne Bone (#F4F5EF) grounding the central reading space */}
+      <div className="absolute top-[42%] left-[18%] w-[640px] h-[640px] blur-[170px] opacity-50 bg-[radial-gradient(circle,rgba(244,245,239,0.045)_0%,transparent_70%)]" />
 
-      {/* Fill 5: soft bone wash across the lower field */}
-      <div className="absolute bottom-16 left-1/4 w-[820px] h-[650px] blur-[150px] opacity-60 bg-[radial-gradient(circle,rgba(244,245,239,0.055)_0%,transparent_74%)]" />
+      {/* Lower Spectrum: Deep Cyan-Teal pool under experience and interactive pond */}
+      <div className="absolute top-[68%] -left-36 w-[800px] h-[800px] blur-[180px] opacity-65 bg-[radial-gradient(circle,rgba(20,184,166,0.065)_0%,rgba(232,255,69,0.03)_55%,transparent_76%)]" />
 
-      {/* ── 2. Framing hairlines, cut edges rather than light beams ── */}
-      <div className="absolute inset-y-0 left-6 sm:left-12 lg:left-24 w-px bg-[linear-gradient(to_bottom,transparent,rgba(217,255,0,0.16)_28%,rgba(244,245,239,0.08)_72%,transparent)]" />
-      <div className="absolute inset-y-0 right-6 sm:right-12 lg:right-24 w-px bg-[linear-gradient(to_bottom,transparent,rgba(217,255,0,0.16)_28%,rgba(244,245,239,0.08)_72%,transparent)]" />
+      {/* Floor Foundation: Subtle warm bone wash framing the lower site boundary */}
+      <div className="absolute bottom-10 right-1/4 w-[760px] h-[550px] blur-[160px] opacity-45 bg-[radial-gradient(circle,rgba(244,245,239,0.04)_0%,transparent_75%)]" />
     </div>
   );
 }

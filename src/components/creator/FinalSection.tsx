@@ -3,16 +3,14 @@
 import { useState } from "react";
 import { FadeIn } from "./FadeIn";
 import { PremiumNightBackdrop } from "./PremiumNightBackdrop";
-import { Mail, FileText } from "lucide-react";
+import { Mail } from "lucide-react";
 import { GithubMark, LinkedinMark } from "@/components/ui/BrandIcons";
-import { ResumeModal } from "@/components/resume/ResumeModal";
 import { ShaderIgnitionButton } from "@/components/ui/ShaderIgnitionButton";
 
 const EMAIL = "sk.mastanvali0116@gmail.com";
 
 export function FinalSection() {
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
-
+  
   return (
     <footer
       id="contact"
@@ -63,17 +61,7 @@ export function FinalSection() {
             Send an email
           </ShaderIgnitionButton>
 
-          <ShaderIgnitionButton
-            variant="bone"
-            onClick={() => setIsResumeOpen(true)}
-            ariaLabel="View resume"
-            icon={<FileText size={15} />}
-            iconPosition="left"
-            size="lg"
-          >
-            Resume
-          </ShaderIgnitionButton>
-        </FadeIn>
+          </FadeIn>
 
         {/* Contact details, inline with slash rules. Phone stays masked. */}
         <FadeIn y={15} delay={0.3} duration={0.7} className="w-full max-w-2xl pt-4">
@@ -132,7 +120,6 @@ export function FinalSection() {
         </div>
       </div>
 
-      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
-    </footer>
+          </footer>
   );
 }
