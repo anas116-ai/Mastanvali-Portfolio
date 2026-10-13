@@ -5,8 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn } from "./FadeIn";
 
 interface Discipline {
-  no: string;
+  id: string;
   code: string;
+  watermark: string;
   title: string;
   /** Complete cover caption. One full sentence, no truncation. */
   caption: string;
@@ -26,8 +27,9 @@ interface Discipline {
  */
 const disciplines: Discipline[] = [
   {
-    no: "01",
-    code: "SYS / DATA / 01",
+    id: "data",
+    code: "SYS / DATA",
+    watermark: "SAP BODS",
     title: "SAP BODS and enterprise data systems",
     caption:
       "High throughput ETL on SAP BODS 4.3, S/4HANA and ECC migration, SQL reconciliation, and SLA governance for data that cannot be wrong.",
@@ -46,9 +48,10 @@ const disciplines: Discipline[] = [
       "Mission critical data flows demand zero loss reconciliation, deterministic audit trails, and an on call rotation that never sleeps. Built to carry a legacy ECC estate into S/4HANA without a single unaccounted row.",
   },
   {
-    no: "02",
-    code: "SYS / AGENT / 02",
-    title: "Autonomous multi agent architecture",
+    id: "agent",
+    code: "SYS / AGENT",
+    watermark: "Autonomous Multi-Agent",
+    title: "Autonomous multi-agent architecture",
     caption:
       "Directed acyclic graph agent frameworks, local open source LLM inference, and persistent semantic memory that survives a process restart.",
     accent: "#D9FF00",
@@ -66,9 +69,10 @@ const disciplines: Discipline[] = [
       "Autonomy is a scheduling problem before it is a prompting problem. Nodes get narrow contracts, edges carry typed state, and the graph heals itself where a single prompt chain would simply stall.",
   },
   {
-    no: "03",
-    code: "SYS / STACK / 03",
-    title: "Modern full stack and desktop systems",
+    id: "stack",
+    code: "SYS / STACK",
+    watermark: "Full-Stack",
+    title: "Full-stack and desktop systems",
     caption:
       "Next.js 15 production web platforms, offline capable Electron desktop software on SQLite WAL, and automated delivery pipelines.",
     accent: "#D9FF00",
@@ -133,7 +137,7 @@ export function SkillsSection() {
   return (
     <section
       id="skills"
-      className="relative w-full bg-transparent py-20 sm:py-24 md:py-28 text-[#F4F5EF] z-20 select-none"
+      className="relative w-full bg-transparent py-16 sm:py-20 md:py-22 text-[#F4F5EF] z-20 select-none"
     >
       {/* Calm wash behind the glass rectangles. The book volumes are frosted
           glass: without light behind them there is nothing to refract and the
@@ -151,11 +155,11 @@ export function SkillsSection() {
         <div className="flex flex-col gap-6">
           <FadeIn y={15} delay={0.1} duration={0.7}>
             <div className="flex items-center gap-2.5 eyebrow">
-              <span className="h-[5px] w-[5px] rounded-full bg-[#D9FF00] animate-pulse" />
+              <span className="h-[5px] w-[5px] rounded-full bg-[#C5AA7A] animate-pulse" />
               // Core disciplines
             </div>
             <h2 className="stylish-header text-[2.4rem] sm:text-[3rem] lg:text-[3.6rem] text-[#FFFFFF] mt-3.5">
-              Technical capabilities
+              Technical Capabilities
             </h2>
             <p className="stylish-sub text-[13px] sm:text-[14.5px] text-[#F4F5EF] max-w-2xl mt-4">
               Each discipline below has run in production and is written down to the exact
@@ -171,118 +175,95 @@ export function SkillsSection() {
           {disciplines.map((d, idx) => (
             <motion.button
               type="button"
-              key={d.no}
+              key={d.id}
               onClick={() => setOpenIdx(idx)}
               aria-label={`Open ${d.title}, opens the full spread`}
-              className="group relative cursor-pointer text-left w-full min-h-[300px] sm:min-h-[320px] flex flex-col overflow-hidden rounded-[18px] glass border border-[rgba(244,245,239,0.12)] hover:border-[rgba(217,255,0,0.22)] transition-all duration-700 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-1"
+              className="group relative cursor-pointer text-left w-full min-h-[300px] sm:min-h-[320px] flex flex-col overflow-hidden rounded-[18px] glass border border-[rgba(217,255,0,0.22)] hover:border-[#D9FF00] shadow-[0_4px_24px_rgba(0,0,0,0.48)] hover:shadow-[0_8px_32px_rgba(217,255,0,0.15)] transition-all duration-700 ease-[cubic-bezier(0.165,0.84,0.44,1)] hover:-translate-y-1"
             >
-              {/* Volume surface: soft 18px plate, hairline border, and a leaf
-                  block that reads as a book rather than a card. */}
-
-              {/* The cover stays a clean liquid sheet: no cloth grain lines,
-                  no woven textures. The glass itself carries the material. */}
-
-              {/* Board: a hairline inset from the trim so the cover reads as a
-                  wrapped board sitting proud of the page block beneath it. */}
+              {/* Volume surface: board inset highlight */}
               <span
                 aria-hidden
-                className="absolute inset-[6px] left-[14px] right-[16px] border border-[rgba(244,245,239,0.09)]"
-                style={{ backgroundColor: d.accent, opacity: 0.035 }}
+                className="absolute inset-[6px] left-[14px] right-[16px] border border-[rgba(217,255,0,0.16)] pointer-events-none"
+                style={{ backgroundColor: d.accent, opacity: 0.045 }}
               />
 
-              {/* Spine: the rolled binding, with its own highlight so the
-                  hinge between spine and cover is legible. */}
+              {/* Spine: highlighted crisp yellow-green rolled binding */}
               <span
                 aria-hidden
-                className="absolute left-0 top-0 bottom-0 w-[11px] z-20"
+                className="absolute left-0 top-0 bottom-0 w-[11px] z-20 pointer-events-none"
                 style={{
-                  background: `linear-gradient(90deg, ${d.accent} 0%, ${d.accent} 42%, rgba(0,0,0,0.55) 100%)`,
-                  opacity: 0.42,
+                  background: `linear-gradient(90deg, ${d.accent} 0%, ${d.accent} 48%, rgba(0,0,0,0.50) 100%)`,
+                  opacity: 0.75,
                 }}
               />
               <span
                 aria-hidden
-                className="absolute left-[11px] top-0 bottom-0 w-px z-20"
-                style={{ backgroundColor: d.accent, opacity: 0.5 }}
+                className="absolute left-[11px] top-0 bottom-0 w-px z-20 pointer-events-none"
+                style={{ backgroundColor: d.accent, opacity: 0.70 }}
               />
 
-              {/* Fore edge: a smooth glass light edge, no leaf stripes. */}
+              {/* Fore edge: refined glass light rim */}
               <span
                 aria-hidden
-                className="absolute right-0 top-[6px] bottom-[6px] w-[14px] z-10"
+                className="absolute right-0 top-[6px] bottom-[6px] w-[14px] z-10 pointer-events-none"
                 style={{
                   background:
-                    "linear-gradient(90deg, rgba(244,245,239,0.015) 0%, rgba(244,245,239,0.16) 58%, rgba(0,0,0,0.42) 100%)",
-                  opacity: 0.6,
+                    "linear-gradient(90deg, rgba(244,245,239,0.02) 0%, rgba(217,255,0,0.22) 58%, rgba(0,0,0,0.50) 100%)",
+                  opacity: 0.75,
                 }}
               />
-              {/* the shaded hollow the leaves sit in, at the head and tail */}
               <span
                 aria-hidden
-                className="absolute right-0 top-0 w-[14px] h-[7px] z-10 bg-[rgba(0,0,0,0.6)]"
+                className="absolute right-0 top-0 w-[14px] h-[7px] z-10 bg-[rgba(0,0,0,0.65)] pointer-events-none"
               />
               <span
                 aria-hidden
-                className="absolute right-0 bottom-0 w-[14px] h-[7px] z-10 bg-[rgba(0,0,0,0.6)]"
+                className="absolute right-0 bottom-0 w-[14px] h-[7px] z-10 bg-[rgba(0,0,0,0.65)] pointer-events-none"
               />
 
-              {/* Deboss: the title blind-stamped into the board, ruled and
-                  lemon, sitting above the printed text. */}
+              {/* Clean single-line header watermark (SAP BODS / Autonomous Multi-Agent / Full-Stack) in one line without underlines */}
               <span
                 aria-hidden
-                className="absolute left-[26px] right-[30px] top-[22px] z-10 flex flex-col gap-[3px] select-none"
+                className="absolute left-[26px] right-[30px] top-[24px] z-10 select-none overflow-hidden"
               >
-                {d.title.split(" ").slice(0, 3).map((w, wi) => (
-                  <span
-                    key={wi}
-                    className="block font-[family-name:var(--font-outfit)] font-medium leading-[1.02] tracking-[-0.03em]"
-                    style={{
-                      fontSize: `clamp(0.95rem, 2.4vw, 1.35rem)`,
-                      color: d.accent,
-                      opacity: 0.16,
-                      borderBottom: `1px solid rgba(217,255,0,0.34)`,
-                      paddingBottom: 2,
-                    }}
-                  >
-                    {w}
-                  </span>
-                ))}
+                <span
+                  className="block font-[family-name:var(--font-outfit)] font-semibold tracking-[0.02em] whitespace-nowrap text-[1.12rem] sm:text-[1.22rem]"
+                  style={{
+                    color: d.accent,
+                    opacity: 0.38,
+                  }}
+                >
+                  {d.watermark}
+                </span>
               </span>
 
-              {/* Ghosted numeral, blind-embossed into the lower board */}
-              <span
-                aria-hidden
-                className="absolute right-8 bottom-2 text-[5rem] leading-none font-[family-name:var(--font-outfit)] font-medium tracking-[-0.05em] opacity-[0.10] group-hover:opacity-[0.18] transition-opacity duration-500 select-none"
-                style={{ color: d.accent }}
-              >
-                {d.no}
-              </span>
-
-              <span className="relative z-20 pl-[26px] pr-[30px] pt-[104px] pb-6 flex flex-col gap-4 flex-1">
-                {/* Cover head */}
-                <span className="flex items-center justify-between gap-3 pb-3.5 border-b border-[rgba(244,245,239,0.09)]">
-                  <span className="text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase text-[#7D8178]">
+              <span className="relative z-20 pl-[26px] pr-[30px] pt-[74px] pb-6 flex flex-col gap-4 flex-1">
+                {/* Cover head: Only line here beneath code */}
+                <span className="flex items-center justify-between gap-3 pb-3 border-b border-[rgba(244,245,239,0.12)]">
+                  <span className="text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase text-[#D9FF00] font-medium">
                     {d.code}
                   </span>
-                  <span className="h-[5px] w-[5px] rounded-full" style={{ backgroundColor: d.accent }} />
+                  <span className="relative flex h-[6px] w-[6px]" aria-hidden="true">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#D9FF00] opacity-60" />
+                    <span className="relative inline-flex h-[6px] w-[6px] rounded-full bg-[#D9FF00]" />
+                  </span>
                 </span>
 
                 <span className="flex flex-col gap-2.5 flex-1">
-                  <span className="block text-[1.15rem] sm:text-[1.28rem] text-[#F4F5EF] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.02em] leading-[1.16]">
+                  <span className="block text-[1.15rem] sm:text-[1.28rem] text-[#F4F5EF] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.02em] leading-[1.16] group-hover:text-[#D9FF00] transition-colors duration-300">
                     {d.title}
                   </span>
                   <span className="block text-[12px] leading-[1.68] text-[#B6B9B0]">{d.caption}</span>
                 </span>
 
                 {/* Tail: the stack rule and the open affordance */}
-                <span className="block pt-3.5 border-t border-[rgba(244,245,239,0.09)]">
-                  <span className="block text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.14em] uppercase text-[#6A6A66]">
+                <span className="block pt-3.5 border-t border-[rgba(244,245,239,0.10)]">
+                  <span className="block text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.14em] uppercase text-[#A2A69C]">
                     {d.stack.slice(0, 3).join(" / ")}
                     {d.stack.length > 3 ? ` / +${d.stack.length - 3}` : ""}
                   </span>
                   <span
-                    className="mt-3 flex items-center gap-1.5 text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase transition-colors duration-300"
-                    style={{ color: d.accent }}
+                    className="mt-3 flex items-center gap-1.5 text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase font-semibold text-[#D9FF00] transition-transform duration-300 group-hover:translate-x-1"
                   >
                     Open volume
                     <ArrowOut />
@@ -345,8 +326,8 @@ export function SkillsSection() {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] text-[#6A6A66] tabular-nums">
-                    {String((openIdx ?? 0) + 1).padStart(2, "0")} / {String(disciplines.length).padStart(2, "0")}
+                  <span className="text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.16em] text-[#D9FF00] font-medium uppercase">
+                    Discipline
                   </span>
                   <button
                     type="button"
@@ -408,7 +389,7 @@ export function SkillsSection() {
                         className="block text-[10.5px] font-[family-name:var(--font-geist-mono)] tracking-[0.24em] uppercase mb-2"
                         style={{ color: active.accent }}
                       >
-                        Volume {active.no}
+                        {active.watermark}
                       </span>
                       <h3 className="text-[1.35rem] sm:text-[1.65rem] leading-[1.16] text-[#F4F5EF] font-[family-name:var(--font-outfit)] font-medium tracking-[-0.025em]">
                         {active.title}

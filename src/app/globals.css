@@ -259,14 +259,14 @@ html {
   line-height: 1.65;
 }
 
-/* Small technical eyebrow — mono, wide, dim, uppercase */
+/* Small technical eyebrow — mono, wide, dim, uppercase — Option 5: Warm Brass Ochre */
 .eyebrow {
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 0.6875rem;
   font-weight: 400;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--accent-hi);
+  color: #C5AA7A;
 }
 
 ::selection {
@@ -532,19 +532,11 @@ html {
    prime-ish 173px so nicks never line up into a visible grid. Every glyph
    stays whole: the longest nick is under a tenth of the narrowest letter. */
 .scratch-face {
-  /* Fully percent-encoded SVG: Chromium refuses to rasterise raw-markup
-     data URIs inside CSS (the previous unencoded tile silently failed to
-     decode — verified with Image.onerror — so no scratch ever painted). */
-  --scratch-tile: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20173%2086%22%3E%3Cg%20stroke%3D%22%23E8FF45%22%20stroke-opacity%3D%220.8%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M14%2018%20L24%2022%22%20stroke-width%3D%221.8%22%2F%3E%3Cpath%20d%3D%22M55%209%20L62%2016%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M100%2028%20L112%2032%22%20stroke-width%3D%221.9%22%2F%3E%3Cpath%20d%3D%22M138%2012%20L146%2018%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M28%2052%20L36%2047%22%20stroke-width%3D%221.8%22%2F%3E%3Cpath%20d%3D%22M70%2040%20L78%2044%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M118%2062%20L128%2066%22%20stroke-width%3D%221.9%22%2F%3E%3Cpath%20d%3D%22M150%2070%20L158%2064%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M44%2076%20L52%2070%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M92%2054%20L97%2061%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M160%2034%20L166%2040%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M8%2062%20L15%2058%22%20stroke-width%3D%221.3%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  /* Fine small scratches (original small scratch scale, no big patches), balanced 50% clean space / 50% scratches */
+  --scratch-tile: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20173%2086%22%3E%3Cg%20stroke%3D%22%23E8FF45%22%20stroke-opacity%3D%220.50%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M14%2018%20L24%2022%22%20stroke-width%3D%221.2%22%2F%3E%3Cpath%20d%3D%22M55%209%20L62%2016%22%20stroke-width%3D%221.1%22%2F%3E%3Cpath%20d%3D%22M100%2028%20L112%2032%22%20stroke-width%3D%221.3%22%2F%3E%3Cpath%20d%3D%22M138%2012%20L146%2018%22%20stroke-width%3D%221.0%22%2F%3E%3Cpath%20d%3D%22M28%2052%20L36%2047%22%20stroke-width%3D%221.2%22%2F%3E%3Cpath%20d%3D%22M70%2040%20L78%2044%22%20stroke-width%3D%221.1%22%2F%3E%3Cpath%20d%3D%22M118%2062%20L128%2066%22%20stroke-width%3D%221.3%22%2F%3E%3Cpath%20d%3D%22M150%2070%20L158%2064%22%20stroke-width%3D%221.0%22%2F%3E%3Cpath%20d%3D%22M44%2076%20L52%2070%22%20stroke-width%3D%221.1%22%2F%3E%3Cpath%20d%3D%22M92%2054%20L97%2061%22%20stroke-width%3D%221.0%22%2F%3E%3Cpath%20d%3D%22M160%2034%20L166%2040%22%20stroke-width%3D%221.1%22%2F%3E%3Cpath%20d%3D%22M8%2062%20L15%2058%22%20stroke-width%3D%221.0%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
   --scratch-layer: var(--scratch-tile);
-  /* Grunge hole tile: fractalNoise (4 octaves = blotches + fine grain
-     in one field) thresholded so the sheet stays mostly opaque with
-     irregular pits. Fully percent-encoded — raw markup silently fails
-     to decode in Chromium. Density tuned by the matrix: measured
-     ~4% ink removal full-cut plus soft speckle edges (~8% effective),
-     roughly a tenth lighter than the previous heavy distress, so the
-     letters stay whole while the worn character survives. */
-  --grunge-tile: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%2290%22%3E%3Cfilter%20id%3D%22gr%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.45%22%20numOctaves%3D%224%22%20seed%3D%2211%22%20stitchTiles%3D%22stitch%22%20result%3D%22n%22%2F%3E%3CfeColorMatrix%20in%3D%22n%22%20type%3D%22matrix%22%20values%3D%222.9%202.9%202.9%200%20-3.25%202.9%202.9%202.9%200%20-3.25%202.9%202.9%202.9%200%20-3.25%202.9%202.9%202.9%200%20-3.25%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22180%22%20height%3D%2290%22%20filter%3D%22url(%23gr)%22%2F%3E%3C%2Fsvg%3E");
+  /* High-frequency fine scratch noise (baseFrequency 0.48) with calibrated 50% clean space / 50% distress threshold */
+  --grunge-tile: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%2290%22%3E%3Cfilter%20id%3D%22gr%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.48%22%20numOctaves%3D%224%22%20seed%3D%2211%22%20stitchTiles%3D%22stitch%22%20result%3D%22n%22%2F%3E%3CfeColorMatrix%20in%3D%22n%22%20type%3D%22matrix%22%20values%3D%223.2%203.2%203.2%200%20-3.35%203.2%203.2%203.2%200%20-3.35%203.2%203.2%203.2%200%20-3.35%203.2%203.2%203.2%200%20-3.35%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22180%22%20height%3D%2290%22%20filter%3D%22url(%23gr)%22%2F%3E%3C%2Fsvg%3E");
   --grunge-mask: var(--grunge-tile);
 }
 

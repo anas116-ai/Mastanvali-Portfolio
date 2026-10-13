@@ -517,41 +517,31 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
         aria-hidden="true"
       />
 
-      {/* The pond opens straight into dark water. No tinted wash, no cut
-          corner, no flow boxes across the top: the light lives inside the
-          water itself, in the caustics and the shafts. */}
+      {/* The pond opens straight into dark water. Clean, elegant layout without numbers or icons */}
       <div className="relative z-20 p-6 sm:p-7 flex-1 flex flex-col justify-between gap-6">
         <div className="space-y-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-baseline gap-3">
               <span
-                className="font-mono text-[26px] sm:text-[30px] font-light leading-none tracking-[0.02em]"
-                style={{ color: area.accent }}
+                className="font-mono text-[10.5px] tracking-[0.22em] uppercase font-medium"
+                style={{ color: "#C5AA7A" }}
               >
-                {area.num}
-              </span>
-              <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#B6B9B0]">
                 {area.systemTag}
               </span>
             </div>
-            <area.icon
-              size={18}
-              className="shrink-0 opacity-90"
-              style={{ color: area.accent }}
-            />
           </div>
 
-          <div className="space-y-2.5 pt-2">
-            <h3 className="stylish-header text-[19px] sm:text-[22px] text-[#F4F5EF] leading-[1.12]">
+          <div className="space-y-2 pt-1">
+            <h3 className="stylish-header text-[20px] sm:text-[23px] text-[#D9FF00] leading-[1.15]">
               {area.title}
             </h3>
             <div
-              className="font-[family-name:var(--font-geist-sans)] text-[13px] font-normal tracking-[-0.005em]"
-              style={{ color: area.accent }}
+              className="font-[family-name:var(--font-geist-sans)] text-[13px] font-medium tracking-[-0.005em]"
+              style={{ color: "#C5AA7A" }}
             >
               {area.subtitle}
             </div>
-            <p className="font-[family-name:var(--font-geist-sans)] text-[13px] text-[#B6B9B0] leading-[1.72] pt-2">
+            <p className="font-[family-name:var(--font-geist-sans)] text-[13.5px] text-[#E4E6DF] leading-[1.72] pt-2">
               {area.desc}
             </p>
           </div>
@@ -561,11 +551,11 @@ export function ZenKoiPondCard({ area, index }: ZenKoiPondCardProps) {
           {area.points.map((point, i) => (
             <li
               key={i}
-              className="flex items-start gap-3 font-[family-name:var(--font-geist-sans)] text-[12.5px] text-[#B6B9B0] leading-[1.6]"
+              className="flex items-start gap-3 font-[family-name:var(--font-geist-sans)] text-[12.5px] text-[#D4D6CF] leading-[1.6]"
             >
               <span
                 className="mt-[7px] h-px w-3 shrink-0"
-                style={{ backgroundColor: area.accent, opacity: 0.7 }}
+                style={{ backgroundColor: "#C5AA7A", opacity: 0.9 }}
                 aria-hidden="true"
               />
               <span>{point}</span>

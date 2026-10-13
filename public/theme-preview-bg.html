@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Background Animation Preview — Mastan Vali Portfolio</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #070807; }
+
+  /* ── Layer stack ── */
+  #layer-three   { position: fixed; inset: 0; z-index: 1; }
+  #layer-flow    { position: fixed; inset: 0; z-index: 2; opacity: 0.55; }
+  #layer-mouse   { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+  #layer-grain   { position: fixed; inset: 0; z-index: 4; pointer-events: none; opacity: 0.3;
+                   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+                   background-size: 180px 180px; }
+
+  /* ── Preview UI overlay ── */
+  #preview-label {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px;
+    background: rgba(7,8,7,0.72);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(244,245,239,0.08);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(244,245,239,0.45);
+  }
+  #preview-label .accent { color: #D9FF00; }
+  #preview-label .controls { display: flex; gap: 20px; align-items: center; }
+  #preview-label button {
+    background: rgba(217,255,0,0.1); border: 1px solid rgba(217,255,0,0.25);
+    color: #D9FF00; padding: 6px 16px; border-radius: 3px; cursor: pointer;
+    font: inherit; font-size: 10px; letter-spacing: 0.16em;
+    transition: background 0.2s;
+  }
+  #preview-label button:hover { background: rgba(217,255,0,0.18); }
+
+  /* ── Hero text mockup ── */
+  #hero-mock {
+    position: fixed; inset: 0; z-index: 10; pointer-events: none;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 8vw;
+  }
+  #hero-mock .eyebrow {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: #D9FF00; margin-bottom: 20px; opacity: 0.8;
+    display: flex; align-items: center; gap: 12px;
+  }
+  #hero-mock .eyebrow::before { content: ''; width: 28px; height: 1px; background: rgba(217,255,0,0.55); flex-shrink: 0; }
+  #hero-mock h1 {
+    font-family: Georgia, serif; font-size: clamp(52px, 9vw, 120px);
+    font-weight: 200; letter-spacing: 0.06em; text-transform: uppercase;
+    color: #F4F5EF; line-height: 0.95; margin-bottom: 24px;
+    text-shadow: 0 0 80px rgba(217,255,0,0.08);
+  }
+  #hero-mock p {
+    font-family: system-ui, sans-serif; font-size: 15px; line-height: 1.75;
+    color: #7D8178; max-width: 460px; font-weight: 400;
+  }
+  #hero-mock .cta {
+    margin-top: 36px; display: flex; gap: 14px; align-items: center;
+  }
+  #hero-mock .btn-primary {
+    background: transparent; border: 1px solid rgba(217,255,0,0.35);
+    color: #D9FF00; padding: 12px 28px; border-radius: 3px;
+    font-family: 'SF Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    position: relative; overflow: hidden;
+  }
+  #hero-mock .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(217,255,0,0.06); 
+  }
+  #toggle-hero { pointer-events: auto; }
+</style>
+</head>
+<body>
+
+<!-- LAYER 1: Three.js atmosphere (star dust + lemon wisps) -->
+<canvas id="layer-three"></canvas>
+
+<!-- LAYER 2: Flow Field (simplex noise, lemon-tinted) -->
+<canvas id="layer-flow"></canvas>
+
+<!-- LAYER 3: CSS mouse light -->
+<div id="layer-mouse"></div>
+
+<!-- LAYER 4: Film grain -->
+<div id="layer-grain"></div>
+
+<!-- Preview UI -->
+<div id="preview-label">
+  <span>// <span class="accent">Background Preview</span> · Mastan Vali Portfolio · 3-Layer Animation</span>
+  <div class="controls">
+    <button id="toggle-hero">Toggle Hero Text</button>
+    <button id="toggle-flow">Flow Field: ON</button>
+    <button id="toggle-three">Atmosphere: ON</button>
+  </div>
+</div>
+
+<!-- Hero mockup (toggleable) -->
+<div id="hero-mock">
+  <div class="eyebrow">// Portfolio · Enterprise Data · Products</div>
+  <h1>MASTAN VALI</h1>
+  <p>Data &amp; Technology Professional. SAP BODS, ETL, enterprise production support, AI-powered applications.</p>
+  <div class="cta">
+    <div class="btn-primary">Explore Work</div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// LAYER 1 — Three.js Atmospheric Depth (star field + lemon wisps)
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('layer-three');
+  const ctx = canvas.getContext('2d');
+  let W, H, animId;
+  let enabled = true;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Star dust particles
+  const STARS = 600;
+  const stars = Array.from({ length: STARS }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: 0.3 + Math.random() * 0.9,
+    a: 0.04 + Math.random() * 0.18,
+    vx: (Math.random() - 0.5) * 0.08,
+    vy: -0.03 - Math.random() * 0.08,
+  }));
+
+  // Lemon wisps (point light blobs orbiting slowly)
+  const WISPS = 5;
+  const wisps = Array.from({ length: WISPS }, (_, i) => ({
+    angle: (i / WISPS) * Math.PI * 2 + Math.random(),
+    radius: 180 + Math.random() * 260,
+    speed: 0.00025 + Math.random() * 0.0003,
+    size: 200 + Math.random() * 320,
+    cx: W / 2 + (Math.random() - 0.5) * W * 0.6,
+    cy: H * 0.38 + (Math.random() - 0.5) * H * 0.4,
+    hue: Math.random() > 0.3 ? '#D9FF00' : '#F4F5EF',
+    alpha: 0.022 + Math.random() * 0.028,
+  }));
+
+  let time = 0;
+
+  function draw() {
+    if (!enabled) { animId = requestAnimationFrame(draw); return; }
+    ctx.clearRect(0, 0, W, H);
+    time += 0.008;
+
+    // Draw wisps
+    for (const w of wisps) {
+      w.angle += w.speed;
+      const wx = w.cx + Math.cos(w.angle) * w.radius;
+      const wy = w.cy + Math.sin(w.angle * 0.7) * w.radius * 0.5;
+      const grad = ctx.createRadialGradient(wx, wy, 0, wx, wy, w.size);
+      const c = w.hue === '#D9FF00' ? `rgba(217,255,0,${w.alpha})` : `rgba(244,245,239,${w.alpha * 0.6})`;
+      grad.addColorStop(0, c);
+      grad.addColorStop(0.5, w.hue === '#D9FF00' ? `rgba(168,200,0,${w.alpha * 0.4})` : `rgba(244,245,239,${w.alpha * 0.2})`);
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fillRect(wx - w.size, wy - w.size, w.size * 2, w.size * 2);
+    }
+
+    // Draw stars
+    for (const s of stars) {
+      s.x += s.vx;
+      s.y += s.vy;
+      if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
+      if (s.x < -2) s.x = W + 2;
+      if (s.x > W + 2) s.x = -2;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(244,245,239,${s.a})`;
+      ctx.fill();
+    }
+
+    animId = requestAnimationFrame(draw);
+  }
+  draw();
+
+  window.toggleThree = function() {
+    enabled = !enabled;
+    if (!enabled) ctx.clearRect(0, 0, W, H);
+    return enabled;
+  };
+})();
+
+
+// ═══════════════════════════════════════════════════════════════
+// LAYER 2 — Flow Field with Simplex Noise (lemon-tinted, exact ThreeUI algo)
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('layer-flow');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  let flowEnabled = true;
+
+  // ── Simplex Noise (exact from ThreeUI source) ──
+  const SimplexNoise = (function() {
+    const F2 = 0.5 * (Math.sqrt(3) - 1);
+    const G2 = (3 - Math.sqrt(3)) / 6;
+    const F3 = 1 / 3;
+    const G3 = 1 / 6;
+    const grad3 = [[1,1,0],[-1,1,0],[1,-1,0],[-1,-1,0],[1,0,1],[-1,0,1],[1,0,-1],[-1,0,-1],[0,1,1],[0,-1,1],[0,1,-1],[0,-1,-1]];
+
+    function SimplexNoise(seed) {
+      this.perm = new Uint8Array(512);
+      this.permMod12 = new Uint8Array(512);
+      const p = new Uint8Array(256);
+      seed = seed || Math.random() * 65536;
+      for (let i = 0; i < 256; i++) p[i] = i;
+      for (let i = 255; i > 0; i--) {
+        seed = (seed * 16807 + 0) % 2147483647;
+        const j = seed % (i + 1);
+        const tmp = p[i]; p[i] = p[j]; p[j] = tmp;
+      }
+      for (let i = 0; i < 512; i++) {
+        this.perm[i] = p[i & 255];
+        this.permMod12[i] = this.perm[i] % 12;
+      }
+    }
+
+    SimplexNoise.prototype.noise2D = function(xin, yin) {
+      const perm = this.perm, permMod12 = this.permMod12;
+      let n0, n1, n2;
+      const s = (xin + yin) * F2;
+      const i = Math.floor(xin + s), j = Math.floor(yin + s);
+      const t = (i + j) * G2;
+      const X0 = i - t, Y0 = j - t;
+      const x0 = xin - X0, y0 = yin - Y0;
+      let i1, j1;
+      if (x0 > y0) { i1 = 1; j1 = 0; } else { i1 = 0; j1 = 1; }
+      const x1 = x0 - i1 + G2, y1 = y0 - j1 + G2;
+      const x2 = x0 - 1 + 2*G2, y2 = y0 - 1 + 2*G2;
+      const ii = i & 255, jj = j & 255;
+      let t0 = 0.5 - x0*x0 - y0*y0;
+      if (t0 < 0) n0 = 0; else { t0 *= t0; const gi = permMod12[ii+perm[jj]]; n0 = t0*t0*(grad3[gi][0]*x0+grad3[gi][1]*y0); }
+      let t1 = 0.5 - x1*x1 - y1*y1;
+      if (t1 < 0) n1 = 0; else { t1 *= t1; const gi = permMod12[ii+i1+perm[jj+j1]]; n1 = t1*t1*(grad3[gi][0]*x1+grad3[gi][1]*y1); }
+      let t2 = 0.5 - x2*x2 - y2*y2;
+      if (t2 < 0) n2 = 0; else { t2 *= t2; const gi = permMod12[ii+1+perm[jj+1]]; n2 = t2*t2*(grad3[gi][0]*x2+grad3[gi][1]*y2); }
+      return 70 * (n0 + n1 + n2);
+    };
+
+    SimplexNoise.prototype.noise3D = function(xin, yin, zin) {
+      const perm = this.perm, permMod12 = this.permMod12;
+      let n0, n1, n2, n3;
+      const s = (xin + yin + zin) * F3;
+      const i = Math.floor(xin + s), j = Math.floor(yin + s), k = Math.floor(zin + s);
+      const t = (i + j + k) * G3;
+      const X0 = i - t, Y0 = j - t, Z0 = k - t;
+      const x0 = xin - X0, y0 = yin - Y0, z0 = zin - Z0;
+      let i1, j1, k1, i2, j2, k2;
+      if (x0 >= y0) {
+        if (y0 >= z0) { i1=1;j1=0;k1=0;i2=1;j2=1;k2=0; }
+        else if (x0 >= z0) { i1=1;j1=0;k1=0;i2=1;j2=0;k2=1; }
+        else { i1=0;j1=0;k1=1;i2=1;j2=0;k2=1; }
+      } else {
+        if (y0 < z0) { i1=0;j1=0;k1=1;i2=0;j2=1;k2=1; }
+        else if (x0 < z0) { i1=0;j1=1;k1=0;i2=0;j2=1;k2=1; }
+        else { i1=0;j1=1;k1=0;i2=1;j2=1;k2=0; }
+      }
+      const x1 = x0-i1+G3, y1 = y0-j1+G3, z1 = z0-k1+G3;
+      const x2 = x0-i2+2*G3, y2 = y0-j2+2*G3, z2 = z0-k2+2*G3;
+      const x3 = x0-1+3*G3, y3 = y0-1+3*G3, z3 = z0-1+3*G3;
+      const ii = i & 255, jj = j & 255, kk = k & 255;
+      let t0 = 0.6 - x0*x0 - y0*y0 - z0*z0;
+      if (t0 < 0) n0 = 0; else { t0 *= t0; const gi = permMod12[ii+perm[jj+perm[kk]]]; n0 = t0*t0*(grad3[gi][0]*x0+grad3[gi][1]*y0+grad3[gi][2]*z0); }
+      let t1 = 0.6 - x1*x1 - y1*y1 - z1*z1;
+      if (t1 < 0) n1 = 0; else { t1 *= t1; const gi = permMod12[ii+i1+perm[jj+j1+perm[kk+k1]]]; n1 = t1*t1*(grad3[gi][0]*x1+grad3[gi][1]*y1+grad3[gi][2]*z1); }
+      let t2 = 0.6 - x2*x2 - y2*y2 - z2*z2;
+      if (t2 < 0) n2 = 0; else { t2 *= t2; const gi = permMod12[ii+i2+perm[jj+j2+perm[kk+k2]]]; n2 = t2*t2*(grad3[gi][0]*x2+grad3[gi][1]*y2+grad3[gi][2]*z2); }
+      let t3 = 0.6 - x3*x3 - y3*y3 - z3*z3;
+      if (t3 < 0) n3 = 0; else { t3 *= t3; const gi = permMod12[ii+1+perm[jj+1+perm[kk+1]]]; n3 = t3*t3*(grad3[gi][0]*x3+grad3[gi][1]*y3+grad3[gi][2]*z3); }
+      return 32 * (n0 + n1 + n2 + n3);
+    };
+
+    return SimplexNoise;
+  })();
+
+  // ── Flow Field Renderer (lemon-tinted palette) ──
+  const noise = new SimplexNoise(42);
+  let animId2;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    ctx.fillStyle = 'rgba(7,8,7,0)';
+    ctx.fillRect(0, 0, W, H);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const mouse = { x: -9999, y: -9999, active: false };
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; });
+
+  // ── LEMON-TINTED PALETTE (adapted from ThreeUI amber palette) ──
+  const palette = [
+    { r: 217, g: 255, b: 0   }, // lemon #D9FF00
+    { r: 200, g: 235, b: 0   }, // lemon-mid
+    { r: 168, g: 201, b: 0   }, // lemon-deep #A8C900
+    { r: 232, g: 255, b: 69  }, // lemon-hi #E8FF45
+    { r: 244, g: 245, b: 239 }, // bone #F4F5EF (accent)
+    { r: 180, g: 215, b: 10  }, // lemon-warm
+    { r: 140, g: 180, b: 0   }, // lemon-dim
+  ];
+
+  function lerpColor(a, b, t) {
+    return { r: a.r + (b.r - a.r) * t, g: a.g + (b.g - a.g) * t, b: a.b + (b.b - a.b) * t };
+  }
+
+  function getColor(noiseVal) {
+    const t = (noiseVal + 1) * 0.5;
+    const idx = t * (palette.length - 1);
+    const i = Math.floor(idx);
+    const f = idx - i;
+    const a = palette[Math.min(i, palette.length - 1)];
+    const b = palette[Math.min(i + 1, palette.length - 1)];
+    return lerpColor(a, b, f);
+  }
+
+  const PARTICLE_COUNT = 1800;
+  let NOISE_SCALE = 0.0025;
+  const SPEED = 1.2;
+  const MOUSE_RADIUS = 150;
+  const MOUSE_FORCE = 2.2;
+
+  const particles = [];
+  function createParticle() {
+    return { x: Math.random() * W, y: Math.random() * H, speed: 0.4 + Math.random() * 1.0, alpha: 0.12 + Math.random() * 0.42, size: 0.5 + Math.random() * 1.4 };
+  }
+  for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
+
+  let time = 0;
+
+  function drawFlow() {
+    if (!flowEnabled) { ctx.clearRect(0, 0, W, H); animId2 = requestAnimationFrame(drawFlow); return; }
+
+    ctx.fillStyle = 'rgba(7,8,7,0.04)';
+    ctx.fillRect(0, 0, W, H);
+    time += 0.0008;
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const p = particles[i];
+      const nx = p.x * NOISE_SCALE;
+      const ny = p.y * NOISE_SCALE;
+      const angle = noise.noise3D(nx, ny, time) * Math.PI * 2;
+      const colorNoise = noise.noise3D(nx * 1.5 + 100, ny * 1.5 + 100, time * 0.5);
+      let vx = Math.cos(angle) * p.speed * SPEED;
+      let vy = Math.sin(angle) * p.speed * SPEED;
+
+      if (mouse.active) {
+        const dx = p.x - mouse.x, dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MOUSE_RADIUS && dist > 0) {
+          const force = (1 - dist / MOUSE_RADIUS) * MOUSE_FORCE;
+          vx += (dx / dist) * force;
+          vy += (dy / dist) * force;
+        }
+      }
+
+      const px = p.x, py = p.y;
+      p.x += vx; p.y += vy;
+
+      const color = getColor(colorNoise);
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(p.x, p.y);
+      ctx.strokeStyle = `rgba(${Math.round(color.r)},${Math.round(color.g)},${Math.round(color.b)},${p.alpha})`;
+      ctx.lineWidth = p.size;
+      ctx.stroke();
+
+      if (p.x < -20 || p.x > W + 20 || p.y < -20 || p.y > H + 20) {
+        p.x = Math.random() * W; p.y = Math.random() * H;
+      }
+    }
+
+    animId2 = requestAnimationFrame(drawFlow);
+  }
+
+  ctx.fillStyle = 'rgba(7,8,7,0)';
+  ctx.fillRect(0, 0, W, H);
+  drawFlow();
+
+  window.toggleFlow = function() {
+    flowEnabled = !flowEnabled;
+    return flowEnabled;
+  };
+})();
+
+
+// ═══════════════════════════════════════════════════════════════
+// LAYER 3 — Mouse-reactive lemon light (inertia-damped)
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  const el = document.getElementById('layer-mouse');
+  let cx = window.innerWidth / 2, cy = window.innerHeight * 0.38;
+  let tx = cx, ty = cy;
+
+  window.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+
+  function update() {
+    cx += (tx - cx) * 0.065;
+    cy += (ty - cy) * 0.065;
+    const nx = Math.round((cx / window.innerWidth) * 100);
+    const ny = Math.round((cy / window.innerHeight) * 100);
+    el.style.background = `
+      radial-gradient(circle 580px at ${nx}% ${ny}%, rgba(217,255,0,0.06) 0%, rgba(168,200,0,0.025) 45%, transparent 75%)
+    `;
+    requestAnimationFrame(update);
+  }
+  update();
+})();
+
+
+// ═══════════════════════════════════════════════════════════════
+// Preview controls
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('toggle-hero').addEventListener('click', function() {
+  const el = document.getElementById('hero-mock');
+  el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+});
+
+document.getElementById('toggle-flow').addEventListener('click', function() {
+  const on = window.toggleFlow();
+  this.textContent = `Flow Field: ${on ? 'ON' : 'OFF'}`;
+  document.getElementById('layer-flow').style.opacity = on ? '0.55' : '0';
+});
+
+document.getElementById('toggle-three').addEventListener('click', function() {
+  const on = window.toggleThree();
+  this.textContent = `Atmosphere: ${on ? 'ON' : 'OFF'}`;
+});
+</script>
+</body>
+</html>

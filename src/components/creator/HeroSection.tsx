@@ -7,6 +7,7 @@ import { ArrowDown } from "lucide-react";
 import { ShaderIgnitionButton } from "@/components/ui/ShaderIgnitionButton";
 import { TextAnimationCollection } from "./TextAnimationCollection";
 import { InteractiveCharacter } from "./InteractiveCharacter";
+import { CharacterLaptopSkillStream } from "./CharacterLaptopSkillStream";
 
 export function HeroSection() {
   return (
@@ -31,8 +32,8 @@ export function HeroSection() {
             <div className="lg:col-span-7 flex flex-col items-start justify-center space-y-3 sm:space-y-5 lg:space-y-7 z-20 py-2">
               {/* Top eyebrow — completely clean, unboxed text (NO boxes, NO pills) */}
               <FadeIn y={12} delay={0.1} duration={0.7} className="w-full">
-                <div className="flex items-center gap-3 eyebrow" style={{ color: "#E8FF45" }}>
-                  <span aria-hidden="true" className="h-px w-7 shrink-0 bg-[rgba(232,255,69,0.55)]" />
+                <div className="flex items-center gap-3 eyebrow" style={{ color: "#C5AA7A" }}>
+                  <span aria-hidden="true" className="h-px w-7 shrink-0 bg-[rgba(197,170,122,0.55)]" />
                   <span>// PORTFOLIO · ENTERPRISE DATA · PRODUCTS</span>
                 </div>
               </FadeIn>
@@ -122,6 +123,8 @@ export function HeroSection() {
                   className="pointer-events-none absolute left-1/2 -bottom-5 z-0 h-[64px] w-[300px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(217,255,0,0.18)_0%,transparent_70%)] blur-[24px]"
                 />
                 <InteractiveCharacter className="!h-[270px] sm:!h-[360px] md:!h-[420px] xl:!h-[520px]" />
+                {/* Character Laptop Skill Stream — badges emerge from laptop edges, sweep outward to flanks without crossing body, and blast at apex */}
+                <CharacterLaptopSkillStream className="absolute -left-12 sm:-left-16 md:-left-20 lg:-left-20 -right-12 sm:-right-16 md:-right-20 lg:-right-20 inset-y-0 w-[calc(100%+96px)] sm:w-[calc(100%+128px)] md:w-[calc(100%+160px)] lg:w-[calc(100%+160px)] !h-[270px] sm:!h-[360px] md:!h-[420px] xl:!h-[520px]" />
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[280px] h-[48px] pointer-events-none z-10">
                   <div className="absolute inset-x-10 bottom-2 h-[24px] rounded-[100%] bg-black/60 blur-[14px]" />
                   <div className="absolute inset-x-16 bottom-3 h-[14px] rounded-[100%] bg-black/50 blur-[8px]" />

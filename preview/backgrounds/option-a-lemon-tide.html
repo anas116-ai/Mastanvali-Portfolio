@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option A — Lemon Tide Drift</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:100%; height:100%; background:#070807; overflow:hidden;
+    font-family: "Geist Sans", system-ui, sans-serif; }
+  .stage { position:fixed; inset:0; background:#070807; overflow:hidden; }
+  .pool { position:absolute; border-radius:50%; filter:blur(120px);
+    will-change:transform; }
+  .pool-lemon-1 { width:62vmax; height:62vmax; left:-14vmax; top:-18vmax;
+    background:#D9FF00; opacity:0.11; animation:drift1 26s cubic-bezier(0.165,0.84,0.44,1) infinite alternate; }
+  .pool-lemon-2 { width:44vmax; height:44vmax; right:-12vmax; bottom:-14vmax;
+    background:#A8C900; opacity:0.10; animation:drift2 32s cubic-bezier(0.165,0.84,0.44,1) infinite alternate; }
+  .pool-bone { width:70vmax; height:46vmax; left:18vw; top:-20vmax;
+    background:#F4F5EF; opacity:0.055; animation:drift3 38s cubic-bezier(0.165,0.84,0.44,1) infinite alternate; }
+  @keyframes drift1 { from{transform:translate(0,0) scale(1);} to{transform:translate(9vw,7vh) scale(1.08);} }
+  @keyframes drift2 { from{transform:translate(0,0) scale(1.05);} to{transform:translate(-8vw,-6vh) scale(1);} }
+  @keyframes drift3 { from{transform:translate(0,0);} to{transform:translate(-5vw,4vh);} }
+  .grain-veil { position:absolute; inset:0; background:#070807; opacity:0.08; }
+  .content { position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; z-index:5; }
+  .eyebrow { font-family:ui-monospace,monospace; font-size:12px; letter-spacing:0.2em;
+    color:#B6B9B0; text-transform:uppercase; }
+  .eyebrow i { display:inline-block; width:7px; height:7px; border-radius:50%;
+    background:#D9FF00; margin-right:10px; vertical-align:1px; }
+  h1 { margin-top:18px; font-size:clamp(42px,6vw,84px); font-weight:500;
+    letter-spacing:-0.02em; color:#F4F5EF; }
+  h1 span { color:#D9FF00; }
+  p { margin-top:14px; color:#7D8178; font-size:15px; letter-spacing:0.02em; }
+  .meta { position:absolute; left:24px; bottom:20px; z-index:6;
+    font-family:ui-monospace,monospace; font-size:11px; letter-spacing:0.14em;
+    color:#6A6A66; text-transform:uppercase; }
+  .meta b { color:#D9FF00; font-weight:500; }
+  @media (prefers-reduced-motion: reduce) { .pool{animation:none;} }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="pool pool-bone"></div>
+  <div class="pool pool-lemon-1"></div>
+  <div class="pool pool-lemon-2"></div>
+  <div class="grain-veil"></div>
+  <div class="content">
+    <div class="eyebrow"><i></i>// Option A / Lemon tide drift</div>
+    <h1>Obsidian lit by <span>one lemon pulse</span></h1>
+    <p>26 to 38s alternate drift / blur 120px / opacity 0.05 to 0.11 / no lines, no dots</p>
+  </div>
+  <div class="meta"><b>A</b> &nbsp; aura.build: soft wash + motionsites: slow loop &nbsp;|&nbsp; 1920x1080 loop</div>
+</div>
+<!-- frame:1 duration:6000 transition:fade -->
+</body>
+</html>

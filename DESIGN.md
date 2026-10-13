@@ -35,12 +35,13 @@ isn't a light source.
 Ground and surface differ by only a hair, which is deliberate: a card never separates
 from its ground by value. It separates by a hairline, or not at all.
 
-### 10% Accent — one lemon hue, five lightness stops
+### 10% Accent — one lemon hue, five lightness stops + Warm Brass Ochre
 | Token | Hex | Meaning |
 |---|---|---|
 | **Lemon hi** | `#E8FF45` | hover, active CTA fill, brightest ink on dark |
-| **Lemon** | `#D9FF00` | primary. Diode, eyebrows, active state, rules |
+| **Lemon** | `#D9FF00` | primary. Diode, active state, rules |
 | **Lemon deep** | `#A8C900` | secondary data, pipeline stages, koi accents |
+| **Warm Brass Ochre** | `#C5AA7A` | Eyebrow labels (`.eyebrow`), section markers, analog instrument precision |
 | **Lemon dim** | `#566000` | tertiary data slot when three accents are on screen |
 | **Bone** (neutral) | `#B6B9B0` | the fourth data slot when accents are already spent |
 | **Accent ink** | `#262B00` | lemon for rules on cream paper only. Never on deep black |

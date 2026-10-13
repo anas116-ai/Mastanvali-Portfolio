@@ -110,7 +110,7 @@ export function ExperienceSection() {
   return (
     <section
       id="experience"
-      className="relative w-full bg-transparent py-24 sm:py-28 md:py-32 text-[#F4F5EF] z-20 select-none"
+      className="relative w-full bg-transparent py-16 sm:py-20 md:py-22 text-[#F4F5EF] z-20 select-none"
     >
       {/* Premium night beams over the spec sheet */}
       <PremiumNightBackdrop side="right" mood="calm" />
@@ -120,7 +120,7 @@ export function ExperienceSection() {
           <div className="space-y-4 max-w-3xl">
             <FadeIn y={20} delay={0.1} duration={0.8}>
               <div className="eyebrow flex items-center gap-2.5">
-                <span className="h-[5px] w-[5px] rounded-full bg-[#D9FF00] animate-pulse" />
+                <span className="h-[5px] w-[5px] rounded-full bg-[#C5AA7A] animate-pulse" />
                 // Curriculum vitae / printed sheet
               </div>
               <h2 className="stylish-header text-[2.1rem] sm:text-[2.6rem] lg:text-[3.1rem] text-[#FFFFFF] mt-3">

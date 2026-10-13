@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L1 — Lemon Flow Silk (inspired, not copied)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;background:#070807;overflow:hidden;font-family:system-ui,sans-serif}
+  .stage{position:fixed;inset:0;background:#070807;overflow:hidden}
+  .wash{position:absolute;border-radius:50%;filter:blur(130px);pointer-events:none}
+  .wash-bone{width:80vmax;height:50vmax;left:10vw;top:-24vmax;background:#F4F5EF;opacity:.05}
+  .wash-lemon{width:56vmax;height:40vmax;right:-14vmax;bottom:-16vmax;background:#D9FF00;opacity:.07}
+  canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.9}
+  .content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:5;pointer-events:none}
+  .eyebrow{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.2em;color:#B6B9B0;text-transform:uppercase}
+  .eyebrow i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#D9FF00;margin-right:10px;vertical-align:1px}
+  h1{margin-top:18px;font-size:clamp(40px,5.6vw,80px);font-weight:500;letter-spacing:-.02em;color:#F4F5EF}
+  h1 span{color:#D9FF00}
+  p{margin-top:14px;color:#7D8178;font-size:14px;max-width:62ch;line-height:1.6}
+  .meta{position:absolute;left:24px;bottom:20px;z-index:6;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:#6A6A66;text-transform:uppercase}
+  .meta b{color:#D9FF00;font-weight:500}
+  .badge{position:absolute;right:24px;top:22px;z-index:6;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:#B6B9B0;border:1px solid rgba(244,245,239,.12);border-radius:3px;padding:8px 12px;background:rgba(18,22,17,.6)}
+  .badge b{color:#D9FF00}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="wash wash-bone"></div>
+  <div class="wash wash-lemon"></div>
+  <canvas id="silk"></canvas>
+  <div class="content">
+    <div class="eyebrow"><i></i>// L1 / Lemon flow silk — hero stage</div>
+    <h1>Silk trails in <span>one lemon hue</span></h1>
+    <p>Flow-field logic inspiration: deterministic noise trails. Amber/coral kadu — lemon ramp only.
+    700 trails, 0.35x speed, 1px strokes, silk fade. Temple-night nunchi: pointer wisp + depth mist only.</p>
+  </div>
+  <div class="badge"><b>RECOMMENDED</b> · hero</div>
+  <div class="meta"><b>L1</b> &nbsp; inspired: flow-field trails + temple-night wisps &nbsp;|&nbsp; original code, no copy</div>
+</div>
+<script>
+// Original flow-silk: deterministic pseudo-noise field, lemon ramp only.
+const cv = document.getElementById('silk'), ctx = cv.getContext('2d');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W, H, t = 0, px = -9999, py = -9999;
+const DPR = Math.min(1.5, devicePixelRatio || 1);
+function size(){ W = innerWidth; H = innerHeight; cv.width = W*DPR; cv.height = H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0); ctx.fillStyle='#070807'; ctx.fillRect(0,0,W,H); }
+addEventListener('resize', size); size();
+addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; }, {passive:true});
+// Lemon ramp weights: mostly dim, rare bright. Bone 4th slot.
+const RAMP = ['#566000','#566000','#566000','#A8C900','#A8C900','#D9FF00','#B6B9B0'];
+const N = innerWidth < 768 ? 320 : 700;
+const P = [];
+function spawn(p){ p.x = Math.random()*W; p.y = Math.random()*H; p.life = 0; p.max = 140+Math.random()*220; p.c = RAMP[(Math.random()*RAMP.length)|0]; p.w = 0.7+Math.random()*0.7; return p; }
+for(let i=0;i<N;i++) { const p = spawn({}); p.life = Math.random()*p.max; P.push(p); }
+function angle(x, y){
+  // smooth deterministic field: two slow sines + time drift (silk, no turbulence)
+  return (Math.sin(x*0.0021 + t*0.00035) + Math.cos(y*0.0026 - t*0.00022)) * Math.PI;
+}
+let running = true;
+document.addEventListener('visibilitychange', ()=>{ running = !document.hidden; if(running) requestAnimationFrame(frame); });
+function frame(){
+  t += 16.6;
+  // silk fade: leaves trails, never harsh
+  ctx.fillStyle = 'rgba(7,8,7,0.055)'; ctx.fillRect(0,0,W,H);
+  ctx.lineCap = 'round';
+  for(const p of P){
+    let a = angle(p.x, p.y);
+    // pointer wisp: gentle bend near cursor (temple-night wisp idea, no rain/leaves)
+    const dx = p.x-px, dy = p.y-py, d2 = dx*dx+dy*dy;
+    if(d2 < 220*220){ const d = Math.sqrt(d2)||1; a += (dx/d)*0.35; }
+    const sp = 0.55; // slow luxury speed
+    const nx = p.x + Math.cos(a)*sp, ny = p.y + Math.sin(a)*sp;
+    ctx.strokeStyle = p.c; ctx.globalAlpha = 0.34; ctx.lineWidth = p.w;
+    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nx, ny); ctx.stroke();
+    p.x = nx; p.y = ny; p.life++;
+    if(p.life > p.max || p.x<-20||p.y<-20||p.x>W+20||p.y>H+20) spawn(p);
+  }
+  ctx.globalAlpha = 1;
+  if(!reduced && running) requestAnimationFrame(frame);
+}
+if(reduced){ for(let k=0;k<240;k++){ t += 16.6; for(const p of P){ const a=angle(p.x,p.y); p.x+=Math.cos(a)*0.55; p.y+=Math.sin(a)*0.55; p.life++; if(p.life>p.max) spawn(p);} } frame.__static = true;
+  // paint one static pass
+  ctx.fillStyle='rgba(7,8,7,0.055)'; ctx.fillRect(0,0,W,H);
+  for(const p of P){ ctx.strokeStyle=p.c; ctx.globalAlpha=0.3; ctx.lineWidth=p.w; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x+8,p.y+4); ctx.stroke(); }
+  ctx.globalAlpha=1;
+} else requestAnimationFrame(frame);
+</script>
+<!-- frame:1 duration:6000 transition:fade -->
+<!-- HYPERFRAMES_META: {"scene":"L1 lemon flow silk","duration":6000,"transition":"fade","tech":"canvas 2d, pseudo-noise, pointer wisp"} -->
+</body>
+</html>

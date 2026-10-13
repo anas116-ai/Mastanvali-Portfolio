@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { GithubMark, LinkedinMark } from "@/components/ui/BrandIcons";
@@ -49,17 +49,10 @@ export function SiteHeader() {
 
   return (
     <header
-      className="fixed top-0 inset-x-0 z-50 transition-all duration-500 ease-out"
-      style={{
-        backgroundColor: pastHero ? "rgba(10, 13, 10, 0.65)" : "rgba(10, 13, 10, 0.40)",
-        WebkitBackdropFilter: "blur(24px) saturate(1.8)",
-        backdropFilter: "blur(24px) saturate(1.8)",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.07)",
-        boxShadow: pastHero ? "0 12px 36px -12px rgba(0, 0, 0, 0.6)" : "none",
-      }}
+      className="fixed top-0 inset-x-0 z-50 transition-all duration-300 pointer-events-none"
     >
-      <div className="px-5 sm:px-8 md:px-12 lg:px-16">
-        <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
+      <div className="px-5 sm:px-8 md:px-12 lg:px-16 pointer-events-auto">
+        <div className="max-w-7xl mx-auto h-16 sm:h-20 flex items-center justify-between">
           <a
             href="#top"
             className="group inline-flex items-center cursor-pointer transition-transform duration-200 hover:scale-[1.02]"

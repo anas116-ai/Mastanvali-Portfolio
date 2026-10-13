@@ -68,26 +68,26 @@ export function DepthCharacterMesh({
       3.0
     );
 
-    // Natural 2.5D Parallax Angular Rotation:
-    // Yaw: subtle, tasteful ~12 degree rotation towards cursor
-    const targetRotY = smoothedMouse.current.x * 0.22;
-    // Pitch: subtle ~6 degree nod up/down
-    const targetRotX = -smoothedMouse.current.y * 0.12;
-    // Roll: slight natural cervical tilt
-    const targetRotZ = -smoothedMouse.current.x * 0.04;
+    // Natural 2.5D Parallax Angular Rotation (calm, subtle, dignified):
+    // Yaw: subtle ~7 degree rotation towards cursor
+    const targetRotY = smoothedMouse.current.x * 0.13;
+    // Pitch: gentle ~3.5 degree nod
+    const targetRotX = -smoothedMouse.current.y * 0.07;
+    // Roll: very slight cervical ease
+    const targetRotZ = -smoothedMouse.current.x * 0.02;
 
-    currentRotY.current += (targetRotY - currentRotY.current) * 0.06;
-    currentRotX.current += (targetRotX - currentRotX.current) * 0.06;
-    currentRotZ.current += (targetRotZ - currentRotZ.current) * 0.06;
+    currentRotY.current += (targetRotY - currentRotY.current) * 0.05;
+    currentRotX.current += (targetRotX - currentRotX.current) * 0.05;
+    currentRotZ.current += (targetRotZ - currentRotZ.current) * 0.05;
 
     meshRef.current.rotation.y = currentRotY.current;
     meshRef.current.rotation.x = currentRotX.current;
     meshRef.current.rotation.z = currentRotZ.current;
 
-    // Organic Respiration Baseline
+    // Organic Respiration Baseline (gentle, calm)
     const BASE_Y = -0.05;
-    meshRef.current.position.y = BASE_Y + Math.sin(time * 1.4) * 0.012;
-    meshRef.current.position.x = smoothedMouse.current.x * 0.015;
+    meshRef.current.position.y = BASE_Y + Math.sin(time * 1.1) * 0.007;
+    meshRef.current.position.x = smoothedMouse.current.x * 0.008;
   });
 
   return (

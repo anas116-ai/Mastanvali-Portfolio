@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L2 — Night Mist Breath (calmest)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;background:#070807;overflow:hidden;font-family:system-ui,sans-serif}
+  .stage{position:fixed;inset:0;background:#060607;overflow:hidden}
+  .mist{position:absolute;border-radius:50%;filter:blur(110px);will-change:transform,opacity}
+  .m1{width:95vmax;height:58vmax;left:50%;top:-30vmax;transform:translateX(-50%);background:#F4F5EF;opacity:.065;animation:b1 9s cubic-bezier(.165,.84,.44,1) infinite alternate}
+  .m2{width:60vmax;height:44vmax;left:-16vmax;top:22vh;background:#B6B9B0;opacity:.05;animation:b2 14s cubic-bezier(.165,.84,.44,1) infinite alternate}
+  .m3{width:64vmax;height:40vmax;right:-16vmax;bottom:-18vmax;background:#D9FF00;opacity:.075;animation:b3 12s cubic-bezier(.165,.84,.44,1) infinite alternate}
+  @keyframes b1{from{opacity:.05;transform:translateX(-50%) scale(1)}to{opacity:.085;transform:translateX(-50%) scale(1.05)}}
+  @keyframes b2{from{opacity:.04;transform:translate(0,0)}to{opacity:.06;transform:translate(4vw,-3vh)}}
+  @keyframes b3{from{opacity:.06;transform:translate(0,0) scale(1)}to{opacity:.09;transform:translate(-3vw,2vh) scale(1.04)}}
+  #wisp{position:absolute;width:340px;height:340px;border-radius:50%;filter:blur(70px);
+    background:rgba(244,245,239,.07);pointer-events:none;transform:translate(-50%,-50%)}
+  #ring{position:absolute;width:46px;height:46px;border-radius:50%;border:1px solid rgba(217,255,0,.5);
+    pointer-events:none;transform:translate(-50%,-50%)}
+  .content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:5;pointer-events:none}
+  .eyebrow{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.2em;color:#B6B9B0;text-transform:uppercase}
+  .eyebrow i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#D9FF00;margin-right:10px;vertical-align:1px}
+  h1{margin-top:18px;font-size:clamp(40px,5.6vw,80px);font-weight:500;letter-spacing:-.02em;color:#F4F5EF}
+  h1 span{color:#D9FF00}
+  p{margin-top:14px;color:#7D8178;font-size:14px;max-width:60ch;line-height:1.6}
+  .meta{position:absolute;left:24px;bottom:20px;z-index:6;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:#6A6A66;text-transform:uppercase}
+  .meta b{color:#D9FF00;font-weight:500}
+  @media (prefers-reduced-motion:reduce){.mist{animation:none}#wisp,#ring{display:none}}
+  @media (pointer:coarse){#wisp,#ring{display:none}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="mist m1"></div><div class="mist m2"></div><div class="mist m3"></div>
+  <div id="wisp"></div><div id="ring"></div>
+  <div class="content">
+    <div class="eyebrow"><i></i>// L2 / Night mist breath — calm sections</div>
+    <h1>Still air, <span>breathing light</span></h1>
+    <p>Temple-night philosophy: layered mist + pointer wisp + bloom on lights only. No particles, no rain, no architecture. Maximum readability.</p>
+  </div>
+  <div class="meta"><b>L2</b> &nbsp; temple-night atmosphere, zero particles &nbsp;|&nbsp; cursor lerp 0.16 / ring 0.09</div>
+</div>
+<script>
+// Temple-night wisp idea, original lerp rig (matches DESIGN.md cursor spec).
+const wisp = document.getElementById('wisp'), ring = document.getElementById('ring');
+let tx = innerWidth/2, ty = innerHeight/2, wx = tx, wy = ty, rx = tx, ry = ty;
+addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; }, {passive:true});
+(function loop(){
+  wx += (tx-wx)*0.16; wy += (ty-wy)*0.16;
+  rx += (tx-rx)*0.09; ry += (ty-ry)*0.09;
+  wisp.style.left = wx+'px'; wisp.style.top = wy+'px';
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(loop);
+})();
+</script>
+<!-- frame:1 duration:6000 transition:fade -->
+<!-- HYPERFRAMES_META: {"scene":"L2 night mist breath","duration":6000,"transition":"fade","tech":"css mist + lerp wisp"} -->
+</body>
+</html>

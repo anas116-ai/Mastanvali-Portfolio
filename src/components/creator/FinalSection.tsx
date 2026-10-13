@@ -14,7 +14,7 @@ export function FinalSection() {
   return (
     <footer
       id="contact"
-      className="relative w-full overflow-hidden bg-transparent text-[#F4F5EF] pt-24 sm:pt-28 md:pt-32 pb-16 px-5 sm:px-8 md:px-12 lg:px-16 select-none"
+      className="relative w-full overflow-hidden bg-transparent text-[#F4F5EF] pt-16 sm:pt-20 md:pt-24 pb-14 sm:pb-16 px-5 sm:px-8 md:px-12 lg:px-16 select-none"
     >
       {/* Floor wash. Lemon pooled low and held at a low alpha, so the page
           appears to end in light rather than in a glow. */}
@@ -27,10 +27,10 @@ export function FinalSection() {
       {/* The closing chapter stands open on the black field: no box, no slab,
           just centred type over the lemon floor wash. Modal stays outside:
           backdrop-filter would trap its fixed overlay. */}
-      <div className="mx-auto max-w-5xl flex flex-col items-center text-center relative z-10 space-y-11 px-5 sm:px-10 md:px-14 py-12 sm:py-14">
+      <div className="mx-auto max-w-5xl flex flex-col items-center text-center relative z-10 space-y-9 px-5 sm:px-10 md:px-14 py-8 sm:py-10">
         <FadeIn y={20} duration={0.8}>
           <div className="flex items-center gap-2.5 eyebrow justify-center">
-            <span className="h-[5px] w-[5px] rounded-full bg-[#D9FF00] animate-pulse" />
+            <span className="h-[5px] w-[5px] rounded-full bg-[#C5AA7A] animate-pulse" />
             // Start a conversation
           </div>
 
@@ -38,7 +38,7 @@ export function FinalSection() {
               statement rather than a slogan: "what's next" also echoes the
               Engineer/Vision note at the top of the page. */}
           <h2 className="stylish-header text-[clamp(1.95rem,5.6vw,3.4rem)] text-[#FFFFFF] mt-4 max-w-[16ch] text-balance">
-            Let&apos;s build what&apos;s next
+            Let&apos;s Build Together
           </h2>
 
           <p className="stylish-sub mt-6 text-[14px] sm:text-[15.5px] leading-[1.7] text-[#F4F5EF] max-w-[46ch] text-pretty">
