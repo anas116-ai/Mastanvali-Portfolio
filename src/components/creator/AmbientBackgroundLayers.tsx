@@ -104,15 +104,13 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
       return 32 * (n0 + n1 + n2 + n3);
     }
 
-    // ── Living Botanical Dandelion Plants & Foliage Meadow ───────────────────
-    interface BotanicalPlant {
+    // ── Photorealistic Botanical Dandelion Architecture (Ref: User Images 1, 2, 3 & 4) ──
+    interface RealisticDandelion {
       xPct: number;
-      heightPct: number;
-      headRadius: number;
-      type: "puffball" | "yellow_flower" | "leaf";
       baseX: number;
       baseY: number;
       height: number;
+      headRadius: number;
       curveCtrl: number;
       angle: number;
       velocity: number;
@@ -121,37 +119,64 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
       damping: number;
       windFreq: number;
       windPhase: number;
-      rayCount: number;
-      lastRelease: number;
+      floretCount: number;
+      lastReleaseTime: number;
+      isPrimary: boolean;
     }
 
-    const botanicalPlants: BotanicalPlant[] = [
-      // Left side botanical grove
-      { xPct: 0.04, heightPct: 0.22, headRadius: 0,  type: "leaf",          baseX: 0, baseY: 0, height: 0, curveCtrl: -20, angle: -0.15, velocity: 0, targetAngle: -0.15, stiffness: 0.035, damping: 0.88, windFreq: 1.1, windPhase: 0.2, rayCount: 0,  lastRelease: 0 },
-      { xPct: 0.09, heightPct: 0.32, headRadius: 44, type: "puffball",      baseX: 0, baseY: 0, height: 0, curveCtrl: -15, angle: -0.08, velocity: 0, targetAngle: -0.08, stiffness: 0.028, damping: 0.89, windFreq: 1.3, windPhase: 1.4, rayCount: 46, lastRelease: 0 },
-      { xPct: 0.15, heightPct: 0.24, headRadius: 26, type: "yellow_flower", baseX: 0, baseY: 0, height: 0, curveCtrl: 10,  angle: 0.05,  velocity: 0, targetAngle: 0.05,  stiffness: 0.040, damping: 0.87, windFreq: 1.5, windPhase: 2.1, rayCount: 32, lastRelease: 0 },
-      { xPct: 0.22, heightPct: 0.28, headRadius: 36, type: "puffball",      baseX: 0, baseY: 0, height: 0, curveCtrl: 18,  angle: 0.12,  velocity: 0, targetAngle: 0.12,  stiffness: 0.032, damping: 0.90, windFreq: 1.2, windPhase: 3.5, rayCount: 38, lastRelease: 0 },
-      { xPct: 0.28, heightPct: 0.18, headRadius: 0,  type: "leaf",          baseX: 0, baseY: 0, height: 0, curveCtrl: 24,  angle: 0.22,  velocity: 0, targetAngle: 0.22,  stiffness: 0.042, damping: 0.86, windFreq: 1.4, windPhase: 4.8, rayCount: 0,  lastRelease: 0 },
-
-      // Right side botanical grove (framing the stage behind character)
-      { xPct: 0.73, heightPct: 0.29, headRadius: 38, type: "puffball",      baseX: 0, baseY: 0, height: 0, curveCtrl: -18, angle: -0.10, velocity: 0, targetAngle: -0.10, stiffness: 0.030, damping: 0.89, windFreq: 1.25, windPhase: 0.9, rayCount: 40, lastRelease: 0 },
-      { xPct: 0.81, heightPct: 0.23, headRadius: 28, type: "yellow_flower", baseX: 0, baseY: 0, height: 0, curveCtrl: -8,  angle: -0.04, velocity: 0, targetAngle: -0.04, stiffness: 0.038, damping: 0.88, windFreq: 1.45, windPhase: 2.7, rayCount: 34, lastRelease: 0 },
-      { xPct: 0.88, heightPct: 0.33, headRadius: 42, type: "puffball",      baseX: 0, baseY: 0, height: 0, curveCtrl: 12,  angle: 0.06,  velocity: 0, targetAngle: 0.06,  stiffness: 0.026, damping: 0.91, windFreq: 1.15, windPhase: 4.1, rayCount: 44, lastRelease: 0 },
-      { xPct: 0.95, heightPct: 0.21, headRadius: 0,  type: "leaf",          baseX: 0, baseY: 0, height: 0, curveCtrl: 22,  angle: 0.18,  velocity: 0, targetAngle: 0.18,  stiffness: 0.045, damping: 0.85, windFreq: 1.35, windPhase: 5.6, rayCount: 0,  lastRelease: 0 },
+    const dandelions: RealisticDandelion[] = [
+      // Primary Macro Hero Dandelion Clock (Lower-Left, matching Image 1)
+      {
+        xPct: 0.13,
+        baseX: 0,
+        baseY: 0,
+        height: 340,
+        headRadius: 62,
+        curveCtrl: -28,
+        angle: -0.07,
+        velocity: 0,
+        targetAngle: -0.07,
+        stiffness: 0.020,
+        damping: 0.92,
+        windFreq: 1.10,
+        windPhase: 0.8,
+        floretCount: 260, // Dense 3D spherical fluff
+        lastReleaseTime: 0,
+        isPrimary: true,
+      },
+      // Subtle Atmospheric Companion Dandelion (Lower-Right depth)
+      {
+        xPct: 0.87,
+        baseX: 0,
+        baseY: 0,
+        height: 260,
+        headRadius: 46,
+        curveCtrl: 20,
+        angle: 0.06,
+        velocity: 0,
+        targetAngle: 0.06,
+        stiffness: 0.026,
+        damping: 0.90,
+        windFreq: 1.25,
+        windPhase: 2.7,
+        floretCount: 160,
+        lastReleaseTime: 0,
+        isPrimary: false,
+      },
     ];
 
-    function updatePlantPositions() {
-      for (const p of botanicalPlants) {
-        p.baseX = W * p.xPct;
-        p.baseY = H + 25;
-        p.height = Math.max(160, H * p.heightPct);
+    function updateDandelionPositions() {
+      for (const d of dandelions) {
+        d.baseX = W * d.xPct;
+        d.baseY = H + 30;
+        d.height = d.isPrimary ? Math.min(360, Math.max(260, H * 0.38)) : Math.min(280, Math.max(190, H * 0.30));
       }
     }
 
     function resize() {
       W = targetCanvas.width = window.innerWidth;
       H = targetCanvas.height = window.innerHeight;
-      updatePlantPositions();
+      updateDandelionPositions();
       targetCtx.clearRect(0, 0, W, H);
     }
     resize();
@@ -253,8 +278,8 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
       });
     }
 
-    // ── Dandelion Airborne Parachute Seeds (Pappus) ─────────────────────────
-    interface DandelionParachuteSeed {
+    // ── High-Fidelity Airborne Dandelion Parachute Seeds (Ref: Images 1, 2, 3 & 4) ──
+    interface RealisticAirborneSeed {
       x: number;
       y: number;
       vx: number;
@@ -263,73 +288,114 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
       umbrellaRadius: number;
       bristleCount: number;
       angle: number;
-      baseAngle: number;
       swayPhase: number;
       swaySpeed: number;
       alpha: number;
       baseAlpha: number;
       color: RGBColor;
+      isPinkTinted: boolean;
       depth: number;
       seedId: number;
+      justDetached: boolean;
     }
 
-    const DANDELION_SEED_COUNT = 48;
-    const dandelionSeeds: DandelionParachuteSeed[] = [];
+    const DANDELION_SEED_COUNT = 60;
+    const dandelionSeeds: RealisticAirborneSeed[] = [];
 
-    const DANDELION_PALETTE: RGBColor[] = [
-      { r: 255, g: 255, b: 255 }, // Crisp Starlight White (#FFFFFF)
-      { r: 245, g: 200, b: 110 }, // Warm Champagne Gold (#F5C86E)
-      { r: 217, g: 255, b: 0   }, // Radiant Lemon (#D9FF00)
-      { r: 254, g: 215, b: 170 }, // Pale Luminous Peach (#FED7AA)
-      { r: 251, g: 191, b: 36  }, // Topaz Amber (#FBBF24)
+    // Color palette: Pure Gossamer Silk White, Luminous Rose Pink (Ref 4), Soft Champagne Gold
+    const SEED_COLOR_DEFS: { color: RGBColor; isPink: boolean }[] = [
+      { color: { r: 255, g: 255, b: 255 }, isPink: false }, // Pure Gossamer Silk White
+      { color: { r: 255, g: 255, b: 255 }, isPink: false },
+      { color: { r: 255, g: 248, b: 240 }, isPink: false }, // Soft Cream White
+      { color: { r: 250, g: 180, b: 215 }, isPink: true  }, // Ethereal Rose Quartz (Image 4)
+      { color: { r: 255, g: 195, b: 228 }, isPink: true  }, // Translucent Skeleton Leaf Pink (Image 4)
+      { color: { r: 245, g: 215, b: 135 }, isPink: false }, // Warm Champagne Amber
     ];
 
     for (let i = 0; i < DANDELION_SEED_COUNT; i++) {
-      const col = DANDELION_PALETTE[i % DANDELION_PALETTE.length];
+      const entry = SEED_COLOR_DEFS[i % SEED_COLOR_DEFS.length];
       const depth = 0.35 + Math.random() * 0.65;
-      const baseAlpha = 0.30 + depth * 0.45;
+      const baseAlpha = 0.38 + depth * 0.50;
 
       dandelionSeeds.push({
         x: Math.random() * (window.innerWidth + 200) - 100,
         y: Math.random() * (window.innerHeight + 200) - 100,
-        vx: 0.18 + Math.random() * 0.32,
-        vy: -(0.25 + Math.random() * 0.45),
-        stemLength: 12 + Math.random() * 6,
-        umbrellaRadius: 9 + Math.random() * 6,
-        bristleCount: 9 + Math.floor(Math.random() * 4),
-        angle: 0.15,
-        baseAngle: (Math.random() - 0.5) * 0.4,
+        vx: 0.25 + Math.random() * 0.35,
+        vy: -(0.25 + Math.random() * 0.40),
+        stemLength: 18 + Math.random() * 10, // Slender botanical beak
+        umbrellaRadius: 15 + Math.random() * 8, // Realistic radiating dome
+        bristleCount: 22 + Math.floor(Math.random() * 8), // 22-30 delicate silky fibers
+        angle: 0.12,
         swayPhase: Math.random() * Math.PI * 2,
-        swaySpeed: 0.015 + Math.random() * 0.02,
+        swaySpeed: 0.016 + Math.random() * 0.022,
         alpha: baseAlpha,
         baseAlpha,
-        color: col,
+        color: entry.color,
+        isPinkTinted: entry.isPink,
         depth,
         seedId: i,
+        justDetached: false,
       });
     }
 
-    // ── Floating Luminous Dandelion Pollen & Forest Spores ───────────────────
-    interface PollenGrain {
+    // ── Bioluminescent Fireflies ("Minuguru Purugulu" with organic breathing pulse) ──
+    interface Firefly {
       x: number;
       y: number;
       vx: number;
       vy: number;
-      alpha: number;
       radius: number;
-      phase: number;
+      pulseFreq: number;
+      pulsePhase: number;
+      baseAlpha: number;
+      color: RGBColor;
     }
 
-    const pollenGrains: PollenGrain[] = [];
-    for (let i = 0; i < 35; i++) {
-      pollenGrains.push({
+    const FIREFLY_COUNT = 32;
+    const fireflies: Firefly[] = [];
+    const FIREFLY_COLORS: RGBColor[] = [
+      { r: 245, g: 215, b: 80  }, // Warm Golden Firefly
+      { r: 217, g: 255, b: 0   }, // Radiant Lemon Spark
+      { r: 250, g: 165, b: 210 }, // Delicate Luminous Pink Glow (Image 4)
+      { r: 255, g: 238, b: 160 }, // Sunlight Starlight
+    ];
+
+    for (let i = 0; i < FIREFLY_COUNT; i++) {
+      fireflies.push({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        vx: 0.12 + Math.random() * 0.22,
-        vy: -(0.15 + Math.random() * 0.28),
-        alpha: 0.25 + Math.random() * 0.45,
-        radius: 0.8 + Math.random() * 1.2,
-        phase: Math.random() * Math.PI * 2,
+        vx: (Math.random() - 0.5) * 0.38,
+        vy: (Math.random() - 0.5) * 0.38,
+        radius: 1.3 + Math.random() * 1.6,
+        pulseFreq: 0.020 + Math.random() * 0.035,
+        pulsePhase: Math.random() * Math.PI * 2,
+        baseAlpha: 0.40 + Math.random() * 0.55,
+        color: FIREFLY_COLORS[i % FIREFLY_COLORS.length],
+      });
+    }
+
+    // ── Bottom Dark Bed & Dew Glitter Sparkles (Ref: Image 4 glitter bed + "rallu rallu ga dark area") ──
+    interface BedGlitter {
+      x: number;
+      y: number;
+      radius: number;
+      pulseFreq: number;
+      pulsePhase: number;
+      color: RGBColor;
+      alpha: number;
+    }
+    const BED_GLITTER_COUNT = 45;
+    const bedGlitters: BedGlitter[] = [];
+    for (let i = 0; i < BED_GLITTER_COUNT; i++) {
+      const isPink = Math.random() > 0.40;
+      bedGlitters.push({
+        x: Math.random() * window.innerWidth,
+        y: window.innerHeight - (Math.random() * 75),
+        radius: 0.8 + Math.random() * 1.8,
+        pulseFreq: 0.018 + Math.random() * 0.040,
+        pulsePhase: Math.random() * Math.PI * 2,
+        color: isPink ? { r: 255, g: 175, b: 215 } : { r: 217, g: 255, b: 120 },
+        alpha: 0.25 + Math.random() * 0.50,
       });
     }
 
@@ -383,6 +449,17 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
       mouse.speed *= 0.93;
 
       const mouseRadius = 220;
+
+      // ── 0. ETHEREAL SUB-SURFACE LIQUID CAUSTICS (User: "water effect mathram realistic ga kanipinchali") ──
+      const causticGrad = targetCtx.createLinearGradient(0, H * 0.4, W, H);
+      const waveOffset1 = Math.sin(time * 0.8) * 0.015;
+      const waveOffset2 = Math.cos(time * 0.6) * 0.018;
+      causticGrad.addColorStop(0, "rgba(7, 12, 10, 0)");
+      causticGrad.addColorStop(0.65, `rgba(18, 28, 25, ${(0.04 + waveOffset1).toFixed(3)})`);
+      causticGrad.addColorStop(0.85, `rgba(32, 18, 30, ${(0.05 + waveOffset2).toFixed(3)})`); // Subtle rose-tinted depth
+      causticGrad.addColorStop(1, "rgba(5, 8, 6, 0.45)");
+      targetCtx.fillStyle = causticGrad;
+      targetCtx.fillRect(0, 0, W, H);
 
       // ── 1. RENDER UNIFORM MULTI-COLORED COMET PARTICLES (LINE ATTACHED TO HEAD BALL) ──
       for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -529,230 +606,261 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
         targetCtx.fill();
       }
 
-      // ── 3. RENDER LIVING BOTANICAL DANDELION PLANTS & FOLIAGE MEADOW ──
+      // ── 3. RENDER DARK ORGANIC BOTTOM BED & PINK GLITTER DEW (User: "under sea rallu rallu ga" & Image 4) ──
+      // Silhouette bedrock with smooth pebble contours
+      targetCtx.beginPath();
+      targetCtx.moveTo(0, H);
+      targetCtx.lineTo(0, H - 42);
+      targetCtx.bezierCurveTo(W * 0.15, H - 58, W * 0.35, H - 32, W * 0.55, H - 48);
+      targetCtx.bezierCurveTo(W * 0.75, H - 62, W * 0.88, H - 38, W, H - 46);
+      targetCtx.lineTo(W, H);
+      targetCtx.closePath();
+      const bedGrad = targetCtx.createLinearGradient(0, H - 60, 0, H);
+      bedGrad.addColorStop(0, "rgba(10, 16, 12, 0.40)");
+      bedGrad.addColorStop(0.5, "rgba(8, 12, 9, 0.75)");
+      bedGrad.addColorStop(1, "rgba(4, 6, 5, 0.95)");
+      targetCtx.fillStyle = bedGrad;
+      targetCtx.fill();
+
+      // Glitter bokeh beads along the bed (Ref: Image 4 pink sparkling sand/dew)
+      for (let g = 0; g < bedGlitters.length; g++) {
+        const bg = bedGlitters[g];
+        bg.pulsePhase += bg.pulseFreq;
+        const gPulse = Math.pow(Math.sin(bg.pulsePhase), 4);
+        const gAlpha = bg.alpha * (0.3 + 0.7 * gPulse);
+
+        targetCtx.beginPath();
+        targetCtx.arc(bg.x, bg.y, bg.radius * (0.8 + 0.4 * gPulse), 0, Math.PI * 2);
+        targetCtx.fillStyle = `rgba(${bg.color.r}, ${bg.color.g}, ${bg.color.b}, ${gAlpha.toFixed(3)})`;
+        targetCtx.fill();
+      }
+
+      // ── 4. RENDER MACRO PHOTOREALISTIC DANDELION PUFFBALL CLOCKS (Ref: User Image 1) ──
       const now = performance.now();
 
-      for (let pIdx = 0; pIdx < botanicalPlants.length; pIdx++) {
-        const p = botanicalPlants[pIdx];
+      // Dynamic wind gust cycle (Natural breathing wind)
+      const windCycle = Math.sin(time * 0.60);
+      const isWindActive = windCycle > -0.15;
+      const windIntensity = 0.40 + (windCycle + 1) * 0.40;
 
-        // Harmonic natural wind wave passing across the plants
-        const naturalWind = Math.sin(time * p.windFreq + p.windPhase) * 0.048 + Math.cos(time * 0.75) * 0.024;
+      for (let dIdx = 0; dIdx < dandelions.length; dIdx++) {
+        const d = dandelions[dIdx];
 
-        // Reactive cursor interaction: bending away smoothly with realistic spring physics
-        const estHeadX = p.baseX + Math.sin(p.angle) * p.height + p.curveCtrl * 0.5;
-        const estHeadY = p.baseY - Math.cos(p.angle) * p.height;
+        // Organic biological sway
+        const naturalSway = Math.sin(time * d.windFreq + d.windPhase) * 0.038 + Math.cos(time * 0.55) * 0.016;
+
+        // Reactive cursor interaction on stem & flower head
+        const estHeadX = d.baseX + Math.sin(d.angle) * d.height + d.curveCtrl * 0.35;
+        const estHeadY = d.baseY - Math.cos(d.angle) * d.height;
         const dx = estHeadX - mouse.x;
         const dy = estHeadY - mouse.y;
         const dist = Math.hypot(dx, dy);
 
-        let cursorForce = 0;
-        if (mouse.active && dist < 220) {
-          const prox = 1 - dist / 220;
-          const pushSign = dx >= 0 ? 1 : -1;
-          cursorForce = pushSign * prox * 0.16 + (mouse.vx * 0.007 * prox);
+        let cursorPush = 0;
+        if (mouse.active && dist < 260) {
+          const prox = 1 - dist / 260;
+          cursorPush = (dx >= 0 ? 1 : -1) * prox * 0.16 + (mouse.vx * 0.007 * prox);
 
-          // If brushing past puffball head with cursor velocity, release seeds into the air!
-          if (p.type === "puffball" && (dist < p.headRadius * 1.6 || mouse.speed > 2.5)) {
-            if (now - p.lastRelease > 140) {
-              p.lastRelease = now;
+          // Brushing near dandelion crown detaches seeds dynamically!
+          if (dist < d.headRadius * 2.2 || (dist < 220 && mouse.speed > 2.0)) {
+            if (now - d.lastReleaseTime > 110) {
+              d.lastReleaseTime = now;
               const readySeed = dandelionSeeds.find(s => s.y < -30 || s.x > W + 40 || s.y > H + 40);
               if (readySeed) {
-                const burstAngle = -Math.PI * 0.5 + p.angle + (Math.random() - 0.5) * 0.9;
-                readySeed.x = estHeadX + Math.cos(burstAngle) * p.headRadius * 0.8;
-                readySeed.y = estHeadY + Math.sin(burstAngle) * p.headRadius * 0.8;
-                readySeed.vx = 0.6 + Math.random() * 1.2 + mouse.vx * 0.12;
-                readySeed.vy = -(1.2 + Math.random() * 1.4 + Math.abs(mouse.vy) * 0.12);
+                // Eject from the top/windward surface of the dandelion clock
+                const releaseAngle = -Math.PI * 0.55 + d.angle + (Math.random() - 0.4) * 1.2;
+                readySeed.x = estHeadX + Math.cos(releaseAngle) * d.headRadius * 0.82;
+                readySeed.y = estHeadY + Math.sin(releaseAngle) * d.headRadius * 0.82;
+                readySeed.vx = 0.8 + Math.random() * 1.4 + mouse.vx * 0.18;
+                readySeed.vy = -(1.6 + Math.random() * 1.8 + Math.abs(mouse.vy) * 0.16);
                 readySeed.alpha = readySeed.baseAlpha;
+                readySeed.justDetached = true;
               }
             }
           }
         }
 
-        // Automatic periodic seed release into the breeze
-        if (p.type === "puffball" && now - p.lastRelease > (3200 + pIdx * 900)) {
-          p.lastRelease = now;
+        // Periodic natural detachment during wind gusts (User: "first image lo paiki lechinattu kanpisthunayo, ala paiki vachi split avuthayi")
+        if (isWindActive && now - d.lastReleaseTime > (2400 + dIdx * 1200)) {
+          d.lastReleaseTime = now;
           const readySeed = dandelionSeeds.find(s => s.y < -30 || s.x > W + 40 || s.y > H + 40);
           if (readySeed) {
-            const burstAngle = -Math.PI * 0.45 + (Math.random() - 0.5) * 0.7;
-            readySeed.x = estHeadX + Math.cos(burstAngle) * p.headRadius * 0.8;
-            readySeed.y = estHeadY + Math.sin(burstAngle) * p.headRadius * 0.8;
-            readySeed.vx = 0.5 + Math.random() * 0.8;
-            readySeed.vy = -(1.0 + Math.random() * 0.9);
+            const releaseAngle = -Math.PI * 0.48 + (Math.random() - 0.5) * 0.75;
+            readySeed.x = estHeadX + Math.cos(releaseAngle) * d.headRadius * 0.85;
+            readySeed.y = estHeadY + Math.sin(releaseAngle) * d.headRadius * 0.85;
+            readySeed.vx = 0.7 + Math.random() * 0.9;
+            readySeed.vy = -(1.3 + Math.random() * 1.0);
             readySeed.alpha = readySeed.baseAlpha;
+            readySeed.justDetached = true;
           }
         }
 
-        // Realistic Spring-Damper Physics Integration
-        const targetAng = p.targetAngle + naturalWind + cursorForce;
-        const springForce = (targetAng - p.angle) * p.stiffness;
-        p.velocity = (p.velocity + springForce) * p.damping;
-        p.angle += p.velocity;
+        // Spring physics
+        const targetAng = d.targetAngle + naturalSway + cursorPush;
+        const springForce = (targetAng - d.angle) * d.stiffness;
+        d.velocity = (d.velocity + springForce) * d.damping;
+        d.angle += d.velocity;
 
-        // Accurate curved stem control coordinates
-        const headX = p.baseX + Math.sin(p.angle) * p.height + p.curveCtrl * 0.5;
-        const headY = p.baseY - Math.cos(p.angle) * p.height;
-        const ctrlX = (p.baseX + headX) * 0.5 + p.curveCtrl;
-        const ctrlY = (p.baseY + headY) * 0.5;
+        // Accurate curved stem
+        const headX = d.baseX + Math.sin(d.angle) * d.height + d.curveCtrl * 0.35;
+        const headY = d.baseY - Math.cos(d.angle) * d.height;
+        const ctrlX = (d.baseX + headX) * 0.5 + d.curveCtrl;
+        const ctrlY = (d.baseY + headY) * 0.5;
 
-        // 1. Botanical Stem (Rich gradient from dark moss to vibrant glowing lemon-gold)
-        const stemGrad = targetCtx.createLinearGradient(p.baseX, p.baseY, headX, headY);
-        stemGrad.addColorStop(0, "rgba(45, 65, 30, 0.05)");
-        stemGrad.addColorStop(0.45, "rgba(140, 175, 60, 0.22)");
-        stemGrad.addColorStop(1, "rgba(217, 255, 0, 0.42)");
+        // 1. Botanical Stem (Rich multilayered organic gradient with natural light rim)
+        const stemGrad = targetCtx.createLinearGradient(d.baseX, d.baseY, headX, headY);
+        stemGrad.addColorStop(0, "rgba(42, 62, 28, 0.25)");
+        stemGrad.addColorStop(0.35, "rgba(82, 120, 42, 0.55)");
+        stemGrad.addColorStop(0.80, "rgba(135, 178, 54, 0.72)");
+        stemGrad.addColorStop(1, "rgba(205, 245, 60, 0.85)");
 
         targetCtx.beginPath();
-        targetCtx.moveTo(p.baseX, p.baseY);
+        targetCtx.moveTo(d.baseX, d.baseY);
         targetCtx.quadraticCurveTo(ctrlX, ctrlY, headX, headY);
         targetCtx.strokeStyle = stemGrad;
-        targetCtx.lineWidth = p.type === "leaf" ? 3.0 : 2.0;
+        targetCtx.lineWidth = d.isPrimary ? 3.8 : 2.6;
         targetCtx.lineCap = "round";
         targetCtx.stroke();
 
-        // 2. Leaf Fronds / Serrated Botanical Foliage
-        if (p.type === "leaf") {
-          const leafSteps = 6;
-          for (let s = 1; s <= leafSteps; s++) {
-            const t = s / (leafSteps + 1);
-            const lx = (1 - t) * (1 - t) * p.baseX + 2 * (1 - t) * t * ctrlX + t * t * headX;
-            const ly = (1 - t) * (1 - t) * p.baseY + 2 * (1 - t) * t * ctrlY + t * t * headY;
-            const lobeLen = (1 - t * 0.4) * 22;
-            const lobeAngle = p.angle + (s % 2 === 0 ? 0.85 : -0.85);
+        // 2. Realistic Involucre & Curled Sepal Bracts (Ref: Image 1 - curled green phyllaries below floral head)
+        const bractCount = 10;
+        for (let b = 0; b < bractCount; b++) {
+          const bAngle = d.angle + Math.PI * 0.5 + ((b - (bractCount - 1) / 2) * 0.32);
+          const bLen = 16;
+          const bTipX = headX + Math.cos(bAngle) * bLen;
+          const bTipY = headY + Math.sin(bAngle) * bLen + 5;
 
-            targetCtx.beginPath();
-            targetCtx.moveTo(lx, ly);
-            targetCtx.quadraticCurveTo(
-              lx + Math.cos(lobeAngle) * lobeLen * 0.5,
-              ly + Math.sin(lobeAngle) * lobeLen * 0.5 - 4,
-              lx + Math.cos(lobeAngle) * lobeLen,
-              ly + Math.sin(lobeAngle) * lobeLen
-            );
-            targetCtx.strokeStyle = `rgba(130, 170, 50, ${0.15 + t * 0.15})`;
-            targetCtx.lineWidth = 1.4;
-            targetCtx.stroke();
-          }
+          targetCtx.beginPath();
+          targetCtx.moveTo(headX, headY + 3);
+          targetCtx.quadraticCurveTo(
+            headX + Math.cos(bAngle) * bLen * 0.55 + 2,
+            headY + 8,
+            bTipX,
+            bTipY
+          );
+          targetCtx.strokeStyle = "rgba(105, 148, 48, 0.65)";
+          targetCtx.lineWidth = 1.6;
+          targetCtx.stroke();
         }
 
-        // 3. Blooming Yellow Dandelion Flower (Layered golden-lemon ray florets)
-        else if (p.type === "yellow_flower") {
-          const fRadius = p.headRadius;
-          const petalLayers = 3;
+        // 3. Central Receptacle Core (Amber floral cushion with velvety texture)
+        const coreGrad = targetCtx.createRadialGradient(headX, headY, 1, headX, headY, 8);
+        coreGrad.addColorStop(0, "rgba(215, 155, 55, 0.95)");
+        coreGrad.addColorStop(0.7, "rgba(145, 95, 32, 0.90)");
+        coreGrad.addColorStop(1, "rgba(70, 48, 18, 0.75)");
+        targetCtx.beginPath();
+        targetCtx.arc(headX, headY, 7.5, 0, Math.PI * 2);
+        targetCtx.fillStyle = coreGrad;
+        targetCtx.fill();
 
-          for (let layer = 0; layer < petalLayers; layer++) {
-            const petalsInLayer = 14 + layer * 6;
-            const lRadius = fRadius * (0.55 + layer * 0.22);
-            const lAlpha = 0.40 - layer * 0.08;
+        // 4. VOLUMETRIC 3D RADIATING DANDELION PUFFBALL (Ref: Image 1 & 2 - 260 dense florets)
+        const floretCount = d.floretCount;
+        const puffRadius = d.headRadius;
 
-            for (let pet = 0; pet < petalsInLayer; pet++) {
-              const petAngle = p.angle - Math.PI * 0.5 + (pet / petalsInLayer) * Math.PI * 1.6 - Math.PI * 0.8;
-              const petTipX = headX + Math.cos(petAngle) * lRadius;
-              const petTipY = headY + Math.sin(petAngle) * lRadius;
+        for (let layer = 0; layer < 3; layer++) {
+          const layerFrac = (layer + 1) / 3;
+          const layerAlpha = layer === 0 ? 0.22 : layer === 1 ? 0.42 : 0.75;
+          const layerStrokeWidth = layer === 0 ? 0.45 : layer === 1 ? 0.60 : 0.75;
 
-              targetCtx.beginPath();
-              targetCtx.moveTo(headX, headY);
-              targetCtx.lineTo(petTipX, petTipY);
-              targetCtx.strokeStyle = layer === 0 ? "rgba(245, 158, 11, 0.55)" : `rgba(217, 255, 0, ${lAlpha.toFixed(2)})`;
-              targetCtx.lineWidth = 1.6 - layer * 0.3;
-              targetCtx.stroke();
-            }
-          }
+          const startIdx = Math.floor((layer * floretCount) / 3);
+          const endIdx = Math.floor(((layer + 1) * floretCount) / 3);
 
-          // Glowing central floral disk
-          targetCtx.beginPath();
-          targetCtx.arc(headX, headY, 4.2, 0, Math.PI * 2);
-          targetCtx.fillStyle = "rgba(245, 158, 11, 0.75)";
-          targetCtx.fill();
-        }
+          for (let r = startIdx; r < endIdx; r++) {
+            const goldenAngle = r * 2.399963;
+            const rNorm = Math.sqrt(r / floretCount);
+            const rayLen = puffRadius * (0.65 + 0.35 * rNorm) * (0.92 + ((r * 13) % 17) / 100);
 
-        // 4. Botanical Dandelion Puffball Clock (Radiating feathery parachute seedhead)
-        else if (p.type === "puffball") {
-          const puffRadius = p.headRadius;
-          const rayCount = p.rayCount;
-
-          // Receptacle dome
-          targetCtx.beginPath();
-          targetCtx.arc(headX, headY, 3.4, 0, Math.PI * 2);
-          targetCtx.fillStyle = "rgba(217, 255, 0, 0.60)";
-          targetCtx.fill();
-
-          for (let r = 0; r < rayCount; r++) {
-            const baseAngle = (r / rayCount) * Math.PI * 2;
-            const rayAngle = baseAngle + p.angle * 0.4 + Math.sin(time * 2.2 + r) * 0.025;
-            const rayLen = puffRadius * (0.84 + ((r * 11) % 19) / 55);
-
+            const rayAngle = goldenAngle + d.angle * 0.30 + Math.sin(time * 2.2 + r) * 0.015;
             const tipX = headX + Math.cos(rayAngle) * rayLen;
             const tipY = headY + Math.sin(rayAngle) * rayLen;
 
-            // Fine silky stalk
+            // Translucent rose-pink highlight on select florets (Image 4 infusion!)
+            const isPinkFloret = (r % 7 === 0);
+
             targetCtx.beginPath();
             targetCtx.moveTo(headX, headY);
             targetCtx.lineTo(tipX, tipY);
-            targetCtx.strokeStyle = `rgba(245, 230, 180, ${0.16 + ((r % 5) * 0.03)})`;
-            targetCtx.lineWidth = 0.65;
+            if (isPinkFloret) {
+              targetCtx.strokeStyle = `rgba(255, 185, 220, ${(layerAlpha * 0.85).toFixed(3)})`;
+            } else {
+              targetCtx.strokeStyle = `rgba(255, 255, 255, ${layerAlpha.toFixed(3)})`;
+            }
+            targetCtx.lineWidth = layerStrokeWidth;
             targetCtx.stroke();
 
-            // Parachute tuft at floret tip
-            const bristleCount = 5;
-            const tuftRadius = 4.2;
-
-            for (let b = 0; b < bristleCount; b++) {
-              const bAngle = rayAngle + ((b - 2) * 0.32);
-              const bx = tipX + Math.cos(bAngle) * tuftRadius;
-              const by = tipY + Math.sin(bAngle) * tuftRadius;
+            // Parachute tuft at tip (Ref: Image 1 micro-feathered umbrella with 6-8 micro-hairs)
+            const tuftR = (3.5 + 2.5 * layerFrac);
+            const tuftBristles = 7;
+            for (let b = 0; b < tuftBristles; b++) {
+              const bAng = rayAngle + ((b - (tuftBristles - 1) / 2) * 0.32);
+              const bx = tipX + Math.cos(bAng) * tuftR;
+              const by = tipY + Math.sin(bAng) * tuftR;
 
               targetCtx.beginPath();
               targetCtx.moveTo(tipX, tipY);
               targetCtx.lineTo(bx, by);
-              targetCtx.strokeStyle = "rgba(255, 255, 255, 0.35)";
-              targetCtx.lineWidth = 0.55;
+              targetCtx.strokeStyle = isPinkFloret
+                ? `rgba(255, 205, 230, ${(layerAlpha * 0.90).toFixed(3)})`
+                : `rgba(255, 255, 255, ${(layerAlpha * 0.80).toFixed(3)})`;
+              targetCtx.lineWidth = 0.45;
               targetCtx.stroke();
             }
 
-            // Seed kernel tip
-            targetCtx.beginPath();
-            targetCtx.arc(tipX, tipY, 0.75, 0, Math.PI * 2);
-            targetCtx.fillStyle = "rgba(255, 255, 255, 0.70)";
-            targetCtx.fill();
+            // Glistening micro-dewdrop tip
+            if (layer === 2 || isPinkFloret) {
+              targetCtx.beginPath();
+              targetCtx.arc(tipX, tipY, 0.80, 0, Math.PI * 2);
+              targetCtx.fillStyle = isPinkFloret
+                ? "rgba(255, 195, 225, 0.95)"
+                : "rgba(255, 255, 255, 0.90)";
+              targetCtx.fill();
+            }
           }
-
-          // Soft ethereal aura around puffball head
-          targetCtx.beginPath();
-          targetCtx.arc(headX, headY, puffRadius * 1.1, 0, Math.PI * 2);
-          targetCtx.fillStyle = "rgba(217, 255, 0, 0.022)";
-          targetCtx.fill();
         }
+
+        // Luminous spherical glow aura around the dandelion puffball (Ref: Image 2 radiance)
+        const auraGrad = targetCtx.createRadialGradient(headX, headY, puffRadius * 0.4, headX, headY, puffRadius * 1.25);
+        auraGrad.addColorStop(0, "rgba(255, 255, 255, 0.045)");
+        auraGrad.addColorStop(0.6, "rgba(255, 215, 235, 0.025)"); // delicate rose tint
+        auraGrad.addColorStop(1, "transparent");
+        targetCtx.beginPath();
+        targetCtx.arc(headX, headY, puffRadius * 1.25, 0, Math.PI * 2);
+        targetCtx.fillStyle = auraGrad;
+        targetCtx.fill();
       }
 
-      // ── 4. RENDER AIRBORNE DANDELION SEEDS (DISPERSAL MOTION & REALISTIC DYNAMICS) ──
+      // ── 5. RENDER HIGH-FIDELITY AIRBORNE DANDELION PARACHUTE SEEDS (Ref: Images 1, 2, 3 & 4) ──
       for (let i = 0; i < dandelionSeeds.length; i++) {
         const ds = dandelionSeeds[i];
 
         ds.swayPhase += ds.swaySpeed;
 
-        // Base aerodynamic forces: gentle rising buoyancy + soft horizontal wind breeze
-        let windVx = 0.35 * ds.depth + Math.cos(ds.swayPhase * 0.75) * 0.16;
-        let windVy = -0.38 * ds.depth + Math.sin(ds.swayPhase) * 0.14;
+        // Dynamic aerodynamics:
+        // In active wind: lift carries seeds diagonally upward & right.
+        // In calm air ("gaali lenappudu"): seeds gently descend downward with air resistance parachute drag!
+        let targetWindVx = 0.38 * ds.depth * windIntensity + Math.cos(ds.swayPhase * 0.8) * 0.15;
+        let targetWindVy = isWindActive
+          ? -(0.42 * ds.depth * windIntensity) + Math.sin(ds.swayPhase) * 0.14
+          : 0.22 * ds.depth + Math.sin(ds.swayPhase) * 0.12;
 
-        // Reactive scroll velocity
-        windVy -= scrollVelocity * ds.depth * 0.45;
+        targetWindVy -= scrollVelocity * ds.depth * 0.45;
 
-        // Realistic Cursor Air Displacement Field (Push & Gust)
+        // Realistic Cursor Air Displacement Wake (User: "cursor tho move chesthe relastic ga move avvali")
         if (mouse.active) {
           const mdx = ds.x - mouse.x;
           const mdy = ds.y - mouse.y;
           const mDist = Math.hypot(mdx, mdy);
-          const mRadius = 240;
+          const mRadius = 250;
 
           if (mDist < mRadius && mDist > 1) {
             const mProx = 1 - mDist / mRadius;
-            const push = mProx * 2.2;
+            const push = mProx * 2.8;
 
-            // Direct wind blowing from cursor movement
-            windVx += (mdx / mDist) * push + mouse.vx * mProx * 0.42;
-            windVy += (mdy / mDist) * push + mouse.vy * mProx * 0.42;
+            targetWindVx += (mdx / mDist) * push + mouse.vx * mProx * 0.50;
+            targetWindVy += (mdy / mDist) * push + mouse.vy * mProx * 0.50;
 
-            // Sudden flutter tilt reaction
-            ds.angle += (mouse.vx * 0.04 - ds.angle) * 0.15;
-            ds.alpha = Math.min(0.95, ds.baseAlpha + mProx * 0.35);
+            ds.angle += (mouse.vx * 0.06 - ds.angle) * 0.20;
+            ds.alpha = Math.min(0.98, ds.baseAlpha + mProx * 0.40);
           } else {
             ds.alpha += (ds.baseAlpha - ds.alpha) * 0.04;
           }
@@ -760,57 +868,75 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
           ds.alpha += (ds.baseAlpha - ds.alpha) * 0.04;
         }
 
-        // Velocity integration
-        ds.vx += (windVx - ds.vx) * 0.06;
-        ds.vy += (windVy - ds.vy) * 0.06;
+        ds.vx += (targetWindVx - ds.vx) * 0.065;
+        ds.vy += (targetWindVy - ds.vy) * 0.065;
         ds.x += ds.vx;
         ds.y += ds.vy;
 
-        // Realistic pendulum drag: umbrella leads into air, seed grain trails beneath
-        const targetTilt = ds.vx * 0.38 + Math.sin(ds.swayPhase) * 0.14;
-        ds.angle += (targetTilt - ds.angle) * 0.08;
+        // Aerodynamic alignment: the parachute creates top drag, pointing the seed down along relative airflow
+        const motionAngle = Math.atan2(ds.vy, ds.vx);
+        const naturalTilt = motionAngle + Math.PI * 0.5 + Math.sin(ds.swayPhase) * 0.16;
+        ds.angle += (naturalTilt - ds.angle) * 0.08;
 
-        // Screen wrap
-        if (ds.y < -50) {
-          ds.y = H + 30;
+        // Screen boundary wrap
+        if (ds.y < -60) {
+          ds.y = H + 40;
           ds.x = Math.random() * W * 0.75;
+          ds.justDetached = false;
         }
-        if (ds.x > W + 60) {
-          ds.x = -40;
+        if (ds.y > H + 60) {
+          ds.y = -40;
+          ds.x = Math.random() * W;
+          ds.justDetached = false;
+        }
+        if (ds.x > W + 70) {
+          ds.x = -50;
           ds.y = Math.random() * H;
+          ds.justDetached = false;
         }
-        if (ds.x < -60) ds.x = W + 40;
+        if (ds.x < -70) {
+          ds.x = W + 50;
+          ds.justDetached = false;
+        }
 
-        // ── Render Dandelion Parachute Geometry ──
         const col = ds.color;
         const stemL = ds.stemLength * ds.depth;
         const umbrellaR = ds.umbrellaRadius * ds.depth;
 
-        // Seed grain at bottom (achenium)
+        // 1. Seed grain at base (elongated achene)
         const seedKernelX = ds.x;
         const seedKernelY = ds.y;
 
-        // Umbrella apex position (above seed grain along angle)
+        // 2. Umbrella apex position (above seed grain along angle)
         const apexX = seedKernelX + Math.sin(ds.angle) * stemL;
         const apexY = seedKernelY - Math.cos(ds.angle) * stemL;
 
-        // 1. Slender filament stalk connecting seed grain to umbrella
+        // Slender gossamer beak stalk with slight aerodynamic bend
+        const midStalkX = (seedKernelX + apexX) * 0.5 + Math.cos(ds.angle) * 1.5;
+        const midStalkY = (seedKernelY + apexY) * 0.5 + Math.sin(ds.angle) * 1.5;
+
         targetCtx.beginPath();
         targetCtx.moveTo(seedKernelX, seedKernelY);
-        targetCtx.lineTo(apexX, apexY);
-        targetCtx.strokeStyle = `rgba(${col.r}, ${col.g}, ${col.b}, ${(ds.alpha * 0.55).toFixed(3)})`;
-        targetCtx.lineWidth = 0.70;
+        targetCtx.quadraticCurveTo(midStalkX, midStalkY, apexX, apexY);
+        targetCtx.strokeStyle = ds.isPinkTinted
+          ? `rgba(250, 185, 218, ${(ds.alpha * 0.75).toFixed(3)})`
+          : `rgba(255, 255, 255, ${(ds.alpha * 0.70).toFixed(3)})`;
+        targetCtx.lineWidth = 0.80;
         targetCtx.stroke();
 
-        // 2. Glowing seed grain (achenium) at base
+        // Realistic seed grain (tapered dark amber-sepia spindle with fine ridges)
+        targetCtx.save();
+        targetCtx.translate(seedKernelX, seedKernelY);
+        targetCtx.rotate(ds.angle);
         targetCtx.beginPath();
-        targetCtx.arc(seedKernelX, seedKernelY, 1.15 * ds.depth, 0, Math.PI * 2);
-        targetCtx.fillStyle = `rgba(${col.r}, ${col.g}, ${col.b}, ${(ds.alpha * 0.95).toFixed(3)})`;
+        targetCtx.ellipse(0, 0, 1.2 * ds.depth, 2.8 * ds.depth, 0, 0, Math.PI * 2);
+        targetCtx.fillStyle = `rgba(175, 120, 50, ${(ds.alpha * 0.95).toFixed(3)})`;
         targetCtx.fill();
+        targetCtx.restore();
 
-        // 3. Radiating pappus bristles (umbrella parachute with micro barbs)
+        // 3. Gossamer Pappus Canopy (Feathered 3D dome, Ref: Image 3 micro-barbs & gossamer sheen)
         const numBristles = ds.bristleCount;
-        const spreadAngle = Math.PI * 0.72;
+        const spreadAngle = Math.PI * 0.82;
         const centerAngle = -Math.PI * 0.5 + ds.angle;
 
         for (let b = 0; b < numBristles; b++) {
@@ -820,63 +946,93 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
           const bristleTipX = apexX + Math.cos(bristleAngle) * umbrellaR;
           const bristleTipY = apexY + Math.sin(bristleAngle) * umbrellaR;
 
+          const curveFrac = Math.sin(bFrac * Math.PI) * 2.2;
+          const bCtrlX = (apexX + bristleTipX) * 0.5 - Math.sin(ds.angle) * curveFrac;
+          const bCtrlY = (apexY + bristleTipY) * 0.5 + Math.cos(ds.angle) * curveFrac;
+
           targetCtx.beginPath();
           targetCtx.moveTo(apexX, apexY);
-          targetCtx.lineTo(bristleTipX, bristleTipY);
-          targetCtx.strokeStyle = `rgba(${col.r}, ${col.g}, ${col.b}, ${(ds.alpha * 0.65).toFixed(3)})`;
+          targetCtx.quadraticCurveTo(bCtrlX, bCtrlY, bristleTipX, bristleTipY);
+          targetCtx.strokeStyle = ds.isPinkTinted
+            ? `rgba(255, 195, 225, ${(ds.alpha * 0.82).toFixed(3)})`
+            : `rgba(255, 255, 255, ${(ds.alpha * 0.78).toFixed(3)})`;
           targetCtx.lineWidth = 0.65;
           targetCtx.stroke();
 
-          // Tiny luminous feathery tip
+          // Micro-plumose lateral barbs (Ref: Image 3 microscopic hairs)
+          if (b % 2 === 0) {
+            const barb1Angle = bristleAngle + 0.32;
+            const barb1X = bCtrlX + Math.cos(barb1Angle) * 3.5;
+            const barb1Y = bCtrlY + Math.sin(barb1Angle) * 3.5;
+
+            targetCtx.beginPath();
+            targetCtx.moveTo(bCtrlX, bCtrlY);
+            targetCtx.lineTo(barb1X, barb1Y);
+            targetCtx.strokeStyle = ds.isPinkTinted
+              ? `rgba(255, 210, 230, ${(ds.alpha * 0.50).toFixed(3)})`
+              : `rgba(255, 255, 255, ${(ds.alpha * 0.45).toFixed(3)})`;
+            targetCtx.lineWidth = 0.45;
+            targetCtx.stroke();
+          }
+
+          // Luminous tip dewdrop (Ref 4: sparkling starlight/pink dew)
           targetCtx.beginPath();
-          targetCtx.arc(bristleTipX, bristleTipY, 0.65 * ds.depth, 0, Math.PI * 2);
-          targetCtx.fillStyle = `rgba(255, 255, 255, ${(ds.alpha * 0.85).toFixed(3)})`;
+          targetCtx.arc(bristleTipX, bristleTipY, 0.85 * ds.depth, 0, Math.PI * 2);
+          targetCtx.fillStyle = ds.isPinkTinted
+            ? `rgba(255, 205, 230, ${(ds.alpha * 0.95).toFixed(3)})`
+            : `rgba(255, 255, 255, ${(ds.alpha * 0.92).toFixed(3)})`;
           targetCtx.fill();
         }
 
-        // Tiny central node at apex
+        // Luminous apex hub
         targetCtx.beginPath();
-        targetCtx.arc(apexX, apexY, 0.85 * ds.depth, 0, Math.PI * 2);
-        targetCtx.fillStyle = `rgba(${col.r}, ${col.g}, ${col.b}, ${(ds.alpha * 0.80).toFixed(3)})`;
+        targetCtx.arc(apexX, apexY, 1.1 * ds.depth, 0, Math.PI * 2);
+        targetCtx.fillStyle = ds.isPinkTinted
+          ? "rgba(255, 215, 235, 0.95)"
+          : `rgba(${col.r}, ${col.g}, ${col.b}, ${(ds.alpha * 0.90).toFixed(3)})`;
         targetCtx.fill();
       }
 
-      // ── 5. RENDER LUMINOUS GOLDEN DANDELION POLLEN GRAINS ──
-      for (let p = 0; p < pollenGrains.length; p++) {
-        const pg = pollenGrains[p];
-        pg.phase += 0.02;
+      // ── 6. RENDER BIOLUMINESCENT FIREFLIES ("Minuguru Purugulu" with breathing pulse) ──
+      for (let f = 0; f < fireflies.length; f++) {
+        const ff = fireflies[f];
+        ff.pulsePhase += ff.pulseFreq;
 
-        let pWindX = pg.vx + Math.sin(pg.phase) * 0.12;
-        let pWindY = pg.vy + Math.cos(pg.phase * 0.8) * 0.08;
+        const pulse = Math.pow(Math.sin(ff.pulsePhase), 4);
+        const currentAlpha = ff.baseAlpha * (0.22 + 0.78 * pulse);
+
+        ff.x += ff.vx + Math.sin(time * 1.2 + f) * 0.18;
+        ff.y += ff.vy + Math.cos(time * 0.9 + f) * 0.18;
 
         if (mouse.active) {
-          const pdx = pg.x - mouse.x;
-          const pdy = pg.y - mouse.y;
-          const pDist = Math.hypot(pdx, pdy);
-          if (pDist < 180 && pDist > 1) {
-            const pProx = 1 - pDist / 180;
-            pWindX += (pdx / pDist) * pProx * 1.4 + mouse.vx * pProx * 0.25;
-            pWindY += (pdy / pDist) * pProx * 1.4 + mouse.vy * pProx * 0.25;
+          const fdx = ff.x - mouse.x;
+          const fdy = ff.y - mouse.y;
+          const fDist = Math.hypot(fdx, fdy);
+          if (fDist < 160 && fDist > 1) {
+            const fProx = 1 - fDist / 160;
+            ff.x += (fdx / fDist) * fProx * 2.0;
+            ff.y += (fdy / fDist) * fProx * 2.0;
           }
         }
 
-        pg.x += pWindX;
-        pg.y += pWindY;
+        if (ff.x < -20) ff.x = W + 20;
+        if (ff.x > W + 20) ff.x = -20;
+        if (ff.y < -20) ff.y = H + 20;
+        if (ff.y > H + 20) ff.y = -20;
 
-        if (pg.y < -10) pg.y = H + 10;
-        if (pg.x > W + 10) pg.x = -10;
-        if (pg.x < -10) pg.x = W + 10;
-
-        // Pollen particle glow
         targetCtx.beginPath();
-        targetCtx.arc(pg.x, pg.y, pg.radius, 0, Math.PI * 2);
-        targetCtx.fillStyle = `rgba(217, 255, 0, ${pg.alpha.toFixed(3)})`;
+        targetCtx.arc(ff.x, ff.y, ff.radius, 0, Math.PI * 2);
+        targetCtx.fillStyle = `rgba(${ff.color.r}, ${ff.color.g}, ${ff.color.b}, ${currentAlpha.toFixed(3)})`;
         targetCtx.fill();
 
-        // Soft halo
+        const haloRadius = ff.radius * 4.8 * (0.7 + pulse * 0.5);
+        const haloGrad = targetCtx.createRadialGradient(ff.x, ff.y, 0, ff.x, ff.y, haloRadius);
+        haloGrad.addColorStop(0, `rgba(${ff.color.r}, ${ff.color.g}, ${ff.color.b}, ${(currentAlpha * 0.40).toFixed(3)})`);
+        haloGrad.addColorStop(1, `rgba(${ff.color.r}, ${ff.color.g}, ${ff.color.b}, 0)`);
+
         targetCtx.beginPath();
-        targetCtx.arc(pg.x, pg.y, pg.radius * 2.2, 0, Math.PI * 2);
-        targetCtx.fillStyle = `rgba(245, 190, 80, ${(pg.alpha * 0.20).toFixed(3)})`;
+        targetCtx.arc(ff.x, ff.y, haloRadius, 0, Math.PI * 2);
+        targetCtx.fillStyle = haloGrad;
         targetCtx.fill();
       }
 
