@@ -285,7 +285,7 @@ export function SkillsSection() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.28 }}
               onClick={() => setOpenIdx(null)}
-              className="absolute inset-0 bg-[rgba(6,6,8,0.94)] backdrop-blur-[3px]"
+              className="absolute inset-0 bg-[rgba(6,6,8,0.55)] backdrop-blur-[10px]"
             />
 
             <motion.div

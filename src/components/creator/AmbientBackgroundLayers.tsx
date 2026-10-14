@@ -167,8 +167,8 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    // ── 20% Reduced Count (150 Particles), UNIFORM SIZE & SHAPE FOR ALL PARTICLES ──
-    const PARTICLE_COUNT = 150;
+    // ── Reduced Count (110 Particles), UNIFORM SIZE & SHAPE FOR ALL PARTICLES ──
+    const PARTICLE_COUNT = 110;
     const NOISE_SCALE = 0.0016;
     const UNIFORM_TAIL_LENGTH = 14; // Exactly 14px tail for every single particle
     const UNIFORM_HEAD_RADIUS = 1.35; // Exactly 1.35px head ball for every single particle
@@ -227,7 +227,7 @@ function useDeterministicFlowFieldCanvas(canvasRef: React.RefObject<HTMLCanvasEl
       const originX = ce.detail.x;
       const originY = ce.detail.y;
 
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 14; i++) {
         const angle = Math.random() * Math.PI * 2;
         const speed = 0.42 + Math.random() * 1.4;
         const col = MULTI_LUXURY_PALETTE[Math.floor(Math.random() * MULTI_LUXURY_PALETTE.length)];
