@@ -45,6 +45,10 @@
   ],
   "exclude": [
     "node_modules",
-    "scratch"
+    "scratch",
+    "_backups",
+    "src_backup_pristine",
+    "preview",
+    "qa"
   ]
 }

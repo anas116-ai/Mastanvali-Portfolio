@@ -466,7 +466,7 @@ export function SkillsSection() {
                       className="text-[11px] font-[family-name:var(--font-geist-mono)] tracking-[0.2em] uppercase"
                       style={{ color: active.accent }}
                     >
-                      {active.no}
+                      {active.code}
                     </span>
                   </div>
                 </div>

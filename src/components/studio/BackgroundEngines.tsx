@@ -259,7 +259,7 @@ export function GenerativeAmbientTree() {
       ctx.fillStyle = crownGlow;
       ctx.fillRect(0, 0, w, h);
 
-      function drawBranch(x: number, y: number, len: number, angle: number, depth: number) {
+      const drawBranch = (x: number, y: number, len: number, angle: number, depth: number): void => {
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(angle);
@@ -285,7 +285,7 @@ export function GenerativeAmbientTree() {
           ctx.shadowBlur = 0;
         }
         ctx.restore();
-      }
+      };
       drawBranch(treeX, treeY, h * 0.25, -0.05, 0);
 
       // Pollen dust drifting leftwards across hero

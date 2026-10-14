@@ -17,7 +17,7 @@ import { MarqueeSection } from "@/components/creator/MarqueeSection";
 import { AboutSection } from "@/components/creator/AboutSection";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
 
-export const MODES: { id: BackgroundMode; name: string; tag: string; desc: string }[] = [
+const MODES: { id: BackgroundMode; name: string; tag: string; desc: string }[] = [
   {
     id: "aurora",
     name: "01. Volumetric Aurora Glass",
