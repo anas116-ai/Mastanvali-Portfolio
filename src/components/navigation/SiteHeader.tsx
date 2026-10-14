@@ -4,20 +4,6 @@ import { useEffect, useState } from "react";
 import { GithubMark, LinkedinMark } from "@/components/ui/BrandIcons";
 import { ProximityCommandDock, MobileNav } from "@/components/creator/ProximityCommandDock";
 
-/* The masthead.
- *
- * It used to live inside the hero as a static element in the hero's flex
- * flow, which meant that past about 400px of scroll the page had no
- * navigation on it at all. It also inherited the hero's `overflow-hidden`,
- * so no amount of `fixed` would have worked from in there. Both problems
- * disappear when the header is a sibling of <main> rather than a child.
- *
- * It stays a faint liquid sheet over the hero and only becomes a
- * full smoked surface once the page has scrolled off it, so the
- * opening frame still carries the glass material without being
- * capped by a heavy bar it does not need.
- */
-
 const SECTIONS = ["about", "experience", "skills", "projects", "contact"];
 
 export function SiteHeader() {
@@ -58,58 +44,51 @@ export function SiteHeader() {
 
   const social = {
     className:
-      "h-11 w-11 flex items-center justify-center transition-transform duration-300 hover:-translate-y-0.5 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D9FF00]",
+      "h-10 w-10 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-white/[0.08] hover:text-[#E8FF45] text-[#B6B9B0] cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E8FF45]",
   };
 
   return (
     <header
-      className="fixed top-0 inset-x-0 z-50"
-      style={{
-        backgroundColor: pastHero ? "rgba(7, 9, 7, 0.66)" : "rgba(7, 9, 7, 0.30)",
-        WebkitBackdropFilter: "blur(28px) saturate(1.75)",
-        backdropFilter: "blur(28px) saturate(1.75)",
-        borderBottom: "none",
-        boxShadow: "none",
-        transition: "background-color 400ms cubic-bezier(0.16, 1, 0.3, 1)",
-      }}
+      className="fixed top-0 inset-x-0 z-50 transition-all duration-300 pointer-events-none"
     >
-      <div className="px-5 sm:px-8 md:px-12 lg:px-16">
-        <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
-        <a
-          href="#top"
-          className="group inline-flex items-center cursor-pointer"
-          aria-label="Mastan Vali, back to top"
-        >
-          <span className="font-header-dynamic text-[17px] sm:text-[18px] font-medium uppercase tracking-[0.16em] text-white select-none">
-            MASTAN VALI
-          </span>
-        </a>
-
-        <ProximityCommandDock activeId={section} />
-
-        <div className="flex items-center gap-2 sm:gap-3">
-          <MobileNav />
+      <div className="px-5 sm:px-8 md:px-12 lg:px-16 pointer-events-auto">
+        <div className="max-w-7xl mx-auto h-16 sm:h-20 flex items-center justify-between">
           <a
-            href="https://github.com/anas116-ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={social.className}
-            title="GitHub (anas116-ai)"
-            aria-label="GitHub Profile"
+            href="#top"
+            className="group inline-flex items-center cursor-pointer transition-transform duration-200 hover:scale-[1.02]"
+            aria-label="Mastan Vali, back to top"
           >
-            <GithubMark size={24} />
+            <span className="font-header-dynamic text-[16px] sm:text-[18px] font-semibold uppercase tracking-[0.16em] text-white select-none flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#E8FF45] shadow-[0_0_8px_#E8FF45]" />
+              MASTAN VALI
+            </span>
           </a>
-          <a
-            href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={social.className}
-            title="LinkedIn (Mastan Vali Shaik)"
-            aria-label="LinkedIn Profile"
-          >
-            <LinkedinMark size={24} />
-          </a>
-        </div>
+
+          <ProximityCommandDock activeId={section} />
+
+          <div className="flex items-center gap-2 sm:gap-3">
+            <MobileNav />
+            <a
+              href="https://github.com/anas116-ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={social.className}
+              title="GitHub (anas116-ai)"
+              aria-label="GitHub Profile"
+            >
+              <GithubMark size={20} />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/mastan-vali-shaik-86952725a/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={social.className}
+              title="LinkedIn (Mastan Vali Shaik)"
+              aria-label="LinkedIn Profile"
+            >
+              <LinkedinMark size={20} />
+            </a>
+          </div>
         </div>
       </div>
     </header>

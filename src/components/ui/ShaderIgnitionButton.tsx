@@ -5,7 +5,7 @@ import React, { useRef, useEffect, useState, memo } from "react";
 /* Named for lightness stops inside one hue, not for four metals. The old
    names (amber / gold / platinum) survived a palette change and were
    actively misleading, since every value inside them is lemon or bone. */
-export type IgnitionColorVariant = "lemonDeep" | "bone" | "lemon" | "lemonHi";
+export type IgnitionColorVariant = "lemonDeep" | "bone" | "lemon" | "lemonHi" | "cobalt";
 
 interface ColorConfig {
   dustRgb: [number, number, number];
@@ -19,6 +19,18 @@ interface ColorConfig {
 }
 
 const COLOR_VARIANTS: Record<IgnitionColorVariant, ColorConfig> = {
+  // Fallback alias for clean lemon aesthetic (strictly no blue)
+  cobalt: {
+    dustRgb: [0.09, 0.09, 0.02],
+    starLow: [1.0, 1.0, 0.82],
+    starHigh: [0.89, 0.89, 0.29],
+    glowRgb: [0.89, 0.89, 0.29],
+    flashRgb: [1.0, 1.0, 0.94],
+    borderIdle: "border-[#D9FF00]/60",
+    borderHover: "group-hover:border-[#E8FF45]",
+    textGlow: "rgba(232,255,69,0.65)",
+  },
+
   // 01. Lemon core (primary accent)
   lemon: {
     dustRgb: [0.09, 0.09, 0.02],

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { HeroSection } from "@/components/creator/HeroSection";
 import { MarqueeSection } from "@/components/creator/MarqueeSection";
@@ -10,66 +10,69 @@ import { FinalSection } from "@/components/creator/FinalSection";
 import { AmbientBackgroundLayers } from "@/components/creator/AmbientBackgroundLayers";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
+import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
+import { LuxuryMagneticCursor } from "@/components/motion/LuxuryMagneticCursor";
 
 export default function Home() {
   return (
-    <div
-      className="relative bg-[#070807] min-h-screen text-[#F4F5EF] antialiased selection:bg-white/20 selection:text-[#F4F5EF]"
-      id="top"
-    >
-      {/* Top Scroll Progress Indicator */}
-      <ScrollProgressBar />
-
-
-      {/* Skip to content for keyboard users */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#F4F5EF] focus:text-[#070807] focus:text-xs focus:font-medium focus:tracking-[0.16em] focus:uppercase focus:outline-none"
-      >
-        Skip to content
-      </a>
-
-      {/* Ambient background architecture */}
-      <AmbientBackgroundLayers />
-
-      {/* Corner vignette framing the composition.
-          Updated to lemon tint for the new theme. */}
+    <SmoothScrollProvider>
       <div
-        className="fixed inset-0 pointer-events-none z-[50]"
-        style={{
-          background:
-            "radial-gradient(150% 118% at 50% 38%, transparent 66%, rgba(0,0,0,0.55) 100%)",
-        }}
-      />
+        className="relative bg-[#070807] min-h-screen text-[#F4F5EF] antialiased selection:bg-white/20 selection:text-[#F4F5EF]"
+        id="top"
+      >
+        {/* Luxury Fluid Magnetic Cursor */}
+        <LuxuryMagneticCursor />
 
-      {/* 01. Masthead. A sibling of <main>, not a child of the hero: the
-          hero clips its overflow, so a fixed bar placed inside it would be
-          cut off, and in static form it scrolled away entirely. */}
-      <SiteHeader />
+        {/* Top Scroll Progress Indicator */}
+        <ScrollProgressBar />
 
-      {/* The single main landmark every reader navigates by */}
-      <main id="main-content">
-        {/* 02. Hero Section */}
-        <HeroSection />
+        {/* Skip to content for keyboard users */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#F4F5EF] focus:text-[#070807] focus:text-xs focus:font-medium focus:tracking-[0.16em] focus:uppercase focus:outline-none"
+        >
+          Skip to content
+        </a>
 
-        {/* 03. Scroll-synchronised technology marquee */}
-        <MarqueeSection />
+        {/* Ambient background architecture */}
+        <AmbientBackgroundLayers />
 
-        {/* 04. About: three live capability ponds */}
-        <AboutSection />
+        {/* Corner vignette framing the composition */}
+        <div
+          className="fixed inset-0 pointer-events-none z-[50]"
+          style={{
+            background:
+              "radial-gradient(150% 118% at 50% 38%, transparent 66%, rgba(0,0,0,0.55) 100%)",
+          }}
+        />
 
-        {/* 05. Verified enterprise experience */}
-        <ExperienceSection />
+        {/* 01. Masthead */}
+        <SiteHeader />
 
-        {/* 06. Core engineering disciplines */}
-        <SkillsSection />
+        {/* The single main landmark every reader navigates by */}
+        <main id="main-content">
+          {/* 02. Hero Section */}
+          <HeroSection />
 
-        {/* 07. Selected engineering work */}
-        <ProjectsSection />
-      </main>
+          {/* 03. Scroll-synchronised technology marquee */}
+          <MarqueeSection />
 
-      {/* 08. Contact and site footer */}
-      <FinalSection />
-    </div>
+          {/* 04. About: three live capability ponds */}
+          <AboutSection />
+
+          {/* 05. Verified enterprise experience */}
+          <ExperienceSection />
+
+          {/* 06. Core engineering disciplines */}
+          <SkillsSection />
+
+          {/* 07. Selected engineering work */}
+          <ProjectsSection />
+        </main>
+
+        {/* 08. Contact and site footer */}
+        <FinalSection />
+      </div>
+    </SmoothScrollProvider>
   );
 }

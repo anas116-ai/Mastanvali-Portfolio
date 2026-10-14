@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef, Suspense, useState, useEffect, Component, type ReactNode } from "react";import { Canvas } from "@react-three/fiber";
+import React, { useRef, Suspense, useState, useEffect, Component, type ReactNode } from "react";
+import { Canvas } from "@react-three/fiber";
 import { DepthCharacterMesh } from "@/components/character/webgl/DepthCharacterMesh";
 import { GroundShadow3D } from "@/components/character/webgl/GroundShadow3D";
 import Image from "next/image";
@@ -85,46 +86,39 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
       {/* 1. TRUE 3D WEBGL ENGINE */}
       {webglSupported && (
         <>
-          {/* No skeleton. The scene fades up once the rig is compiled. */}
           <div
             className={`absolute inset-0 transition-opacity duration-[900ms] ease-out ${
               sceneReady ? "opacity-100" : "opacity-0"
             }`}
           >
-          <RigBoundary>
-            <Canvas
-              camera={{ position: [0, -0.02, 5.35], fov: 38 }}
-              dpr={isMobile ? 1 : [1, 2]}
-              gl={{
-                antialias: true,
-                alpha: true,
-                powerPreference: "high-performance",
-              }}
-              className="w-full h-full pointer-events-auto"
-              onCreated={() => setSceneReady(true)}
-            >
-            {/* Clean Neutral Studio Lights (Zero artificial color tints on clothing or pants) */}
-            <ambientLight intensity={1.05} />
-            <directionalLight position={[0, 3.0, 4.0]} intensity={0.85} color="#FFFFFF" />
+            <RigBoundary>
+              <Canvas
+                camera={{ position: [0, -0.02, 5.35], fov: 38 }}
+                dpr={isMobile ? 1 : [1, 2]}
+                gl={{
+                  antialias: true,
+                  alpha: true,
+                  powerPreference: "high-performance",
+                }}
+                className="w-full h-full pointer-events-auto"
+                onCreated={() => setSceneReady(true)}
+              >
+                {/* Clean Neutral Studio Lights */}
+                <ambientLight intensity={1.05} />
+                <directionalLight position={[0, 3.0, 4.0]} intensity={0.85} color="#FFFFFF" />
 
-            <Suspense fallback={null}>
-              {/* 3D Depth Displaced Character Mesh */}
-              <DepthCharacterMesh
-                diffuseSrc="/images/avatar/style_01_4k_transparent.png"
-                closedEyesSrc="/images/avatar/style_01_eyes_closed.png"
-                depthSrc="/images/avatar/style_01_depth.png"
-                normalSrc="/images/avatar/style_01_normal.png"
-                mousePosition={mousePosition}
-              />
+                <Suspense fallback={null}>
+                  <DepthCharacterMesh
+                    diffuseSrc="/images/avatar/style_01_4k_transparent.png"
+                    depthSrc="/images/avatar/style_01_depth.png"
+                    normalSrc="/images/avatar/style_01_normal.png"
+                    mousePosition={mousePosition}
+                  />
 
-              {/* 3D Ground Contact Shadow Plane directly under the feet */}
-              <GroundShadow3D mousePosition={mousePosition} />
-
-              {/* Calm stage — volumetric dust removed for clean luxury */}
-              {/* Dust particles removed for clean luxury */}
-            </Suspense>
-          </Canvas>
-        </RigBoundary>
+                  <GroundShadow3D mousePosition={mousePosition} />
+                </Suspense>
+              </Canvas>
+            </RigBoundary>
           </div>
         </>
       )}
@@ -141,11 +135,6 @@ export function V2CharacterRig({ className = "" }: V2CharacterRigProps) {
           sizes="520px"
         />
       )}
-
-
-
-      {/* Floating skill badges removed for clean luxury */}
-      {/* Skill stream removed for clean luxury */}
     </div>
   );
 }

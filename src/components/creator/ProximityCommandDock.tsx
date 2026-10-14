@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 interface NavItem {
@@ -17,248 +18,67 @@ const NAV_ITEMS: NavItem[] = [
   { id: "contact", label: "Contact", href: "#contact" },
 ];
 
-const PROXIMITY = 118;
-const SPRING = 0.19;
-const DAMPING = 0.7;
-const SHIFT = 3;
-
-type RGB = readonly [number, number, number];
-
-function parseRGB(value: string): RGB {
-  const m = value.match(/-?[\d.]+/g);
-  if (!m || m.length < 3) return [140, 140, 134];
-  return [Number(m[0]), Number(m[1]), Number(m[2])];
-}
-
-/* The resting colour is whatever the stylesheet says, and the arriving
-   colour is the lemon. Reading the rest state instead of hardcoding it
-   means a palette change in globals.css carries the ramp with it. Rest
-   is crisp bone white, arrival is lemon yellow. */
-function readRamp(el: HTMLElement) {
-  const rest = parseRGB(getComputedStyle(el).color);
-  return { from: rest, to: [217, 255, 0] as RGB };
-}
-
-function mix(a: RGB, b: RGB, t: number) {
-  const c = a.map((v, i) => Math.round(v + (b[i] - v) * t)) as unknown as RGB;
-  return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
-}
-
 export function ProximityCommandDock({ activeId = "" }: { activeId?: string }) {
-  const containerRef = useRef<HTMLElement>(null);
-  const itemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
-  const [clickedId, setClickedId] = useState("");
-  const repaintRef = useRef<(() => void) | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-  /* The masthead supplies the section actually on screen, which is correct
-     after any manual scroll. A click sets the same value immediately so the
-     bar responds to the touch instead of waiting a beat for the smooth
-     scroll to begin. The override retires as soon as the real tracker lands
-     on the same section, and on any wheel input: otherwise the clicked
-     value would outrank the tracked section indefinitely and the hairline
-     would follow the last click rather than the page. */
-  const currentId = clickedId || activeId;
-
-  useEffect(() => {
-    if (clickedId && clickedId === activeId) setClickedId("");
-  }, [clickedId, activeId]);
-
-  useEffect(() => {
-    const retire = () => setClickedId("");
-    window.addEventListener("wheel", retire, { passive: true });
-    window.addEventListener("touchstart", retire, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", retire);
-      window.removeEventListener("touchstart", retire);
-    };
-  }, []);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const states = NAV_ITEMS.map(() => ({ target: 0, value: 0, velocity: 0 }));
-    const ramps: Array<{ from: RGB; to: RGB } | undefined> = NAV_ITEMS.map(() => undefined);
-
-    let animationFrameId = 0;
-    let isMoving = false;
-
-    const clamp = (val: number, min: number, max: number) =>
-      Math.max(min, Math.min(max, val));
-
-    const updatePhysics = () => {
-      let stillMoving = false;
-
-      states.forEach((state, index) => {
-        const item = itemsRef.current[index];
-        if (!item) return;
-
-        state.velocity += (state.target - state.value) * SPRING;
-        state.velocity *= DAMPING;
-        state.value += state.velocity;
-
-        if (
-          Math.abs(state.target - state.value) < 0.001 &&
-          Math.abs(state.velocity) < 0.001
-        ) {
-          state.value = state.target;
-          state.velocity = 0;
-        } else {
-          stillMoving = true;
-        }
-
-        const val = clamp(state.value, 0, 1.12);
-
-        // Letter spacing opens slightly and the word lifts, no scaling gimmick.
-        const tracking = val * 0.01;
-        const lift = val * -1.5;
-
-        item.style.transform = `translate3d(${(
-          val * SHIFT
-        ).toFixed(2)}px, ${lift.toFixed(2)}px, 0)`;
-
-        const textSpan = item.querySelector<HTMLElement>(".dock-text");
-        /* An active section keeps its hairline open and its label at lemon,
-           whatever the pointer is doing. Proximity can add emphasis but
-           never take it away. */
-        const held = item.dataset.active === "true";
-        const emph = Math.max(val, held ? 1 : 0);
-
-        if (textSpan) {
-          textSpan.style.letterSpacing = `${(0.015 + tracking).toFixed(4)}em`;
-          /* One ramp, muted to lemon. The previous ramp was left over from
-             the brass palette and resolved to rgb(228, 213, 96) at full
-             proximity, a muddy olive that is neither the muted grey the
-             link rests at nor the lemon it is meant to become. The rest
-             state is now read from the live computed style so the ramp
-             cannot drift off the palette again. */
-          const ramp = ramps[index] ?? (ramps[index] = readRamp(textSpan));
-          textSpan.style.color = mix(ramp.from, ramp.to, emph);
-        }
-
-      });
-
-      if (stillMoving) {
-        animationFrameId = requestAnimationFrame(updatePhysics);
-      } else {
-        isMoving = false;
-      }
-    };
-
-    const startPhysics = () => {
-      if (!isMoving) {
-        isMoving = true;
-        animationFrameId = requestAnimationFrame(updatePhysics);
-      }
-    };
-
-    const releaseAll = () => {
-      states.forEach((state) => {
-        state.target = 0;
-      });
-      startPhysics();
-    };
-
-    /* Section tracking repaints with no pointer involved, so a settle pass
-       has to run when the active section changes or the hairline for the
-       new section never opens. */
-    const repaint = () => {
-      states.forEach((state) => {
-        state.value = state.target;
-        state.velocity = 0;
-      });
-      updatePhysics();
-      isMoving = false;
-    };
-
-    const handlePointerMove = (e: PointerEvent) => {
-      const rect = container.getBoundingClientRect();
-
-      if (
-        e.clientX < rect.left - 40 ||
-        e.clientX > rect.right + 40 ||
-        e.clientY < rect.top - 30 ||
-        e.clientY > rect.bottom + 40
-      ) {
-        releaseAll();
-        return;
-      }
-
-      itemsRef.current.forEach((item, index) => {
-        if (!item) return;
-        const itemRect = item.getBoundingClientRect();
-        const centerX = itemRect.left + itemRect.width / 2;
-        const dist = Math.abs(e.clientX - centerX);
-
-        const proximity = clamp(1 - dist / PROXIMITY, 0, 1);
-        states[index].target = proximity * proximity * (3 - 2 * proximity);
-      });
-
-      startPhysics();
-    };
-
-    const handleWindowPointerMove = (e: PointerEvent) => {
-      const rect = container.getBoundingClientRect();
-      if (
-        e.clientX < rect.left - 60 ||
-        e.clientX > rect.right + 60 ||
-        e.clientY < rect.top - 40 ||
-        e.clientY > rect.bottom + 60
-      ) {
-        releaseAll();
-      }
-    };
-
-    container.addEventListener("pointermove", handlePointerMove);
-    container.addEventListener("pointerleave", releaseAll);
-    window.addEventListener("pointermove", handleWindowPointerMove, { passive: true });
-    repaintRef.current = repaint;
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      container.removeEventListener("pointermove", handlePointerMove);
-      container.removeEventListener("pointerleave", releaseAll);
-      window.removeEventListener("pointermove", handleWindowPointerMove);
-      repaintRef.current = null;
-    };
-  }, []);
-
-  useEffect(() => {
-    repaintRef.current?.();
-  }, [currentId]);
+  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <nav
-      ref={containerRef}
-      className="hidden md:flex items-center gap-3.5 lg:gap-6 py-2 font-header-dynamic font-medium text-[15px] lg:text-[16px] tracking-[0.01em] select-none relative"
+      className="hidden md:flex items-center gap-6 lg:gap-8 select-none"
       aria-label="Portfolio Navigation"
+      onMouseLeave={() => setHoveredId(null)}
     >
-      {NAV_ITEMS.map((item, idx) => {
-        const isActive = currentId === item.id;
-        return (
-          <a
-            key={item.id}
-            ref={(el) => {
-              itemsRef.current[idx] = el;
-            }}
-            href={item.href}
-            data-active={isActive ? "true" : "false"}
-            onClick={(e) => {
-              e.preventDefault();
-              setClickedId(item.id);
-              const target = document.querySelector(item.href);
-              if (target) target.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="dock-link relative inline-flex items-center justify-center py-1 cursor-pointer will-change-transform focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D9FF00]"
-            style={{ transformOrigin: "left center" }}
-          >
-            {/* Rest state is crisp bone white, fully lit. Proximity ramps
-                it to lemon and opens the hairline; the bounce lands it. */}
-            <span className="dock-text text-[#FFFFFF] transition-colors duration-300">
-              {item.label}
-            </span>
+      {NAV_ITEMS.map((item) => {
+        const isActive = activeId === item.id;
+        const isHovered = hoveredId === item.id;
 
-          </a>
+        return (
+          <motion.a
+            key={item.id}
+            href={item.href}
+            onClick={(e) => handleScrollTo(e, item.href)}
+            onMouseEnter={() => setHoveredId(item.id)}
+            // Bouncy spring physics on hover and tap
+            whileHover={{
+              y: -3,
+              scale: 1.08,
+              transition: { type: "spring", stiffness: 450, damping: 12 },
+            }}
+            whileTap={{
+              scale: 0.92,
+              y: 0,
+              transition: { type: "spring", stiffness: 500, damping: 15 },
+            }}
+            className={`relative py-1 cursor-pointer font-header-dynamic text-[15px] lg:text-[16px] tracking-[0.02em] font-medium transition-colors duration-200 ${
+              isActive
+                ? "text-[#E8FF45]"
+                : isHovered
+                ? "text-[#E8FF45]"
+                : "text-[#B6B9B0] hover:text-white"
+            }`}
+          >
+            <span>{item.label}</span>
+
+            {/* Bouncy Spring Pill Dot beneath active/hovered link - NO enclosing box */}
+            {(isHovered || (isActive && !hoveredId)) && (
+              <motion.span
+                layoutId="bouncy-nav-dot"
+                className="absolute -bottom-1 left-0 right-0 h-[2.5px] rounded-full bg-[#E8FF45] shadow-[0_0_10px_#E8FF45]"
+                transition={{
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 22,
+                }}
+              />
+            )}
+          </motion.a>
         );
       })}
     </nav>
@@ -286,10 +106,7 @@ export function MobileNav() {
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
       {open && (
-        <div /* Anchored to the masthead's measured height (57px) plus a 4px gap.
-             This was 4.25rem, tuned for the older taller bar, which left the
-             panel floating 11px below the header it belongs to. */
-        className="fixed inset-x-4 top-[61px] z-50 rounded-[3px] border border-[rgba(244,245,239,0.13)] glass-strong p-2">
+        <div className="fixed inset-x-4 top-[64px] z-50 rounded-2xl border border-white/[0.12] bg-[#0A0D0A]/90 backdrop-blur-xl p-3 shadow-2xl flex flex-col gap-1">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.id}
@@ -298,7 +115,7 @@ export function MobileNav() {
                 e.preventDefault();
                 go(item);
               }}
-              className="block px-4 py-3 text-[15px] font-medium tracking-[0.01em] text-[#B6B9B0] hover:text-[#E8FF45] transition-colors duration-200 font-header-dynamic"
+              className="px-4 py-2.5 rounded-xl text-[#F4F5EF] hover:text-[#E8FF45] hover:bg-white/[0.05] transition-all duration-200 text-sm font-medium"
             >
               {item.label}
             </a>

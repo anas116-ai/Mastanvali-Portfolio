@@ -43,7 +43,7 @@ const capabilityAreas: CapabilityArea[] = [
   },
   {
     num: "03",
-    title: "Full-stack products and desktop ERP",
+    title: "Full-stack applications",
     subtitle: "Zero-latency software engineering",
     desc: "Engineering reliable software from offline-first healthcare desktop ERPs to real-time AI resume platforms on the web.",
     points: [
@@ -54,7 +54,7 @@ const capabilityAreas: CapabilityArea[] = [
     accent: "#CDFD02",
     borderColor: "rgba(205,253,2,0.34)",
     icon: MonitorSmartphone,
-    systemTag: "ZERO-LATENCY // WAL ERP",
+    systemTag: "ERP",
     fishCount: 3,
   },
 ];
@@ -63,7 +63,7 @@ export function AboutSection() {
   return (
     <section
       id="about"
-      className="relative w-full bg-transparent py-24 sm:py-28 md:py-32 text-[#F5F2EB] z-20 select-none border-t border-[rgba(245,242,235,0.06)] font-[family-name:var(--font-geist-sans)]"
+      className="relative w-full bg-transparent py-16 sm:py-20 md:py-22 text-[#F5F2EB] z-20 select-none border-t border-[rgba(245,242,235,0.06)] font-[family-name:var(--font-geist-sans)]"
     >
       {/* Two low, cool light sources. Lemon on one side, bone on the other,
           both held far below the threshold where they read as a glow. */}
@@ -76,14 +76,17 @@ export function AboutSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="flex flex-col items-start space-y-4 max-w-3xl">
             <FadeIn y={18} delay={0.1} duration={0.8}>
-              <div className="eyebrow">// ABOUT ME · ARCHITECTURAL FOUNDATION</div>
+              <div className="flex items-center gap-2.5 eyebrow">
+                <span className="h-[5px] w-[5px] rounded-full bg-[#C5AA7A] animate-pulse" />
+                // ABOUT ME · ARCHITECTURAL FOUNDATION
+              </div>
               <h2 className="stylish-header text-[2rem] sm:text-[2.6rem] md:text-[3.15rem] lg:text-[3.6rem] text-[#F5F2EB] mt-3">
-                Engineering & vision
+                Engineering & Vision
               </h2>
             </FadeIn>
 
             <FadeIn y={14} delay={0.2} duration={0.8}>
-              <p className="stylish-sub text-[#8C8C86] text-sm sm:text-[16px] max-w-2xl">
+              <p className="stylish-sub text-[#B0B2A8] text-sm sm:text-[16px] max-w-2xl">
                 A bridge between enterprise data architecture and autonomous agent systems. Grounded
                 in mission-critical reliability, deterministic logic, and systems that stay fast under
                 load.

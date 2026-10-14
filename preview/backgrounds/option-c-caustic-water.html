@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option C — Caustic Night Water</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:100%; height:100%; background:#070807; overflow:hidden;
+    font-family:"Geist Sans",system-ui,sans-serif; }
+  .stage { position:fixed; inset:0; background:#070807; overflow:hidden; }
+  canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  .lemon-floor { position:absolute; left:50%; bottom:-32vmax; width:72vmax; height:40vmax;
+    transform:translateX(-50%); border-radius:50%; filter:blur(130px);
+    background:#566000; opacity:0.28; }
+  .content { position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; z-index:5; pointer-events:none; }
+  .eyebrow { font-family:ui-monospace,monospace; font-size:12px; letter-spacing:0.2em;
+    color:#B6B9B0; text-transform:uppercase; }
+  .eyebrow i { display:inline-block; width:7px; height:7px; border-radius:50%;
+    background:#D9FF00; margin-right:10px; vertical-align:1px; }
+  h1 { margin-top:18px; font-size:clamp(42px,6vw,84px); font-weight:500;
+    letter-spacing:-0.02em; color:#F4F5EF; }
+  h1 span { color:#D9FF00; }
+  p { margin-top:14px; color:#7D8178; font-size:15px; }
+  .meta { position:absolute; left:24px; bottom:20px; z-index:6;
+    font-family:ui-monospace,monospace; font-size:11px; letter-spacing:0.14em;
+    color:#6A6A66; text-transform:uppercase; }
+  .meta b { color:#D9FF00; font-weight:500; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <canvas id="water"></canvas>
+  <div class="lemon-floor"></div>
+  <div class="content">
+    <div class="eyebrow"><i></i>// Option C / Caustic night water</div>
+    <h1>Light lives <span>in the water</span></h1>
+    <p>Koi-card caustics, global scale / bone light only / zero blue cast</p>
+  </div>
+  <div class="meta"><b>C</b> &nbsp; meigen product-light + koi system &nbsp;|&nbsp; canvas 60fps, reduced-motion safe</div>
+</div>
+<script>
+const cv = document.getElementById('water');
+const ctx = cv.getContext('2d');
+let W, H, t = 0;
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function size(){ W = cv.width = innerWidth; H = cv.height = innerHeight; }
+addEventListener('resize', size); size();
+const blobs = [
+  { x:0.30, y:0.30, r:0.34, sp:0.00022, o:0.055, c:'244,245,239' },
+  { x:0.72, y:0.24, r:0.28, sp:0.00017, o:0.045, c:'244,245,239' },
+  { x:0.55, y:0.62, r:0.40, sp:0.00013, o:0.040, c:'182,185,176' },
+  { x:0.24, y:0.74, r:0.26, sp:0.00019, o:0.050, c:'217,255,0' },
+];
+function frame(){
+  t += 16.6;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = '#070807'; ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation = 'lighter';
+  blobs.forEach((b,i)=>{
+    const dx = Math.sin(t*b.sp*(i+1) + i*2.1) * W*0.06;
+    const dy = Math.cos(t*b.sp*1.3 + i*1.7) * H*0.05;
+    const rx = b.r*Math.min(W,H)*(1+0.06*Math.sin(t*0.0002+i));
+    const ry = rx*0.62;
+    const g = ctx.createRadialGradient(
+      W*b.x+dx, H*b.y+dy, 0,
+      W*b.x+dx, H*b.y+dy, rx);
+    g.addColorStop(0, `rgba(${b.c},${b.o})`);
+    g.addColorStop(1, `rgba(${b.c},0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(W*b.x+dx, H*b.y+dy, rx, ry, 0.4*Math.sin(t*0.0001+i), 0, 7);
+    ctx.fill();
+  });
+  ctx.globalCompositeOperation = 'source-over';
+  if(!reduced) requestAnimationFrame(frame);
+}
+frame();
+if(reduced){ t = 4000; frame(); }
+</script>
+<!-- frame:1 duration:6000 transition:fade -->
+</body>
+</html>
